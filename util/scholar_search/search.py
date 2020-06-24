@@ -47,14 +47,16 @@ def get_faculty(email_domain):
         next_btn = list(filter(lambda x: x['aria-label'] == 'Next', nav_btns))
 
         # convert onclick text to unicode 
-        next_link = str(next_btn[0]['onclick'][17:-1])
-        a = next_link
-        print(html.unescape(a))
-        print('/citations?view_op\x3dsearch_authors\x26hl\x3den\x26oe\x3dASCII\x26mauthors\x3dqin+he\x26after_author\x3ddywJAKf-__8J\x26astart\x3d10')
+        next_link = next_btn[0]['onclick'][17:-1]
+        after_author_id = (next_link.split('\\x3d')[-2])[:-10]
+        profile_count = 10
+        next_page = f'https://scholar.google.com/citations?view_op=search_authors&hl=en&mauthors={email_domain}&after_author={after_author_id}&astart={profile_count}'
+        print(next_page)
         break
 
 def main():
-    print(get_profile('ketan mayer-patel', 'unc.edu'))
+    # print(get_profile('ketan mayer-patel', 'unc.edu'))
+    get_faculty('unc.edu')
 
 if __name__ == '__main__':
     main()
