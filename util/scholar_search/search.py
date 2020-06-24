@@ -1,7 +1,9 @@
-from csv import writer
 import time
 import requests
 from bs4 import BeautifulSoup
+from csv import writer
+from requests.exceptions import Timeout
+
 
 session = requests.Session()
 
@@ -14,9 +16,15 @@ def get_profile(name, uni_email):
     query += info
 
     # TODO: implement proxy rotation and random user-agent
-    search_resp = session.get(
-        url=query
-    )
+    try:
+        search_resp = session.get(
+            url=query,
+            timeout=3
+        )
+    except Timeout:
+        print('request timed out')
+    else:
+        pass
 
     if 200 <= search_resp.status_code < 300:
         soup = BeautifulSoup(search_resp.text, 'html.parser')
@@ -36,7 +44,7 @@ def get_faculty(email_domain):
     next_page += email_domain
 
     next_resp = session.get(
-        url=next_page
+        url=next_page,
     )
 
     start_time = time.time()
@@ -57,9 +65,17 @@ def get_faculty(email_domain):
         next_page = f'https://scholar.google.com/citations?view_op=search_authors&hl=en&mauthors={email_domain}&after_author={after_author_id}&astart={profile_count}'
 
         # load the html of the next page
-        next_resp = session.get(
-            url=next_page
-        )
+        try:
+            next_resp = session.get(
+                url=next_page,
+                timeout=3
+            )
+        except Timeout:
+            print('request timed out')
+            continue
+        else:
+            pass
+
         soup = BeautifulSoup(next_resp.text, 'html.parser')
         nav_btns = soup.find_all('button', attrs={'aria-label':True})
         next_btn = list(filter(lambda x: x['aria-label'] == 'Next', nav_btns))
