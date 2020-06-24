@@ -11,16 +11,13 @@ def get_profile(name, uni_email):
     '''returns link to google scholar profile based on search query'''
     query = "https://scholar.google.com/citations?hl=en&view_op=search_authors&mauthors="
 
-    # adds + symbol between fname, lname, and email
+    # adds the "+" symbol between fname, lname, and email
     info = '+'.join(name.split(' ')) + f'+{uni_email}'
     query += info
 
     # TODO: implement proxy rotation and random user-agent
     try:
-        search_resp = session.get(
-            url=query,
-            timeout=3
-        )
+        search_resp = session.get(url=query, timeout=3)
     except Timeout:
         print('request timed out')
     else:
@@ -39,30 +36,34 @@ def get_profile(name, uni_email):
 
 
 def get_faculty(email_domain, starting_id=None, limit=None ):
-    '''return list of scholar-listed faculty members'''
+    '''writes list of scholar-listed faculty members to .csv file'''
+    # check if there is a search limit
     if limit == None:
-        # no limit
         search_limit = 10000000
     else:
         search_limit = limit
+
+    # remains True while have not loaded the first profile page
     first_page = True
+
+    # total number of profiles written to .csv file
     current_profile_count = 0
 
-    next_page = "https://scholar.google.com/citations?hl=en&view_op=search_authors&mauthors="
-    next_page += email_domain
-
-    next_resp = session.get(
-        url=next_page,
-    )
-
+    # start time, used for debugging
     start_time = time.time()
 
+    # initial search query
+    next_page = "https://scholar.google.com/citations?hl=en&view_op=search_authors&mauthors="
+    next_page += email_domain
+    next_resp = session.get(url=next_page)
+
+    # skip collecting information from base page if there is a beginning author id specified
     if starting_id == None:
         current_profile_count += get_profile(next_resp.text)
 
     # continue going to next page, until last page is reached, or when limit is hit
     while True:
-        # locate the btn to goto next page
+        # locate the btn that navigates to next page
         soup = BeautifulSoup(next_resp.text, 'html.parser')
         nav_btns = soup.find_all('button', attrs={'aria-label':True})
         next_btn = list(filter(lambda x: x['aria-label'] == 'Next', nav_btns))
@@ -83,24 +84,23 @@ def get_faculty(email_domain, starting_id=None, limit=None ):
             print(f'final [#{current_profile_count}]: {after_author_id}')
             break
 
-        next_page = f'https://scholar.google.com/citations?view_op=search_authors&hl=en&mauthors={email_domain}&after_author={after_author_id}&astart={profile_id}'
 
         # load the html of the next page
         try:
-            next_resp = session.get(
-                url=next_page,
-                timeout=3
-            )
+            next_page = f'https://scholar.google.com/citations?view_op=search_authors&hl=en&mauthors={email_domain}&after_author={after_author_id}&astart={profile_id}'
+            next_resp = session.get(url=next_page, timeout=3)
         except Timeout:
             print('request timed out')
             continue
         else:
             pass
 
+        # locate the "next" button on the scholar page
         soup = BeautifulSoup(next_resp.text, 'html.parser')
         nav_btns = soup.find_all('button', attrs={'aria-label':True})
         next_btn = list(filter(lambda x: x['aria-label'] == 'Next', nav_btns))
 
+        # save current profiles onto .csv file and update counter
         current_profile_count += get_profile(next_resp.text)
 
         # if there is no KeyError, disabled is True, and last page has been reached
@@ -120,8 +120,10 @@ def get_faculty(email_domain, starting_id=None, limit=None ):
 
 
 def get_profile(page_html):
-    '''writes the profiles onto a .json file'''
-    '''returns the total number of profiles added'''
+    '''
+    writes the profiles onto a .json file
+    and returns the total number of profiles added
+    '''
     profiles = []
     current_profiles = BeautifulSoup(page_html, 'html.parser')
     current_profiles = current_profiles.find_all('h3', class_='gs_ai_name')
@@ -134,7 +136,7 @@ def get_profile(page_html):
 
 
 def main():
-    get_faculty('duke.edu', starting_id="z_riAPj___8J", limit=500)
+    get_faculty('xin+chen', starting_id=None, limit=500)
 
 
 if __name__ == '__main__':
