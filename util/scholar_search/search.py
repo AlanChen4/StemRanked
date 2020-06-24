@@ -1,3 +1,4 @@
+from csv import writer
 import time
 import requests
 from bs4 import BeautifulSoup
@@ -39,9 +40,8 @@ def get_faculty(email_domain):
     )
 
     start_time = time.time()
-    faculty = []
 
-    faculty.append(get_profile(next_resp.text))
+    get_profile(next_resp.text)
 
     # continue going to next page, until last page is reached
     while True:
@@ -64,7 +64,7 @@ def get_faculty(email_domain):
         nav_btns = soup.find_all('button', attrs={'aria-label':True})
         next_btn = list(filter(lambda x: x['aria-label'] == 'Next', nav_btns))
 
-        faculty.append(get_profile(next_resp.text))
+        get_profile(next_resp.text)
 
         # if there is no KeyError, disabled is True, and last page has been reached
         try:
@@ -75,20 +75,19 @@ def get_faculty(email_domain):
         except KeyError:
             time_record = str(time.time() - start_time)[:4]
             print(f'[{time_record}] searched through profile #{profile_count}')
-            print(f'added {faculty}[-1]')
             continue
 
 
 def get_profile(page_html):
-    '''returns dictionary of profiles on url'''
+    '''writes the profiles onto a .json file'''
     profiles = []
     current_profiles = BeautifulSoup(page_html, 'html.parser')
     current_profiles = current_profiles.find_all('h3', class_='gs_ai_name')
     for profile in current_profiles:
-        info = {'name': profile.text,
-                'link': profile.findChildren()[0]['href']}
-        profiles.append(info)
-    return profiles
+        with open('data.csv', 'a+', newline='') as f:
+            csv_writer = writer(f)
+            info = [profile.text, profile.findChildren()[0]['href']]
+            csv_writer.writerow(info)
 
 
 def main():
