@@ -60,6 +60,7 @@ def parseTable(div):
     pub_information = dict()
     for parent in div:
         child = parent.find_all("div")
+        # we want to avoid Description, Total Citations, and Scholar Articles because they are not valuable for this project
         if (child[0].text == 'Description' or child[0].text == 'Total citations' or child[0].text == 'Scholar articles'): # child[0] is key and child[1] is value
             continue
         pub_information[child[0].text] = child[1].text
@@ -95,11 +96,16 @@ def cleanPages(pages):
     start_end = pages.split('-',1)
     return (int(start_end[0]),int(start_end[1]))
 
+def getAuthor():
+    pass #TODO create functionality to get author name from the author profile, cannot do until unbanned
+
 def pub_clean(pub_info): #convert authors from string to list and pages to tuple of startpage and endpage
     try:
-        pub_info['Authors'] = pub_info['Authors'].split(',')
         #TODO it would probably be a good idea to actually get rid of the authors, make a new section called numAuthors with 
         # the number of authors, and fill the original spot with this particular author's name
+        pub_info['Authors'] = pub_info['Authors'].split(',')
+        pub_info['NumAuthors'] = len(pub_info['Authors'])
+        pub_info['Authors'] = getAuthor() #yet to complete
     except:
         print("Failure to Clean Authors")
         raise ValueError("Failure to Clean Authors")
@@ -138,7 +144,7 @@ def scrapePub(pub):
 #_________________________________________________________________________________
 def getAllInfo(auth_profile): 
     pubs = getPubUrls(auth_profile) # recieves a list of all the publications for this particular author
-    pub_info = [] # creates a to store information scraped from each publication
+    pub_info = [] # creates a to store information scraped from each publication (contains dictionaries)
     for pub in pubs:
         toAppend = scrapePub(pub) #obtains information for that specific publication
         if (toAppend == False):
@@ -150,8 +156,17 @@ def getAllInfo(auth_profile):
 def writeInfo(csv_file, pub_info): #takes the information and writes it to a csv called publication_information.csv
     with open(csv_file, 'a') as f:
         writer = csv.writer(f)
+        writer.writerow(['Author','Title','Page Start','Page End','Conference','Publisher','Journal','Issue','Book','Volume','Edition','Year'])
         for item in pub_info:
-            pass
+            author = item['Author']; title = item['Title']; pageStart = item['Pages'][0]; pageEnd = item['Pages'][1]; year = item['Year']
+            location = {'Conference': None, 'Publisher': None, 'Journal': None,'Issue': None, 'Book' : None, 'Volume': None, 'Edition': None} # because we don't know if they will exist
+            for loc in location.keys():
+                try:
+                    location[loc] = item[loc]
+                except:
+                    pass
+            writer.writerow(author, title, pageStart, pageEnd,location['Conference'],location['Publisher'],location['Journal'],location['Issue'],location['Book'],location['Volume'],location['Edition'], year)
+
 
 #_________________________________________________________________________________
 def main():
