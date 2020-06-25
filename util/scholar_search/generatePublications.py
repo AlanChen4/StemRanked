@@ -5,10 +5,11 @@ ses = requests.Session()
 
 #_________________________________________________________________________________
 def pubList(atags):
+    '''given the atag of a publication, this returns a url that can be used to access a new page with all publication info'''
     urls = []
-    base_url = "https://scholar.google.com"
+    base_url = "https://scholar.google.com" 
     for atag in atags:
-        if (atag['href'] == "javascript:void(0)"):
+        if (atag['href'] == "javascript:void(0)"): #google scholar blocks the ability to just click a link and have it open separately
             try:
                 new_url = atag["data-href"]
                 if (not new_url.find("/citations?view_op=view_citation&hl=") == -1):
@@ -17,39 +18,41 @@ def pubList(atags):
                 pass
     return urls
 
-def check_end(parse):
+def check_end(parse): #checks to see if this page is the page after the final urls
     tds = parse.find_all('td')
     try:
         for item in tds:
-            if (item.text == "There are no articles in this profile."):
+            if (item.text == "There are no articles in this profile."): #always shown on the finalpage+1 for every author
                 return True
     except:
         pass
     return False
 
-def getUrlsPerPage(query):
+def getUrlsPerPage(query): #scrapes all urls from a given page of the author profile
     auth_info = ses.get(url = query)
     if (auth_info.status_code < 300 and auth_info.status_code >=200):
         parse = BeautifulSoup(auth_info.text, "html.parser")
         atags = parse.find_all('a')
-        if (check_end(parse)):
+        if (check_end(parse)): #exits if this is the page after the final page (triggers the flag in getPubUrls)
             return([],True)
-        pubs = pubList(atags)
+        pubs = pubList(atags) #list of all publication urls
         return (pubs,False)
     else:
         print("Author Request Failed")
         exit()
 
-def getPubUrls(query):
-    article_start = 0
-    stop_trigger = False #triggers when page displays "There are no articles in this profile"
+def getPubUrls(query): 
+    '''google scholar only allows a max of 100 results per page, this function helps alter the url
+    and send multiple requests to get the valid urls from all pages of the author profile'''
+    article_start = 0 
+    stop_trigger = False #triggers when page displays "There are no articles in this profile" which is the page after the final page
     pubs = []
     while (not stop_trigger):
-        add_on = f"&cstart={article_start}&pagesize=100"
+        add_on = f"&cstart={article_start}&pagesize=100" 
         print(query+add_on)
         (pub, stop_trigger) = getUrlsPerPage(query+add_on)
         pubs+=pub
-        article_start+=100
+        article_start+=100 # to move to the next 100 publications
     return pubs
 
 #_________________________________________________________________________________
@@ -127,15 +130,15 @@ def scrapePub(pub):
         return(pub_info)
 
     else:
-        print("Paper Request Failed")
+        print(f"Paper Request Failed: {pub}\t\t{paper.status_code}")
         exit()
 
 #_________________________________________________________________________________
-def getAllInfo(auth_profile):
-    pubs = getPubUrls(auth_profile)
-    pub_info = []
+def getAllInfo(auth_profile): 
+    pubs = getPubUrls(auth_profile) # recieves a list of all the publications for this particular author
+    pub_info = [] # creates a to store information scraped from each publication
     for pub in pubs:
-        toAppend = scrapePub(pub)
+        toAppend = scrapePub(pub) 
         if (toAppend == False):
             continue #effectively ignoring this publication
         pub_info.append(toAppend)
@@ -143,9 +146,8 @@ def getAllInfo(auth_profile):
 #_________________________________________________________________________________
 def main():
 
-    print(getAllInfo('https://scholar.google.com/citations?hl=en&user=FSIQi4IAAAAJ'))
+    print(getAllInfo('https://scholar.google.com/citations?user=ni_ZrQQAAAAJ&hl=en&oi=ao'))
 
-    #TODO develop a method to expand the results of publications on a scolar profile
 
 if __name__ == "__main__":
     main()
