@@ -1,4 +1,4 @@
-import requests
+import requests, csv
 from bs4 import BeautifulSoup
 
 ses = requests.Session()
@@ -98,6 +98,8 @@ def cleanPages(pages):
 def pub_clean(pub_info): #convert authors from string to list and pages to tuple of startpage and endpage
     try:
         pub_info['Authors'] = pub_info['Authors'].split(',')
+        #TODO it would probably be a good idea to actually get rid of the authors, make a new section called numAuthors with 
+        # the number of authors, and fill the original spot with this particular author's name
     except:
         print("Failure to Clean Authors")
         raise ValueError("Failure to Clean Authors")
@@ -138,11 +140,19 @@ def getAllInfo(auth_profile):
     pubs = getPubUrls(auth_profile) # recieves a list of all the publications for this particular author
     pub_info = [] # creates a to store information scraped from each publication
     for pub in pubs:
-        toAppend = scrapePub(pub) 
+        toAppend = scrapePub(pub) #obtains information for that specific publication
         if (toAppend == False):
             continue #effectively ignoring this publication
         pub_info.append(toAppend)
     return pub_info
+
+#_________________________________________________________________________________
+def writeInfo(csv_file, pub_info): #takes the information and writes it to a csv called publication_information.csv
+    with open(csv_file, 'a') as f:
+        writer = csv.writer(f)
+        for item in pub_info:
+            pass
+
 #_________________________________________________________________________________
 def main():
 
