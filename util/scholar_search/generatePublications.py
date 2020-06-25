@@ -17,16 +17,40 @@ def pubList(atags):
                 pass
     return urls
 
-def getPubUrls(query):
+def check_end(parse):
+    tds = parse.find_all('td')
+    try:
+        for item in tds:
+            if (item.text == "There are no articles in this profile."):
+                return True
+    except:
+        pass
+    return False
+
+def getUrlsPerPage(query):
     auth_info = ses.get(url = query)
     if (auth_info.status_code < 300 and auth_info.status_code >=200):
         parse = BeautifulSoup(auth_info.text, "html.parser")
         atags = parse.find_all('a')
+        if (check_end(parse)):
+            return([],True)
         pubs = pubList(atags)
-        return pubs
+        return (pubs,False)
     else:
         print("Author Request Failed")
         exit()
+
+def getPubUrls(query):
+    article_start = 0
+    stop_trigger = False #triggers when page displays "There are no articles in this profile"
+    pubs = []
+    while (not stop_trigger):
+        add_on = f"&cstart={article_start}&pagesize=100"
+        print(query+add_on)
+        (pub, stop_trigger) = getUrlsPerPage(query+add_on)
+        pubs+=pub
+        article_start+=100
+    return pubs
 
 #_________________________________________________________________________________
 def parseTable(div):
@@ -58,11 +82,13 @@ def getTitle(divisions):
         except:
             pass
     print("Failure: Title not found")
-    exit()
+    raise ValueError("Failure: Title not found")
 
 def cleanPages(pages):
     if (pages.find('-') == -1):
         print("Failure to identify valid page numbers")
+        raise ValueError("Failure to identify valid page numbers")
+
     start_end = pages.split('-',1)
     return (int(start_end[0]),int(start_end[1]))
 
@@ -71,17 +97,20 @@ def pub_clean(pub_info): #convert authors from string to list and pages to tuple
         pub_info['Authors'] = pub_info['Authors'].split(',')
     except:
         print("Failure to Clean Authors")
+        raise ValueError("Failure to Clean Authors")
 
     try:
         pub_info["Pages"] = cleanPages(pub_info["Pages"])
     except:
         print("Failure to Clean Pages")
+        raise ValueError("Failure to Clean Pages")
     
     try:
         pub_info["Year"] = pub_info["Publication date"].split('/')[0]
         pub_info.pop("Publication date")
     except:
         print("Failure to Clean Year")
+        raise ValueError("Failure to Clean Year")
     return pub_info
 
 def scrapePub(pub):
@@ -90,8 +119,11 @@ def scrapePub(pub):
         parse = BeautifulSoup(paper.text, "html.parser")
         divisions = parse.find_all('div')
         pub_info = getTable(divisions)
-        pub_info["Title"] = getTitle(divisions)
-        pub_info = pub_clean(pub_info)
+        try:
+            pub_info["Title"] = getTitle(divisions)
+            pub_info = pub_clean(pub_info)
+        except:
+            return False
         return(pub_info)
 
     else:
@@ -103,12 +135,15 @@ def getAllInfo(auth_profile):
     pubs = getPubUrls(auth_profile)
     pub_info = []
     for pub in pubs:
-        pub_info.append(scrapePub(pub))
+        toAppend = scrapePub(pub)
+        if (toAppend == False):
+            continue #effectively ignoring this publication
+        pub_info.append(toAppend)
     return pub_info
 #_________________________________________________________________________________
 def main():
 
-    print(getAllInfo("https://scholar.google.com/citations?hl=en&user=S4GP-G4AAAAJ"))
+    print(getAllInfo('https://scholar.google.com/citations?hl=en&user=FSIQi4IAAAAJ'))
 
     #TODO develop a method to expand the results of publications on a scolar profile
 
