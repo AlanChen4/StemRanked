@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 
 ses = requests.Session()
 
-#_________________________________________________________________________________
+#_________________________________________________________________________________COLLECT PUBLICATION LIST
 def pubList(atags):
     '''given the atag of a publication, this returns a url that can be used to access a new page with all publication info'''
     urls = []
@@ -55,7 +55,7 @@ def getPubUrls(query):
         article_start+=100 # to move to the next 100 publications
     return pubs
 
-#_________________________________________________________________________________
+#_________________________________________________________________________________SCRAPE PUBLICATION INFORMATION
 def parseTable(div):
     pub_information = dict()
     for parent in div:
@@ -96,8 +96,10 @@ def cleanPages(pages):
     start_end = pages.split('-',1)
     return (int(start_end[0]),int(start_end[1]))
 
-def getAuthor():
-    pass #TODO create functionality to get author name from the author profile, cannot do until unbanned
+def getAuthor(query): # NOT CURRENTLY NEEDED OR IN USE
+    val = ses.get(url='https://scholar.google.com/citations?user=S4GP-G4AAAAJ&hl=en&oi=ao')
+    soup = BeautifulSoup(val.text,'html.parser')
+    return (soup.find_all('div',{'id':'gsc_prf_in'})[0].text)
 
 def pub_clean(pub_info): #convert authors from string to list and pages to tuple of startpage and endpage
     try:
@@ -141,7 +143,7 @@ def scrapePub(pub):
         print(f"Paper Request Failed: {pub}\t\t{paper.status_code}")
         exit()
 
-#_________________________________________________________________________________
+#_________________________________________________________________________________MAIN FUNCTIONS TO RUN
 def getAllInfo(auth_profile): 
     pubs = getPubUrls(auth_profile) # recieves a list of all the publications for this particular author
     pub_info = [] # creates a to store information scraped from each publication (contains dictionaries)
@@ -152,27 +154,26 @@ def getAllInfo(auth_profile):
         pub_info.append(toAppend)
     return pub_info
 
-#_________________________________________________________________________________
-def writeInfo(csv_file, pub_info): #takes the information and writes it to a csv called publication_information.csv
+
+def writeInfo(csv_file, pub_info, authName): #takes the information and writes it to a csv called publication_information.csv
     with open(csv_file, 'a') as f:
         writer = csv.writer(f)
-        writer.writerow(['Author','Title','Page Start','Page End','Conference','Publisher','Journal','Issue','Book','Volume','Edition','Year'])
+        writer.writerow(['Author','Title','Page Start','Page End','Conference','Publisher','Journal','Issue','Book','Volume','Edition','Year','NumAuthors'])
         for item in pub_info:
-            author = item['Author']; title = item['Title']; pageStart = item['Pages'][0]; pageEnd = item['Pages'][1]; year = item['Year']
+            author = authName; title = item['Title']; pageStart = item['Pages'][0]; pageEnd = item['Pages'][1]; year = item['Year']; numAuthors = item['NumAuthors']
             location = {'Conference': None, 'Publisher': None, 'Journal': None,'Issue': None, 'Book' : None, 'Volume': None, 'Edition': None} # because we don't know if they will exist
             for loc in location.keys():
                 try:
                     location[loc] = item[loc]
                 except:
                     pass
-            writer.writerow(author, title, pageStart, pageEnd,location['Conference'],location['Publisher'],location['Journal'],location['Issue'],location['Book'],location['Volume'],location['Edition'], year)
+            writer.writerow(author, title, pageStart, pageEnd,location['Conference'],location['Publisher'],location['Journal'],location['Issue'],location['Book'],location['Volume'],location['Edition'], year, numAuthors)
 
 
-#_________________________________________________________________________________
-def main():
-
-    print(getAllInfo('https://scholar.google.com/citations?user=ni_ZrQQAAAAJ&hl=en&oi=ao'))
+def main(csv_file,authName,query):
+    pub_info = getAllInfo(query)
+    writeInfo(csv_file, pub_info, authName)
 
 
 if __name__ == "__main__":
-    main()
+    main("publication_information.csv","Ketan Mayer-Patel",'https://scholar.google.com/citations?user=ni_ZrQQAAAAJ&hl=en&oi=ao')
