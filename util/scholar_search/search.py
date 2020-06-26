@@ -9,6 +9,7 @@ session = requests.Session()
 
 def get_profile(name, uni_email):
     '''returns link to google scholar profile based on search query'''
+    # base query to work with
     query = "https://scholar.google.com/citations?hl=en&view_op=search_authors&mauthors="
 
     # adds the "+" symbol between fname, lname, and email
@@ -83,7 +84,6 @@ def get_faculty(email_domain, starting_id=None, limit=None ):
         if current_profile_count >= search_limit:
             print(f'final [#{current_profile_count}]: {after_author_id}')
             break
-
 
         # load the html of the next page
         try:
