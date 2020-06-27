@@ -1,3 +1,7 @@
+'''
+Generates a CSV file that contains institution names and their website url domains
+'''
+
 import requests, csv, os, time, random
 from bs4 import BeautifulSoup
 
