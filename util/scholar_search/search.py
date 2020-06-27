@@ -6,9 +6,9 @@ import requests
 
 from bs4 import BeautifulSoup
 from csv import writer
-from fake_useragent import UserAgent
 from itertools import cycle
 from requests.exceptions import Timeout
+from scraper_helper import get_proxy_online
 
 
 session = requests.Session()
@@ -22,7 +22,6 @@ def get_profile(name, uni_email):
     info = '+'.join(name.split(' ')) + f'+{uni_email}'
     query += info
 
-    # TODO: implement proxy rotation and random user-agent
     try:
         search_resp = session.get(url=query, timeout=3)
     except Timeout:
@@ -42,7 +41,7 @@ def get_profile(name, uni_email):
         print('search attempt failed')
 
 
-def get_faculty(email_domain, starting_id=None, limit=None ):
+def get_faculty(email_domain, starting_id=None, limit=None):
     '''writes list of scholar-listed faculty members to .csv file'''
     # check if there is a search limit
     if limit == None:
@@ -68,8 +67,17 @@ def get_faculty(email_domain, starting_id=None, limit=None ):
     if starting_id == None:
         current_profile_count += get_profile(next_resp.text)
 
+    # prepare proxies
+    proxy_list = get_proxy_online(n=20)
+    proxy_cycle = cycle(proxy_list)
+    proxy_ip = next(proxy_cycle)
+
     # continue going to next page, until last page is reached, or when limit is hit
     while True:
+        # TODO: remove proxy from list if it get's banned
+        # format proxy for requests
+        proxy = {'http': proxy_ip}
+
         # locate the btn that navigates to next page
         soup = BeautifulSoup(next_resp.text, 'html.parser')
         nav_btns = soup.find_all('button', attrs={'aria-label':True})
@@ -94,7 +102,9 @@ def get_faculty(email_domain, starting_id=None, limit=None ):
         # load the html of the next page
         try:
             next_page = f'https://scholar.google.com/citations?view_op=search_authors&hl=en&mauthors={email_domain}&after_author={after_author_id}&astart={profile_id}'
-            next_resp = session.get(url=next_page, timeout=3)
+            next_resp = session.get(url=next_page,
+                    timeout=3,
+                    proxies=proxy)
         except Timeout:
             print('request timed out')
             continue
