@@ -3,8 +3,11 @@ Generates a CSV file that contains every author's name and profile link from a G
 '''
 import time
 import requests
+
 from bs4 import BeautifulSoup
 from csv import writer
+from fake_useragent import UserAgent
+from itertools import cycle
 from requests.exceptions import Timeout
 
 
