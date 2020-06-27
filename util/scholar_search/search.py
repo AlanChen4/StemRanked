@@ -1,3 +1,6 @@
+'''
+Generates a CSV file that contains every author's name and profile link from a Google Scholar query for an author
+'''
 import time
 import requests
 from bs4 import BeautifulSoup
@@ -121,14 +124,14 @@ def get_faculty(email_domain, starting_id=None, limit=None ):
 
 def get_profile(page_html):
     '''
-    writes the profiles onto a .json file
+    writes the profiles onto a .csv file
     and returns the total number of profiles added
     '''
     profiles = []
     current_profiles = BeautifulSoup(page_html, 'html.parser')
     current_profiles = current_profiles.find_all('h3', class_='gs_ai_name')
     for profile in current_profiles:
-        with open('data.csv', 'a+', newline='') as f:
+        with open('./data/data.csv', 'a+', newline='') as f:
             csv_writer = writer(f)
             info = [profile.text, profile.findChildren()[0]['href']]
             csv_writer.writerow(info)
