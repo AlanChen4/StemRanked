@@ -142,7 +142,7 @@ def get_profile(page_html):
 
 
 def main():
-    get_faculty('xin+chen', starting_id=None, limit=500)
+    get_faculty('chen+ualabama', starting_id=None, limit=500)
 
 
 if __name__ == '__main__':
