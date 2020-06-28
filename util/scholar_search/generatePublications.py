@@ -29,7 +29,7 @@ def check_end(parse): # checks to see if this page is the page after the final u
     tds = parse.find_all('td')
     try:
         for item in tds:
-            if (item.text == "There are no articles in this profile."): # always shown on the finalpage+1 for every author
+            if (item.text == "There are no articles in this profile."): # always shown on the finalpage + 1 for every author
                 return True
     except:
         pass
@@ -62,7 +62,7 @@ def getPubUrls(query, proxy_cycle):
         (pub, stop_trigger) = getUrlsPerPage(query + add_on, proxy_cycle)
         pubs += pub
         article_start += 100 # to move to the next 100 publications
-        #time.sleep(2)#hopefully enough not to get banned
+        #time.sleep(2) # hopefully enough not to get banned
     return pubs
 
 #_________________________________________________________________________________SCRAPE PUBLICATION INFORMATION
@@ -106,7 +106,7 @@ def cleanPages(pages):
     return (int(start_end[0]), int(start_end[1]))
 
 def getAuthor(query):
-    val = ses.get(url='https://scholar.google.com/citations?user=S4GP-G4AAAAJ&hl=en&oi=ao')
+    val = ses.get(url=query)
     soup = BeautifulSoup(val.text, 'html.parser')
     return soup.find_all('div', {'id':'gsc_prf_in'})[0].text
 
@@ -174,20 +174,20 @@ def getAllInfo(auth_profile):
         #time.sleep(2) # hopefully enough not to get banned
     return pub_info
 
-def makeFile(location):
-	if (not os.path.isfile(location)):
-		with open(location, 'w') as f:
+def makeFile(loc):
+	if (not os.path.isfile(loc)):
+		with open(loc, 'w') as f:
 			writer = csv.writer(f)
 			writer.writerow(['Author', 'Institution', 'Title', 'PageStart', 'PageEnd', 'Conference', 'Publisher', 'Journal', 'Issue', 'Book', 'Volume', 'Edition', 'Year', 'NumAuthors'])
 
 def writeInfo(csv_file, pub_info, institution, authName): # takes the information and writes it to a csv called publication_information.csv
-    loc = './data/' + csv_file
-    makeFile(loc)
-    with open(loc, 'a') as f:
+    path = './data/' + csv_file
+    makeFile(path)
+    with open(path, 'a') as f:
         writer = csv.writer(f)
         for item in pub_info:
             author = authName; title = item['Title']; pageStart = item['Pages'][0]; pageEnd = item['Pages'][1]; year = item['Year']; numAuthors = item['NumAuthors']
-            location = {'Conference': None, 'Publisher': None, 'Journal': None,'Issue': None, 'Book' : None, 'Volume': None, 'Edition': None} # because we don't know if they will exist
+            location = {'Conference': None, 'Publisher': None, 'Journal': None, 'Issue': None, 'Book' : None, 'Volume': None, 'Edition': None} # because we don't know if they will exist
             for loc in location.keys():
                 try:
                     location[loc] = item[loc]
