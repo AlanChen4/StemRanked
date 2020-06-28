@@ -4,6 +4,7 @@ import readCSV from './dataReader';
 // delete dictionary[key] <-- remove elements from a dictionary
 //!(rank_dic.hasOwnProperty(currentCollegeInfo[i][1]))
 
+// Dictionary in which the keys are areas and the values are conferences
 let areaDict = {
     "vision": ['cvpr', 'iccv', 'eccv'],
     "plan": ['popl', 'pldi', 'oopsla'],
@@ -33,9 +34,11 @@ let areaDict = {
 
 }
 
+// Global array that has the institutions
 let colleges = [];
 // rank_dic[colleges[0]] <-- all the areas and it's values in Imperial College London key
 
+// Returns the final rankings from dictionary that contains the average count and institutions
 function ranks(counts) {
     let averageCount = []
     for (let i = 0; i < Object.keys(counts).length; i++) {
@@ -54,7 +57,8 @@ function ranks(counts) {
     return final_rank;
 }
 
-function avgCount(rank_dic, currentCollegeInfo) {
+// Returns a dictionary with average count and institutions from a dictionary that has the institution, areas, and adjusted count
+function avgCount(rank_dic) {
 
     let counts = {};
     for (let inst of Object.keys(rank_dic)) {
@@ -70,6 +74,7 @@ function avgCount(rank_dic, currentCollegeInfo) {
     return (counts)
 }
 
+// Returns the areas based on what the conference is
 function confAreas(conferences) {
     for (let x = 0; x < Object.keys(areaDict).length; x++) {
         if ((areaDict[Object.keys(areaDict)[x]].includes(conferences))) {
@@ -80,11 +85,13 @@ function confAreas(conferences) {
     return ("Cannot find area");
 }
 
+// Adds the institution name to the global array 'colleges
 function getInstitutions(institutions) {
     colleges.push(institutions);
 
 }
 
+// Returns a dictionary that has the institution names, areas, and adjusted counts
 function rankingsInfo(currentCollegeInfo) {
     let rank_dic = {};
     for (let college in Object.keys(currentCollegeInfo)) {
@@ -102,6 +109,7 @@ function rankingsInfo(currentCollegeInfo) {
     return rank_dic
 }
 
+// Checks to make sure that each publication isn't before 2010
 function yearCheck(collegeInfo) {
     for (let i = 0; i < Object.keys(collegeInfo).length; i++) {
         if ((collegeInfo[i])[4] < 2010) {
@@ -143,7 +151,7 @@ function rankings(subject) {
     let final = ranks(counts);
     console.log('Subject:', subject);
     console.log(final);
-    
+
     return final;
 }
 
