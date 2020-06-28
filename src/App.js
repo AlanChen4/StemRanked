@@ -4,7 +4,7 @@ import './App.css';
 import readCSV from './util/dataReader';
 
 function App() {
-  readCSV('Biology');
+  readCSV('test');
   return (
     <div className="App">
       <header className="App-header">
