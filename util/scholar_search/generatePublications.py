@@ -1,9 +1,16 @@
-import requests, csv
+'''
+Generates a CSV file that contains institution names and their website url domains
+'''
+
+import requests, csv, os, time, random
 from bs4 import BeautifulSoup
+#from scraper_helper2 import get_proxy_online
+from requests.exceptions import Timeout
+from itertools import cycle
 
 ses = requests.Session()
 
-#_________________________________________________________________________________
+#_________________________________________________________________________________COLLECT PUBLICATION LIST
 def pubList(atags):
     '''given the atag of a publication, this returns a url that can be used to access a new page with all publication info'''
     urls = []
@@ -28,7 +35,9 @@ def check_end(parse): #checks to see if this page is the page after the final ur
         pass
     return False
 
-def getUrlsPerPage(query): #scrapes all urls from a given page of the author profile
+def getUrlsPerPage(query,proxy_cycle): #scrapes all urls from a given page of the author profile
+    #proxy = {'https': next(proxy_cycle)}
+    #auth_info = ses.get(url = query, timeout = 10, proxies = proxy)
     auth_info = ses.get(url = query)
     if (auth_info.status_code < 300 and auth_info.status_code >=200):
         parse = BeautifulSoup(auth_info.text, "html.parser")
@@ -41,7 +50,7 @@ def getUrlsPerPage(query): #scrapes all urls from a given page of the author pro
         print("Author Request Failed")
         exit()
 
-def getPubUrls(query): 
+def getPubUrls(query,proxy_cycle): 
     '''google scholar only allows a max of 100 results per page, this function helps alter the url
     and send multiple requests to get the valid urls from all pages of the author profile'''
     article_start = 0 
@@ -50,12 +59,13 @@ def getPubUrls(query):
     while (not stop_trigger):
         add_on = f"&cstart={article_start}&pagesize=100" 
         print(query+add_on)
-        (pub, stop_trigger) = getUrlsPerPage(query+add_on)
+        (pub, stop_trigger) = getUrlsPerPage(query+add_on, proxy_cycle)
         pubs+=pub
         article_start+=100 # to move to the next 100 publications
+        #time.sleep(2)#hopefully enough not to get banned
     return pubs
 
-#_________________________________________________________________________________
+#_________________________________________________________________________________SCRAPE PUBLICATION INFORMATION
 def parseTable(div):
     pub_information = dict()
     for parent in div:
@@ -96,16 +106,19 @@ def cleanPages(pages):
     start_end = pages.split('-',1)
     return (int(start_end[0]),int(start_end[1]))
 
-def getAuthor():
-    pass #TODO create functionality to get author name from the author profile, cannot do until unbanned
+def getAuthor(query):
+    val = ses.get(url='https://scholar.google.com/citations?user=S4GP-G4AAAAJ&hl=en&oi=ao')
+    soup = BeautifulSoup(val.text,'html.parser')
+    return (soup.find_all('div',{'id':'gsc_prf_in'})[0].text)
 
-def pub_clean(pub_info): #convert authors from string to list and pages to tuple of startpage and endpage
+def pub_clean(pub_info, query): #convert authors from string to list and pages to tuple of startpage and endpage
     try:
         #TODO it would probably be a good idea to actually get rid of the authors, make a new section called numAuthors with 
         # the number of authors, and fill the original spot with this particular author's name
         pub_info['Authors'] = pub_info['Authors'].split(',')
+        print(pub_info['Authors'], end='\t')
         pub_info['NumAuthors'] = len(pub_info['Authors'])
-        pub_info['Authors'] = getAuthor() #yet to complete
+        pub_info['Authors'] = getAuthor(query) #yet to complete
     except:
         print("Failure to Clean Authors")
         raise ValueError("Failure to Clean Authors")
@@ -113,7 +126,7 @@ def pub_clean(pub_info): #convert authors from string to list and pages to tuple
     try:
         pub_info["Pages"] = cleanPages(pub_info["Pages"])
     except:
-        print("Failure to Clean Pages")
+        print(f"Failure to Clean Pages\t\t{pub_info['Pages']}")
         raise ValueError("Failure to Clean Pages")
     
     try:
@@ -124,55 +137,72 @@ def pub_clean(pub_info): #convert authors from string to list and pages to tuple
         raise ValueError("Failure to Clean Year")
     return pub_info
 
-def scrapePub(pub):
-    paper = ses.get(url=pub)
+def scrapePub(pub,auth_profile,proxy_cycle):
+    #proxy = {'https': next(proxy_cycle)}
+    #paper = ses.get(url = pub, timeout = 10, proxies = proxy)
+    paper = ses.get(url = pub)
     if (paper.status_code < 300 and paper.status_code >= 200):
         parse = BeautifulSoup(paper.text, "html.parser")
         divisions = parse.find_all('div')
         pub_info = getTable(divisions)
         try:
             pub_info["Title"] = getTitle(divisions)
-            pub_info = pub_clean(pub_info)
+            pub_info = pub_clean(pub_info,auth_profile)
+            #print(proxy['https'])
         except:
             return False
         return(pub_info)
 
     else:
         print(f"Paper Request Failed: {pub}\t\t{paper.status_code}")
+        #scrapePub(pub,auth_profile,proxy_cycle)
         exit()
 
-#_________________________________________________________________________________
+#_________________________________________________________________________________MAIN FUNCTIONS TO RUN
 def getAllInfo(auth_profile): 
-    pubs = getPubUrls(auth_profile) # recieves a list of all the publications for this particular author
+    # prepare proxies
+    #proxy_list = get_proxy_online(n=45)
+    #proxy_cycle = cycle(proxy_list)
+    proxy_cycle = None
+
+    pubs = getPubUrls(auth_profile, proxy_cycle) # recieves a list of all the publications for this particular author
     pub_info = [] # creates a to store information scraped from each publication (contains dictionaries)
     for pub in pubs:
-        toAppend = scrapePub(pub) #obtains information for that specific publication
+        toAppend = scrapePub(pub,auth_profile,proxy_cycle) #obtains information for that specific publication
         if (toAppend == False):
             continue #effectively ignoring this publication
         pub_info.append(toAppend)
+        #time.sleep(2)#hopefully enough not to get banned
     return pub_info
 
-#_________________________________________________________________________________
-def writeInfo(csv_file, pub_info): #takes the information and writes it to a csv called publication_information.csv
+def makeFile(csv_file):
+	loc = './data/'+csv_file
+	if (not os.path.isfile(loc)):
+		with open(loc,'w') as f:
+			writer = csv.writer(f)
+			writer.writerow(['Author','Institution','Title','Page Start','Page End','Conference','Publisher','Journal','Issue','Book','Volume','Edition','Year','NumAuthors'])
+
+
+def writeInfo(csv_file, pub_info, institution,authName): #takes the information and writes it to a csv called publication_information.csv
+    makeFile(csv_file)
     with open(csv_file, 'a') as f:
         writer = csv.writer(f)
-        writer.writerow(['Author','Title','Page Start','Page End','Conference','Publisher','Journal','Issue','Book','Volume','Edition','Year'])
         for item in pub_info:
-            author = item['Author']; title = item['Title']; pageStart = item['Pages'][0]; pageEnd = item['Pages'][1]; year = item['Year']
+            author = authName; title = item['Title']; pageStart = item['Pages'][0]; pageEnd = item['Pages'][1]; year = item['Year']; numAuthors = item['NumAuthors']
             location = {'Conference': None, 'Publisher': None, 'Journal': None,'Issue': None, 'Book' : None, 'Volume': None, 'Edition': None} # because we don't know if they will exist
             for loc in location.keys():
                 try:
                     location[loc] = item[loc]
                 except:
                     pass
-            writer.writerow(author, title, pageStart, pageEnd,location['Conference'],location['Publisher'],location['Journal'],location['Issue'],location['Book'],location['Volume'],location['Edition'], year)
+            writer.writerow([author, institution, title, pageStart, pageEnd,location['Conference'],location['Publisher'],location['Journal'],location['Issue'],location['Book'],location['Volume'],location['Edition'], year, numAuthors])
+            print(f"({author}, {title}, {pageStart}, {pageEnd},{location['Conference']},{location['Publisher']},{location['Journal']},{location['Issue']},{location['Book']},{location['Volume']},{location['Edition']}, {year}, {numAuthors})")
 
 
-#_________________________________________________________________________________
-def main():
-
-    print(getAllInfo('https://scholar.google.com/citations?user=ni_ZrQQAAAAJ&hl=en&oi=ao'))
+def main(csv_file,authName,institution,query):
+    pub_info = getAllInfo(query)
+    writeInfo(csv_file, pub_info, institution,authName)
 
 
 if __name__ == "__main__":
-    main()
+    main("publication_information.csv","Ketan Mayer-Pagel",'University of North Carolina at Chapel Hill','https://scholar.google.com/citations?user=S4GP-G4AAAAJ&hl=en&oi=ao')
