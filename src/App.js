@@ -1,10 +1,10 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import readCSV from './util/dataReader';
+import rankings from './util/dataRanker';
 
 function App() {
-  readCSV('test');
+  rankings('test');
   return (
     <div className="App">
       <header className="App-header">
