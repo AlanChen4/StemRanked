@@ -2,7 +2,9 @@ import * as Papa from 'papaparse';
 
 function readCSV(subject) {
     const files = {
-        'test': './data/publication_information.csv'
+        'test': './data/publication_information.csv',
+        'Computer Science': '',
+        // add subject areas and corresponding csv path here
     };
     const parsed = {};
 
