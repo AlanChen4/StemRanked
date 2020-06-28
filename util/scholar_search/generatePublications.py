@@ -107,7 +107,7 @@ def cleanPages(pages):
     return (int(start_end[0]),int(start_end[1]))
 
 def getAuthor(query):
-    val = ses.get(url='https://scholar.google.com/citations?user=S4GP-G4AAAAJ&hl=en&oi=ao')
+    val = ses.get(url=query)
     soup = BeautifulSoup(val.text,'html.parser')
     return (soup.find_all('div',{'id':'gsc_prf_in'})[0].text)
 
