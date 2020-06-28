@@ -3,7 +3,7 @@ import * as Papa from 'papaparse';
 function readCSV(subject) {
     const files = {
         'test': './data/publication_information.csv'
-    }
+    };
     const parsed = {};
 
     console.log('Subject:', subject);
