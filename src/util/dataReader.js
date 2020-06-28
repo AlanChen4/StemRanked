@@ -1,16 +1,15 @@
 import * as Papa from 'papaparse';
 
 function readCSV(subject) {
-    const urls = {
-        'test': 'https://srv-file22.gofile.io/download/HtWYEn/publication_information.csv'
+    const files = {
+        'test': './data/publication_information.csv'
     }
     const parsed = {};
 
     console.log('Subject:', subject);
-    const url = urls[subject];
+    const file = files[subject];
 
-    // TODO: add error catching in case the file request fails
-    Papa.parse(url, {
+    Papa.parse(file, {
         download: true,
         header: true,
         complete: (results) => {
@@ -22,7 +21,7 @@ function readCSV(subject) {
             }
         }
     });
-
+    
     return parsed;
 }
 
