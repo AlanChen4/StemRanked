@@ -3,6 +3,20 @@ import requests
 from fake_useragent import UserAgent
 
 
+def get_proxy_local(path, n=50):
+    '''read and try to return n number of
+    working proxies from proxies.txt
+    '''
+    proxy_list = []
+    with open(path) as f:
+        lines = [line.rstrip('\n') for line in f]
+    for line in lines:
+        line = 'https://'  + line
+        proxy_list.append(line)
+
+    return proxy_list
+
+
 def get_proxy_online(n=45):
     '''fetch and check a list of (up to) 45 proxies
     at a time from proxy-list.download
@@ -28,6 +42,7 @@ def get_proxy_online(n=45):
         if check_proxy(p):
             proxy_working.append(p)
     print(f'{len(proxy_working)} total working proxies returned')
+
     return proxy_working
 
 
@@ -40,4 +55,13 @@ def check_proxy(proxy_ip):
         return True
     except:
         return False
+
+
+def gen_headers():
+    '''TODO: return human-like headers to avoid basic detection'''
+    headers = {
+            }
+
+    return headers
+
 
