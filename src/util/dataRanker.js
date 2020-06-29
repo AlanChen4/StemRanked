@@ -142,6 +142,8 @@ function rankings(subject) {
         12: ["Abdullah Muzahid", "Cardiff University", "icml", 0.3333333333333333, 2019]
     };
     //let collegeInfo = readCSV(subject);
+    // eslint-disable-next-line
+    //let thing = readCSV(subject); // temporary while we try to optimize
 
     let currentCollegeInfo = yearCheck(collegeInfo);
     let rank_dic = rankingsInfo(currentCollegeInfo);
@@ -149,7 +151,6 @@ function rankings(subject) {
     //console.log(counts[colleges[1]]);
 
     let final = ranks(counts);
-    console.log('Subject:', subject);
     console.log(final);
 
     return final;

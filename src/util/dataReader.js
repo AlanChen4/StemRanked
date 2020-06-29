@@ -3,27 +3,53 @@ import * as Papa from 'papaparse';
 function readCSV(subject) {
     const files = {
         'test': './data/publication_information.csv',
+        'namh': './data/generated-author-info.csv',
         'Computer Science': '',
-        // add subject areas and corresponding csv path here
+        'Life Sciences': '',
+        'Chemistry': '',
+        'Engineering': '',
+        'Mathematics': '',
+        'Physics': ''
+        // TODO: add corresponding subject area csv path
     };
-    const parsed = {};
+    let parsed = {};
 
     console.log('Subject:', subject);
     const file = files[subject];
 
+    // TODO: optimize the parser
+    // IDEAS TO TRY:
+    // - Use counter variable as index instead of reading the length of the dictionary each time we add a new row
+    // - Get rid of console.log() statements and figure out a way to time the function
+    // - Enable fastMode in papaparser
+    // - see if parseInt() and parseFloat() is faster than dynamicTyping
+    // - see what Emery did
+    if (subject === 'namh') {
+        Papa.parse(file, {
+            download: true,
+            header: true,
+            dynamicTyping: true,
+            step: (row) => {
+                const info = row.data;
+                console.log(info);
+                parsed[Object.keys(parsed).length] = [info.name, info.dept, info.area, info.adjustedcount, info.year];
+            }
+        });
+
+        return parsed;
+    }
+
     Papa.parse(file, {
         download: true,
         header: true,
-        complete: (results) => {
-            for (let x of results.data) {
-                if (x.Author !== "") { // if the author is not empty --> is a bug on the backend right now
-                    //console.log(x); // would print each row of the csv
-                    parsed[Object.keys(parsed).length] = [x.Author, x.Institution, x.Conference, 1 / parseInt(x.NumAuthors, 10), parseInt(x.Year, 10)];
-                }
-            }
+        dynamicTyping: true,
+        step: (row) => {
+            const info = row.data;
+            parsed[Object.keys(parsed).length] = [info.Author, info.Institution, info.Conference, 1 / info.NumAuthors, info.Year];
         }
     });
-    
+
+    console.log(parsed);
     return parsed;
 }
 
