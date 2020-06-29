@@ -7,7 +7,7 @@ import requests
 from bs4 import BeautifulSoup
 from csv import writer
 from itertools import cycle
-from requests.exceptions import Timeout, ProxyError
+from requests.exceptions import Timeout, ProxyError, ConnectionError
 from scraper_helper import get_proxy_local, gen_headers
 
 
@@ -41,8 +41,14 @@ def get_profile(name, uni_email):
         print('search attempt failed')
 
 
-def get_faculty(email_domain, starting_id=None, limit=None):
-    '''writes list of scholar-listed faculty members to .csv file'''
+def get_faculty(email_domain, starting_id=None, limit=None, strict=False):
+    '''writes list of scholar-listed faculty members to .csv file
+
+    :param str email_domain: The email domain of the faculty being searched
+    :param str starting_id: The author_id to start searching from
+    :param int limit: Maximum number of profiles returned from search
+    :param boolean strict: Setting True removes proxies on proxy error
+    '''
     # check if there is a search limit
     if limit == None:
         search_limit = 10000000
@@ -58,21 +64,25 @@ def get_faculty(email_domain, starting_id=None, limit=None):
     # start time, used for debugging
     start_time = time.time()
 
+    # prepare proxies
+    proxy_path = 'proxies.txt'
+    proxy_list = get_proxy_local(proxy_path, n=100)
+    proxy_cycle = cycle(proxy_list)
+    proxy_ip = next(proxy_cycle)
+    proxy = {'https': proxy_ip}
+
     # initial search query
     next_page = "https://scholar.google.com/citations?hl=en&view_op=search_authors&mauthors="
     next_page += email_domain
     referer = 'https://scholar.google.com/citations?view_op=search_authors'
-    next_resp = session.get(url=next_page, headers=gen_headers(referer))
+    next_resp = session.get(
+            url=next_page,
+            headers=gen_headers(referer),
+            proxies=proxy)
 
     # skip collecting information from base page if there is a beginning author id specified
     if starting_id == None:
         current_profile_count += get_profile(next_resp.text)
-
-    # prepare proxies
-    proxy_path = 'proxies.txt'
-    proxy_list = get_proxy_local(proxy_path, n=20)
-    proxy_cycle = cycle(proxy_list)
-    proxy_ip = next(proxy_cycle)
 
     # continue going to next page, until last page is reached, or when limit is hit
     while True:
@@ -108,7 +118,8 @@ def get_faculty(email_domain, starting_id=None, limit=None):
             referer = next_page
 
             next_page = f'https://scholar.google.com/citations?view_op=search_authors&hl=en&mauthors={email_domain}&after_author={after_author_id}&astart={profile_id}'
-            next_resp = session.get(url=next_page,
+            next_resp = session.get(
+                    url=next_page,
                     timeout=5,
                     headers=gen_headers(referer),
                     proxies=proxy)
@@ -117,11 +128,18 @@ def get_faculty(email_domain, starting_id=None, limit=None):
             continue
         # remove bad proxy and continue
         except ProxyError:
-            proxy_list.remove(proxy_ip)
-            proxy_cycle = cycle(proxy_list)
-            proxy_ip = next(proxy_cycle)
-            print(f'[ProxyError] Removed {proxy_ip}')
-            print(f'[Update] {len(proxy_list)} proxies remaining')
+            if strict:
+                proxy_list.remove(proxy_ip)
+                proxy_cycle = cycle(proxy_list)
+                proxy_ip = next(proxy_cycle)
+                print(f'[ProxyError] Removed {proxy_ip}')
+                print(f'[Update] {len(proxy_list)} proxies remaining')
+                continue
+            else:
+                print(f'[ProxyError] (Strict: False) {proxy_list}')
+                continue
+        except ConnectionError:
+            print('[ConnectionError] Moving to next proxy')
             continue
         else:
             pass
@@ -176,7 +194,7 @@ def get_profile(page_html):
 
 
 def main():
-    get_faculty('unc.edu', starting_id=None, limit=None)
+    get_faculty('unc.edu', starting_id=None, limit=None, strict=False)
 
 
 if __name__ == '__main__':
