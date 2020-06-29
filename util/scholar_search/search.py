@@ -69,7 +69,7 @@ def get_faculty(email_domain, starting_id=None, limit=None):
 
     # prepare proxies
     proxy_path = 'proxies.txt'
-    proxy_list = get_proxy_local(proxy_path, n=20)
+    proxy_list = get_proxy_local(proxy_path, n=30)
     proxy_cycle = cycle(proxy_list)
     proxy_ip = next(proxy_cycle)
 
@@ -144,7 +144,7 @@ def get_profile(page_html):
     current_profiles = BeautifulSoup(page_html, 'html.parser')
     current_profiles = current_profiles.find_all('h3', class_='gs_ai_name')
     for profile in current_profiles:
-        with open('./data/data.csv', 'a+', newline='', encoding='utf-8') as f:
+        with open('./data/profiles.csv', 'a+', newline='', encoding='utf-8') as f:
             csv_writer = writer(f)
             info = [profile.text, profile.findChildren()[0]['href']]
             csv_writer.writerow(info)
@@ -152,7 +152,7 @@ def get_profile(page_html):
 
 
 def main():
-    get_faculty('chen+ualabama', starting_id=None, limit=500)
+    get_faculty('unc.edu', starting_id=None, limit=None)
 
 
 if __name__ == '__main__':
