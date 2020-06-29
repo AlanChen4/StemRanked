@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 from csv import writer
 from itertools import cycle
 from requests.exceptions import Timeout
-from scraper_helper import get_proxy_online
+from scraper_helper import get_proxy_local
 
 
 session = requests.Session()
@@ -68,15 +68,15 @@ def get_faculty(email_domain, starting_id=None, limit=None):
         current_profile_count += get_profile(next_resp.text)
 
     # prepare proxies
-    proxy_list = get_proxy_online(n=20)
+    proxy_path = 'proxies.txt'
+    proxy_list = get_proxy_local(proxy_path, n=20)
     proxy_cycle = cycle(proxy_list)
     proxy_ip = next(proxy_cycle)
 
     # continue going to next page, until last page is reached, or when limit is hit
     while True:
         # TODO: remove proxy from list if it get's banned
-        # format proxy for requests
-        proxy = {'http': proxy_ip}
+        proxy = {'https': proxy_ip}
 
         # locate the btn that navigates to next page
         soup = BeautifulSoup(next_resp.text, 'html.parser')
@@ -144,7 +144,7 @@ def get_profile(page_html):
     current_profiles = BeautifulSoup(page_html, 'html.parser')
     current_profiles = current_profiles.find_all('h3', class_='gs_ai_name')
     for profile in current_profiles:
-        with open('./data/data.csv', 'a+', newline='') as f:
+        with open('./data/data.csv', 'a+', newline='', encoding='utf-8') as f:
             csv_writer = writer(f)
             info = [profile.text, profile.findChildren()[0]['href']]
             csv_writer.writerow(info)
