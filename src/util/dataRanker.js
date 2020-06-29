@@ -100,10 +100,10 @@ function rankingsInfo(currentCollegeInfo) {
             getInstitutions((currentCollegeInfo[college])[1]);
         }
         if (!(Object.keys(rank_dic[(currentCollegeInfo[college])[1]]).includes(confAreas(currentCollegeInfo[college][2])))) {
-            rank_dic[(currentCollegeInfo[college])[1]][confAreas(currentCollegeInfo[college][2])] = currentCollegeInfo[college][4];
+            rank_dic[(currentCollegeInfo[college])[1]][confAreas(currentCollegeInfo[college][2])] = currentCollegeInfo[college][3];
         }
         else {
-            rank_dic[(currentCollegeInfo[college])[1]][confAreas(currentCollegeInfo[college][2])] += currentCollegeInfo[college][4];
+            rank_dic[(currentCollegeInfo[college])[1]][confAreas(currentCollegeInfo[college][2])] += currentCollegeInfo[college][3];
         }
     }
     return rank_dic
@@ -112,7 +112,7 @@ function rankingsInfo(currentCollegeInfo) {
 // Checks to make sure that each publication isn't before 2010
 function yearCheck(collegeInfo) {
     for (let i = 0; i < Object.keys(collegeInfo).length; i++) {
-        if ((collegeInfo[i])[5] < 2010) {
+        if ((collegeInfo[i])[4] < 2010) {
             let deletes = i;
             delete collegeInfo[i];
             for (let j = deletes; j < Object.keys(collegeInfo).length; j++) {
@@ -127,19 +127,19 @@ function yearCheck(collegeInfo) {
 
 function rankings(subject) {
     let collegeInfo = {
-        0: ["Abdullah Muzahid", "Imperial College London", "icra", 2.0, 0.3333333333333333, 2016],
-        1: ["Abdullah Muzahid", "Imperial College London", "icra", 1.0, 0.3333333333333333, 2019],
-        2: ["Abdullah Muzahid", "Imperial College London", "iros", 3.0, 0.3333333333333333, 2019],
-        3: ["Abdullah Muzahid", "Imperial College London", "nips", 2.0, 0.14285714285714285, 2018],
-        4: ["Abdullah Muzahid", "Imperial College London", "ubicomp", 1.0, 0.16666666666666666, 2019],
-        5: ["Abdullah Muzahid", "BUET", "chiconf", 2.0, 0.3333333333333333, 2017],
-        6: ["Abdullah Muzahid", "BUET", "ubicomp", 1.0, 0.125, 2019],
-        7: ["Abdullah Muzahid", "Istanbul Technical University", "acl", 1.0, 0.3333333333333333, 2007],
-        8: ["Abdullah Muzahid", "Istanbul Technical University", "acl", 1.0, 0.3333333333333333, 2019],
-        9: ["Abdullah Muzahid", "Cardiff University", "cvpr", 1.0, 0.3333333333333333, 2009],
-        10: ["Abdullah Muzahid", "Cardiff University", "cvpr", 1.0, 0.3333333333333333, 2011],
-        11: ["Abdullah Muzahid", "Cardiff University", "eccv", 1.0, 0.3333333333333333, 1998],
-        12: ["Abdullah Muzahid", "Cardiff University", "icml", 1.0, 0.3333333333333333, 2019]
+        0: ["Abdullah Muzahid", "Imperial College London", "icra", 0.3333333333333333, 2016],
+        1: ["Abdullah Muzahid", "Imperial College London", "icra", 0.3333333333333333, 2019],
+        2: ["Abdullah Muzahid", "Imperial College London", "iros", 0.3333333333333333, 2019],
+        3: ["Abdullah Muzahid", "Imperial College London", "nips", 0.14285714285714285, 2018],
+        4: ["Abdullah Muzahid", "Imperial College London", "ubicomp", 0.16666666666666666, 2019],
+        5: ["Abdullah Muzahid", "BUET", "chiconf", 0.3333333333333333, 2017],
+        6: ["Abdullah Muzahid", "BUET", "ubicomp", 0.125, 2019],
+        7: ["Abdullah Muzahid", "Istanbul Technical University", "acl", 0.3333333333333333, 2007],
+        8: ["Abdullah Muzahid", "Istanbul Technical University", "acl", 0.3333333333333333, 2019],
+        9: ["Abdullah Muzahid", "Cardiff University", "cvpr", 0.3333333333333333, 2009],
+        10: ["Abdullah Muzahid", "Cardiff University", "cvpr", 0.3333333333333333, 2011],
+        11: ["Abdullah Muzahid", "Cardiff University", "eccv", 0.3333333333333333, 1998],
+        12: ["Abdullah Muzahid", "Cardiff University", "icml", 0.3333333333333333, 2019]
     };
     //let collegeInfo = readCSV(subject);
     // eslint-disable-next-line
