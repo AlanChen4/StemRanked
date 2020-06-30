@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState, useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import rankings from './util/dataRanker';
@@ -26,11 +27,19 @@ function App() {
   );
 }
 
-function SchoolRankingList(subject) {
-  let ranks = rankings(subject.subject);
+function SchoolRankingList(props) {
+  const [ranks, setRanks] = useState({});
+ 
+  useEffect(() => {
+    const fetchData = async (subject) => {
+      const result = await rankings(subject);
+      setRanks(result);
+    };
+    fetchData(props.subject);
+  }, []); // eslint-disable-line
+
   let school_ranks = [];
-  // eslint-disable-next-line
-  for (const [key, value] of Object.entries(ranks)) {
+  for (const [key, value] of Object.entries(ranks)) { // eslint-disable-line
     school_ranks.push(key);
   }
   return (
