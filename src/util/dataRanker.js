@@ -126,6 +126,7 @@ function yearCheck(collegeInfo) {
 }
 
 function rankings(subject) {
+    // eslint-disable-next-line
     let collegeInfo = {
         0: ["Abdullah Muzahid", "Imperial College London", "icra", 0.3333333333333333, 2016],
         1: ["Abdullah Muzahid", "Imperial College London", "icra", 0.3333333333333333, 2019],
@@ -143,9 +144,9 @@ function rankings(subject) {
     };
     //let collegeInfo = readCSV(subject);
     // eslint-disable-next-line
-    //let thing = readCSV(subject); // temporary while we try to optimize
+    let thing = readCSV(subject); // temporary while we try to optimize
 
-    let currentCollegeInfo = yearCheck(collegeInfo);
+    let currentCollegeInfo = yearCheck(thing);
     let rank_dic = rankingsInfo(currentCollegeInfo);
     let counts = avgCount(rank_dic);
     //console.log(counts[colleges[1]]);

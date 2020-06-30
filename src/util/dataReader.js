@@ -16,10 +16,10 @@ function readCSV(subject) {
 
     console.log('Subject:', subject);
     const file = files[subject];
+    let count = 0;
 
     // TODO: optimize the parser
     // IDEAS TO TRY:
-    // - Use counter variable as index instead of reading the length of the dictionary each time we add a new row
     // - Get rid of console.log() statements and figure out a way to time the function
     // - Enable fastMode in papaparser
     // - see if parseInt() and parseFloat() is faster than dynamicTyping
@@ -31,12 +31,17 @@ function readCSV(subject) {
             dynamicTyping: true,
             step: (row) => {
                 const info = row.data;
-                console.log(info);
-                parsed[Object.keys(parsed).length] = [info.name, info.dept, info.area, info.adjustedcount, info.year];
+                parsed[count] = [info.name, info.dept, info.area, info.adjustedcount, info.year];
+                count++;
+            },
+            complete: () => {
+                console.log('And we are done!');
+                console.log(parsed);
             }
         });
-
+        
         return parsed;
+        
     }
 
     Papa.parse(file, {
@@ -45,11 +50,15 @@ function readCSV(subject) {
         dynamicTyping: true,
         step: (row) => {
             const info = row.data;
-            parsed[Object.keys(parsed).length] = [info.Author, info.Institution, info.Conference, 1 / info.NumAuthors, info.Year];
+            parsed[count] = [info.Author, info.Institution, info.Conference, 1 / info.NumAuthors, info.Year];
+            count++;
+        },
+        complete: () => {
+            console.log('And we are done!');
+            console.log(parsed);
         }
     });
-
-    console.log(parsed);
+    
     return parsed;
 }
 
