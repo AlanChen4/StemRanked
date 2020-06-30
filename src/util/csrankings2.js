@@ -1,4 +1,4 @@
-function rankingsInfo(currentCollegeInfo) {
+/*function rankingsInfo(currentCollegeInfo) {
     let rank_dic = [];
     for (let i = 0; i < collegeInfo.length; i++) {
         for (let j = 0; j < rank_dic.length; j++) {
@@ -7,7 +7,7 @@ function rankingsInfo(currentCollegeInfo) {
             }
         }
     }
-}
+} */
 
 function yearCheck(collegeInfo) {
     let i = 0;
