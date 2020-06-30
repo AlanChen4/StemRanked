@@ -125,34 +125,29 @@ function yearCheck(collegeInfo) {
     return collegeInfo;
 }
 
-function rankings(subject) {
-    // eslint-disable-next-line
-    let collegeInfo = {
-        0: ["Abdullah Muzahid", "Imperial College London", "icra", 0.3333333333333333, 2016],
-        1: ["Abdullah Muzahid", "Imperial College London", "icra", 0.3333333333333333, 2019],
-        2: ["Abdullah Muzahid", "Imperial College London", "iros", 0.3333333333333333, 2019],
-        3: ["Abdullah Muzahid", "Imperial College London", "nips", 0.14285714285714285, 2018],
-        4: ["Abdullah Muzahid", "Imperial College London", "ubicomp", 0.16666666666666666, 2019],
-        5: ["Abdullah Muzahid", "BUET", "chiconf", 0.3333333333333333, 2017],
-        6: ["Abdullah Muzahid", "BUET", "ubicomp", 0.125, 2019],
-        7: ["Abdullah Muzahid", "Istanbul Technical University", "acl", 0.3333333333333333, 2007],
-        8: ["Abdullah Muzahid", "Istanbul Technical University", "acl", 0.3333333333333333, 2019],
-        9: ["Abdullah Muzahid", "Cardiff University", "cvpr", 0.3333333333333333, 2009],
-        10: ["Abdullah Muzahid", "Cardiff University", "cvpr", 0.3333333333333333, 2011],
-        11: ["Abdullah Muzahid", "Cardiff University", "eccv", 0.3333333333333333, 1998],
-        12: ["Abdullah Muzahid", "Cardiff University", "icml", 0.3333333333333333, 2019]
-    };
-    //let collegeInfo = readCSV(subject);
-    // eslint-disable-next-line
-    let thing = readCSV(subject); // temporary while we try to optimize
+async function rankings(subject) {
 
-    let currentCollegeInfo = yearCheck(thing);
+    console.log('Making call to readCSV')
+    let collegeInfo = await readCSV(subject);
+    console.log('Result of readCSV call', collegeInfo);
+
+    console.log('Making call to yearCheck');
+    let currentCollegeInfo = yearCheck(collegeInfo);
+    console.log('Result of yearCheck call', currentCollegeInfo);
+
+    console.log('Making call to rankingsInfo');
     let rank_dic = rankingsInfo(currentCollegeInfo);
+    console.log('Result of rankingsInfo call', rank_dic);
+
+    console.log('Making call to avgCount');
     let counts = avgCount(rank_dic);
+    console.log('Result of avgCount call', counts);
+
     //console.log(counts[colleges[1]]);
 
+    console.log('Making call to ranks');
     let final = ranks(counts);
-    console.log(final);
+    console.log('Result of ranks call', final);
 
     return final;
 }
