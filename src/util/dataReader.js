@@ -22,26 +22,23 @@ async function readCSV(subject) {
             }
         });
     })
-    let parsed = {};
+    let parsed = [];
 
     console.log('Subject:', subject);
 
     const file = files[subject];
-    let count = 0;
     const results = await papaPromise(file);
 
     // TODO: see if parseInt() and parseFloat() is faster than dynamicTyping
     if (subject === 'namh') {
         for (let info of results.data) {
-            parsed[count] = [info.name, info.dept, info.area, info.adjustedcount, info.year];
-            count++;
+            parsed.push([info.dept, info.name, info.area, info.adjustedcount, info.year]);
         }
         return parsed;
     }
 
     for (let info of results.data) {
-        parsed[count] = [info.Author, info.Institution, info.Conference, 1 / info.NumAuthors, info.Year];
-        count++;
+        parsed.push([info.Institution, info.Author, info.Conference, 1 / info.NumAuthors, info.Year]);
     }
     return parsed;
 }
