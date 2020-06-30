@@ -36,7 +36,6 @@ async function readCSV(subject) {
             parsed[count] = [info.name, info.dept, info.area, info.adjustedcount, info.year];
             count++;
         }
-        
         return parsed;
     }
 
@@ -44,7 +43,6 @@ async function readCSV(subject) {
         parsed[count] = [info.Author, info.Institution, info.Conference, 1 / info.NumAuthors, info.Year];
         count++;
     }
-    
     return parsed;
 }
 
