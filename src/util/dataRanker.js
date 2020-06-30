@@ -92,7 +92,7 @@ function getInstitutions(institutions) {
 }
 
 // Returns a dictionary that has the institution names, areas, and adjusted counts
-function rankingsInfo(currentCollegeInfo) {
+/*function rankingsInfo(currentCollegeInfo) {
     let rank_dic = {};
     for (let college in Object.keys(currentCollegeInfo)) {
         if (!(rank_dic.hasOwnProperty(currentCollegeInfo[college][1]))) {
@@ -107,22 +107,35 @@ function rankingsInfo(currentCollegeInfo) {
         }
     }
     return rank_dic
+} */
+
+function rankingsInfo(currentCollegeInfo) {
+    let rank_dic = {};
+    for (let i = 0; i < currentCollegeInfo.length; i++) {
+        if (!(rank_dic.hasOwnProperty(currentCollegeInfo[i][0]))) {
+            rank_dic[(currentCollegeInfo[i][0])] = {}
+            getInstitutions((currentCollegeInfo[i])[1]);
+        }
+        if (!(Object.keys(rank_dic[(currentCollegeInfo[i][0])]).includes(confAreas(currentCollegeInfo[i][2])))) {
+            rank_dic[(currentCollegeInfo[i][0])][confAreas(currentCollegeInfo[i][2])] = currentCollegeInfo[i][3];
+        }
+        else {
+            rank_dic[(currentCollegeInfo[i][0])][confAreas(currentCollegeInfo[i][2])] += currentCollegeInfo[i][3];
+        }
+    }
+    return rank_dic;
+
 }
 
 // Checks to make sure that each publication isn't before 2010
 function yearCheck(collegeInfo) {
-    for (let i = 0; i < Object.keys(collegeInfo).length; i++) {
-        if ((collegeInfo[i])[4] < 2010) {
-            let deletes = i;
-            delete collegeInfo[i];
-            for (let j = deletes; j < Object.keys(collegeInfo).length; j++) {
-                collegeInfo[j] = collegeInfo[j + 1]
-                delete collegeInfo[j + 1]
-            }
+    let currentInfo = [];
+    for (let i = 0; i < collegeInfo.length; i++) {
+        if (collegeInfo[i][4] >= 2010) {
+            currentInfo.push(collegeInfo[i]);
         }
     }
-    // Makes the keys go in numerical order again
-    return collegeInfo;
+    return currentInfo;
 }
 
 async function rankings(subject) {
@@ -138,7 +151,7 @@ async function rankings(subject) {
     console.log('Making call to rankingsInfo');
     let rank_dic = rankingsInfo(currentCollegeInfo);
     console.log('Result of rankingsInfo call', rank_dic);
-
+    /*
     console.log('Making call to avgCount');
     let counts = avgCount(rank_dic);
     console.log('Result of avgCount call', counts);
@@ -148,8 +161,9 @@ async function rankings(subject) {
     console.log('Making call to ranks');
     let final = ranks(counts);
     console.log('Result of ranks call', final);
+    */
 
-    return final;
+    return { UNC: 1.044949 };
 }
 
 export default rankings;
