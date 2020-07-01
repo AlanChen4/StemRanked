@@ -7,8 +7,8 @@ import readCSV from './dataReader';
 // Dictionary in which the keys are areas and the values are conferences
 let areaDict = {
     "vision": ['cvpr', 'iccv', 'eccv'],
-    "plan": ['popl', 'pldi', 'oopsla'],
-    "soft": ['icse', 'fse', 'icfp'],
+    "plan": ['popl', 'pldi', 'oopsla', 'icfp'],
+    "soft": ['icse', 'fse', 'ase', 'issta'],
     "ops": ['sosp', 'osdi', 'eurosys', 'fast', 'usenixatc'],
     'metrics': ['imc', 'sigmetrics'],
     'mobile': ['mobisys', 'mobicom', 'sensys'],
@@ -16,21 +16,22 @@ let areaDict = {
     'bed': ['emsoft', 'rtss', 'rtas'],
     'da': ['iccad', 'dac'],
     'mod': ['vldb', 'sigmod', 'icde', 'pods'],
-    'sec': ['ccs', 'oakland', 'usenixsec', 'ndss'],
+    'sec': ['ccs', 'oakland', 'usenixsec', 'ndss', 'ieee s&p', 'pets'],
     'comm': ['sigcomm', 'nsdi'],
-    'arch': ['asplos', 'isca', 'micro', 'hpca'],
+    'arch': ['asplos', 'isca', 'micro', 'hpca', 'neurlps'],
     'log': ['cav', 'lics'],
     'act': ['focs', 'stoc', 'soda'],
-    'mlmining': ['nips', 'icml', 'ijcai'],
+    'mlmining': ['nips', 'icml', 'kdd'],
     'compgraph': ['siggraph', 'siggraph-asia'],
     'ir': ['sigir', 'www'],
-    'chi': ['chiconf', 'ubicomp', 'uist'],
+    'chi': ['chiconf', 'ubicomp', 'uist', 'imwut, pervasive'],
     'nlp': ['emnlp', 'acl', 'naacl'],
     'robotics': ['icra', 'iros', 'rss'],
     'crypt': ['crypto', 'eurocrypt'],
     'bio': ['ismb', 'recomb'],
     'visual': ['vis', 'vr'],
-    'ecom': ['ec', 'wine', 'cse']
+    'ecom': ['ec', 'wine', 'cse'],
+    'ai': ['aaai', 'ijcai']
 
 }
 
@@ -40,13 +41,14 @@ let colleges = [];
 
 // Returns the final rankings from dictionary that contains the average count and institutions
 function ranks(counts) {
-    let averageCount = []
+    let averageCount = [];
     for (let i = 0; i < Object.keys(counts).length; i++) {
-        averageCount.push(counts[colleges[i]])
+        averageCount.push(counts[colleges[i]]);
     }
-    averageCount.sort();
+    // points.sort(function(a, b){return a - b});
+    averageCount.sort(function (a, b) { return a - b });
     averageCount.reverse();
-    let final_rank = {}
+    let final_rank = {};
     for (let j = 0; j < Object.keys(counts).length; j++) {
         for (let x = 0; x < averageCount.length; x++) {
             if (counts[colleges[x]] === averageCount[j]) {
@@ -82,7 +84,8 @@ function confAreas(conferences) {
         }
 
     }
-    return ("Cannot find area");
+    //return conferences;
+    return ("Cannot find area")
 }
 
 // Adds the institution name to the global array 'colleges
@@ -114,7 +117,7 @@ function rankingsInfo(currentCollegeInfo) {
     for (let i = 0; i < currentCollegeInfo.length; i++) {
         if (!(rank_dic.hasOwnProperty(currentCollegeInfo[i][0]))) {
             rank_dic[(currentCollegeInfo[i][0])] = {}
-            getInstitutions((currentCollegeInfo[i])[1]);
+            getInstitutions((currentCollegeInfo[i])[0]);
         }
         if (!(Object.keys(rank_dic[(currentCollegeInfo[i][0])]).includes(confAreas(currentCollegeInfo[i][2])))) {
             rank_dic[(currentCollegeInfo[i][0])][confAreas(currentCollegeInfo[i][2])] = currentCollegeInfo[i][3];
@@ -151,19 +154,17 @@ async function rankings(subject) {
     console.log('Making call to rankingsInfo');
     let rank_dic = rankingsInfo(currentCollegeInfo);
     console.log('Result of rankingsInfo call', rank_dic);
-    /*
+
     console.log('Making call to avgCount');
     let counts = avgCount(rank_dic);
     console.log('Result of avgCount call', counts);
-
     //console.log(counts[colleges[1]]);
 
     console.log('Making call to ranks');
     let final = ranks(counts);
     console.log('Result of ranks call', final);
-    */
 
-    return { UNC: 1.044949 };
+    return final;
 }
 
 export default rankings;

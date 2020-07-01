@@ -1,7 +1,7 @@
 let areaDict = {
     "vision": ['cvpr', 'iccv', 'eccv'],
-    "plan": ['popl', 'pldi', 'oopsla'],
-    "soft": ['icse', 'fse', 'icfp'],
+    "plan": ['popl', 'pldi', 'oopsla', 'icfp'],
+    "soft": ['icse', 'fse', 'ase', 'issta'],
     "ops": ['sosp', 'osdi', 'eurosys', 'fast', 'usenixatc'],
     'metrics': ['imc', 'sigmetrics'],
     'mobile': ['mobisys', 'mobicom', 'sensys'],
@@ -9,15 +9,15 @@ let areaDict = {
     'bed': ['emsoft', 'rtss', 'rtas'],
     'da': ['iccad', 'dac'],
     'mod': ['vldb', 'sigmod', 'icde', 'pods'],
-    'sec': ['ccs', 'oakland', 'usenixsec', 'ndss'],
+    'sec': ['ccs', 'oakland', 'usenixsec', 'ndss', 'ieee s&p'],
     'comm': ['sigcomm', 'nsdi'],
-    'arch': ['asplos', 'isca', 'micro', 'hpca'],
+    'arch': ['asplos', 'isca', 'micro', 'hpca', 'neurlps'],
     'log': ['cav', 'lics'],
     'act': ['focs', 'stoc', 'soda'],
-    'mlmining': ['nips', 'icml', 'ijcai'],
+    'mlmining': ['nips', 'icml', 'ijcai', 'kdd'],
     'compgraph': ['siggraph', 'siggraph-asia'],
     'ir': ['sigir', 'www'],
-    'chi': ['chiconf', 'ubicomp', 'uist'],
+    'chi': ['chiconf', 'ubicomp', 'uist', 'imwut, pervasive'],
     'nlp': ['emnlp', 'acl', 'naacl'],
     'robotics': ['icra', 'iros', 'rss'],
     'crypt': ['crypto', 'eurocrypt'],
@@ -28,6 +28,40 @@ let areaDict = {
 }
 
 let colleges = [];
+
+function ranks(counts) {
+    let averageCount = [];
+    for (let i = 0; i < Object.keys(counts).length; i++) {
+        averageCount.push(counts[colleges[i]]);
+    }
+    averageCount.sort();
+    averageCount.reverse();
+    let final_rank = {}
+    for (let j = 0; j < Object.keys(counts).length; j++) {
+        for (let x = 0; x < averageCount.length; x++) {
+            if (counts[colleges[x]] === averageCount[j]) {
+                final_rank[colleges[x]] = averageCount[j];
+            }
+        }
+    }
+    return final_rank;
+}
+
+function avgCount(rank_dic) {
+
+    let counts = {};
+    for (let inst of Object.keys(rank_dic)) {
+        let prod = 1;
+        let numAreas = 5;
+        for (let area of Object.keys(rank_dic[inst])) {
+            numAreas++
+            prod *= (rank_dic[inst][area] + 1)
+        }
+
+        counts[inst] = Math.pow(prod, (1 / numAreas))
+    }
+    return (counts)
+}
 
 function confAreas(conferences) {
     for (let x = 0; x < Object.keys(areaDict).length; x++) {
@@ -49,7 +83,7 @@ function rankingsInfo(currentCollegeInfo) {
     for (let i = 0; i < currentCollegeInfo.length; i++) {
         if (!(rank_dic.hasOwnProperty(currentCollegeInfo[i][0]))) {
             rank_dic[(currentCollegeInfo[i][0])] = {}
-            getInstitutions((currentCollegeInfo[i])[1]);
+            getInstitutions((currentCollegeInfo[i])[0]);
         }
         if (!(Object.keys(rank_dic[(currentCollegeInfo[i][0])]).includes(confAreas(currentCollegeInfo[i][2])))) {
             rank_dic[(currentCollegeInfo[i][0])][confAreas(currentCollegeInfo[i][2])] = currentCollegeInfo[i][3];
@@ -89,4 +123,7 @@ let collegeInfo = [
 ]
 
 let currentCollegeInfo = yearCheck(collegeInfo);
-console.log(rankingsInfo(currentCollegeInfo));
+let rank_dic = rankingsInfo(currentCollegeInfo);
+let counts = avgCount(rank_dic);
+//console.log(counts);
+console.log(ranks(counts));
