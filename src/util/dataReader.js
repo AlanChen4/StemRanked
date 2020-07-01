@@ -3,7 +3,7 @@ import * as Papa from 'papaparse';
 async function readCSV(subject) {
     const files = {
         'test': './data/publication_information.csv',
-        'namh': './data/generated-author-info.csv',
+        'Emery Computer Science': './data/generated-author-info.csv',
         'Computer Science': '',
         'Life Sciences': '',
         'Chemistry': '',
@@ -30,7 +30,7 @@ async function readCSV(subject) {
     const results = await papaPromise(file);
 
     // TODO: see if parseInt() and parseFloat() is faster than dynamicTyping
-    if (subject === 'namh') {
+    if (file === './data/generated-author-info.csv') {
         for (let info of results.data) {
             parsed.push([info.dept, info.name, info.area, info.adjustedcount, info.year]);
         }

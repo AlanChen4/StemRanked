@@ -42,12 +42,17 @@ let colleges = [];
 // Returns the final rankings from dictionary that contains the average count and institutions
 function ranks(counts) {
     let averageCount = [];
+
+    console.log('Right before the first loop in ranks()', counts);
     for (let i = 0; i < Object.keys(counts).length; i++) {
         averageCount.push(counts[colleges[i]]);
     }
+    console.log('Right after the first loop in ranks()', averageCount);
+
     // points.sort(function(a, b){return a - b});
     averageCount.sort(function (a, b) { return a - b });
     averageCount.reverse();
+
     let final_rank = {};
     for (let j = 0; j < Object.keys(counts).length; j++) {
         for (let x = 0; x < averageCount.length; x++) {
@@ -93,24 +98,6 @@ function getInstitutions(institutions) {
     colleges.push(institutions);
 
 }
-
-// Returns a dictionary that has the institution names, areas, and adjusted counts
-/*function rankingsInfo(currentCollegeInfo) {
-    let rank_dic = {};
-    for (let college in Object.keys(currentCollegeInfo)) {
-        if (!(rank_dic.hasOwnProperty(currentCollegeInfo[college][1]))) {
-            rank_dic[(currentCollegeInfo[college])[1]] = {};
-            getInstitutions((currentCollegeInfo[college])[1]);
-        }
-        if (!(Object.keys(rank_dic[(currentCollegeInfo[college])[1]]).includes(confAreas(currentCollegeInfo[college][2])))) {
-            rank_dic[(currentCollegeInfo[college])[1]][confAreas(currentCollegeInfo[college][2])] = currentCollegeInfo[college][3];
-        }
-        else {
-            rank_dic[(currentCollegeInfo[college])[1]][confAreas(currentCollegeInfo[college][2])] += currentCollegeInfo[college][3];
-        }
-    }
-    return rank_dic
-} */
 
 function rankingsInfo(currentCollegeInfo) {
     let rank_dic = {};
