@@ -99,6 +99,7 @@ function getInstitutions(institutions) {
 
 }
 
+// Created a dictionary from the publications that contains the institution names, areas, and the adjusted count
 function rankingsInfo(currentCollegeInfo) {
     let rank_dic = {};
     for (let i = 0; i < currentCollegeInfo.length; i++) {
@@ -128,6 +129,7 @@ function yearCheck(collegeInfo) {
     return currentInfo;
 }
 
+// Logs everythin on console in the local browser
 async function rankings(subject) {
 
     console.log('Making call to readCSV')
