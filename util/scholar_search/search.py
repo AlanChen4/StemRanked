@@ -148,16 +148,17 @@ def get_faculty(email_domain, proxy_path, starting_author=None,
                 except Exception as e:
                     print(e)
                     break
-            # IndexError mean IP Ban
-            except IndexError as e:
-                print(e)
-                proxy_list.remove(proxy_ip)
-                proxy_cycle = cycle(proxy_list)
-                print(f'[IP Ban] Removed proxy, {len(proxy_list)} remaining')
-        except IndexError:
-            proxy_list.remove(proxy_ip)
-            proxy_cycle = cycle(proxy_list)
-            print(f'[IP Ban] Removed proxy, {len(proxy_list)} remaining')
+     #       # IndexError mean IP Ban
+     #       except IndexError as e:
+     #           print(e)
+     #           proxy_list.remove(proxy_ip)
+     #           proxy_cycle = cycle(proxy_list)
+     #           print(f'[IP Ban] Removed proxy, {len(proxy_list)} remaining')
+     #   except IndexError as e:
+     #       print(e)
+     #       proxy_list.remove(proxy_ip)
+     #       proxy_cycle = cycle(proxy_list)
+     #       print(f'[IP Ban] Removed proxy, {len(proxy_list)} remaining')
         except StopIteration:
             print('[Stopped] No proxies remaining')
             print(f'[Info] Ending author_id: {author_id}')
@@ -184,10 +185,10 @@ def main():
     get_faculty(
             'unc.edu',
             'proxies.txt',
-            starting_id=None,
+            author_id=None,
             limit=None,
             strict=False,
-            proxy_num=5)
+            proxy_num=20)
 
 
 if __name__ == '__main__':
