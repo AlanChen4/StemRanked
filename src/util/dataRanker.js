@@ -92,7 +92,7 @@ function getInstitutions(institutions) {
 }
 
 // Returns a dictionary that has the institution names, areas, and adjusted counts
-function rankingsInfo(currentCollegeInfo) {
+/*function rankingsInfo(currentCollegeInfo) {
     let rank_dic = {};
     for (let college in Object.keys(currentCollegeInfo)) {
         if (!(rank_dic.hasOwnProperty(currentCollegeInfo[college][1]))) {
@@ -107,53 +107,63 @@ function rankingsInfo(currentCollegeInfo) {
         }
     }
     return rank_dic
+} */
+
+function rankingsInfo(currentCollegeInfo) {
+    let rank_dic = {};
+    for (let i = 0; i < currentCollegeInfo.length; i++) {
+        if (!(rank_dic.hasOwnProperty(currentCollegeInfo[i][0]))) {
+            rank_dic[(currentCollegeInfo[i][0])] = {}
+            getInstitutions((currentCollegeInfo[i])[1]);
+        }
+        if (!(Object.keys(rank_dic[(currentCollegeInfo[i][0])]).includes(confAreas(currentCollegeInfo[i][2])))) {
+            rank_dic[(currentCollegeInfo[i][0])][confAreas(currentCollegeInfo[i][2])] = currentCollegeInfo[i][3];
+        }
+        else {
+            rank_dic[(currentCollegeInfo[i][0])][confAreas(currentCollegeInfo[i][2])] += currentCollegeInfo[i][3];
+        }
+    }
+    return rank_dic;
+
 }
 
 // Checks to make sure that each publication isn't before 2010
 function yearCheck(collegeInfo) {
-    for (let i = 0; i < Object.keys(collegeInfo).length; i++) {
-        if ((collegeInfo[i])[4] < 2010) {
-            let deletes = i;
-            delete collegeInfo[i];
-            for (let j = deletes; j < Object.keys(collegeInfo).length; j++) {
-                collegeInfo[j] = collegeInfo[j + 1]
-                delete collegeInfo[j + 1]
-            }
+    let currentInfo = [];
+    for (let i = 0; i < collegeInfo.length; i++) {
+        if (collegeInfo[i][4] >= 2010) {
+            currentInfo.push(collegeInfo[i]);
         }
     }
-    // Makes the keys go in numerical order again
-    return collegeInfo;
+    return currentInfo;
 }
 
-function rankings(subject) {
-    let collegeInfo = {
-        0: ["Abdullah Muzahid", "Imperial College London", "icra", 0.3333333333333333, 2016],
-        1: ["Abdullah Muzahid", "Imperial College London", "icra", 0.3333333333333333, 2019],
-        2: ["Abdullah Muzahid", "Imperial College London", "iros", 0.3333333333333333, 2019],
-        3: ["Abdullah Muzahid", "Imperial College London", "nips", 0.14285714285714285, 2018],
-        4: ["Abdullah Muzahid", "Imperial College London", "ubicomp", 0.16666666666666666, 2019],
-        5: ["Abdullah Muzahid", "BUET", "chiconf", 0.3333333333333333, 2017],
-        6: ["Abdullah Muzahid", "BUET", "ubicomp", 0.125, 2019],
-        7: ["Abdullah Muzahid", "Istanbul Technical University", "acl", 0.3333333333333333, 2007],
-        8: ["Abdullah Muzahid", "Istanbul Technical University", "acl", 0.3333333333333333, 2019],
-        9: ["Abdullah Muzahid", "Cardiff University", "cvpr", 0.3333333333333333, 2009],
-        10: ["Abdullah Muzahid", "Cardiff University", "cvpr", 0.3333333333333333, 2011],
-        11: ["Abdullah Muzahid", "Cardiff University", "eccv", 0.3333333333333333, 1998],
-        12: ["Abdullah Muzahid", "Cardiff University", "icml", 0.3333333333333333, 2019]
-    };
-    //let collegeInfo = readCSV(subject);
-    // eslint-disable-next-line
-    //let thing = readCSV(subject); // temporary while we try to optimize
+async function rankings(subject) {
 
+    console.log('Making call to readCSV')
+    let collegeInfo = await readCSV(subject);
+    console.log('Result of readCSV call', collegeInfo);
+
+    console.log('Making call to yearCheck');
     let currentCollegeInfo = yearCheck(collegeInfo);
+    console.log('Result of yearCheck call', currentCollegeInfo);
+
+    console.log('Making call to rankingsInfo');
     let rank_dic = rankingsInfo(currentCollegeInfo);
+    console.log('Result of rankingsInfo call', rank_dic);
+    /*
+    console.log('Making call to avgCount');
     let counts = avgCount(rank_dic);
+    console.log('Result of avgCount call', counts);
+
     //console.log(counts[colleges[1]]);
 
+    console.log('Making call to ranks');
     let final = ranks(counts);
-    console.log(final);
+    console.log('Result of ranks call', final);
+    */
 
-    return final;
+    return { UNC: 1.044949 };
 }
 
 export default rankings;
