@@ -185,7 +185,7 @@ def main():
     get_faculty(
             'unc.edu',
             'proxies.txt',
-            author_id=None,
+            starting_author=None,
             limit=None,
             strict=False,
             proxy_num=20)
