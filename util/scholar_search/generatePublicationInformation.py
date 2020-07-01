@@ -1,4 +1,4 @@
-import requests, csv, re
+import requests, csv, re, venues
 from bs4 import BeautifulSoup
 
 session = requests.Session()
@@ -36,11 +36,14 @@ def furtherRequest(pub, requestType, beginningString = ''):
                 if (divs[0].text != 'Scholar articles' and divs[0].text != 'Description'):
                     if (divs[1].text.find(beginningString) != -1):
                         venue = divs[1].text
+        area = venues.check(venue)
+        if (area is None):
+            return False
                 
         for item in table:
             if (list(item.find_all('div',{'class':'gsc_vcd_field'}))[0].text == 'Authors'):
                 numAuthors = len(list(list(item.find_all('div',{'class':'gsc_vcd_value'}))[0].text.split(',')))
-        return (venue, numAuthors)
+        return (area, numAuthors)
     else:
         print(f"Paper Request Failed: {baseUrl+additionalUrl}\t\t{paper.status_code}")
         exit()
@@ -52,26 +55,28 @@ def scrapeInfo(pub, auth_name,institution):
     pub_info = dict()
     pub_info['Year'] = list(pub.find_all('td',{'class':'gsc_a_y'}))[0].span.text  
     if (pub_info['Year'] == ''):
-        #print('Failure: No Year')
+        print('Failure: No Year')
         return False 
     pub_info['Author'] = auth_name 
     pub_info['Institution'] = institution
+    ven = None
     venue = list(pub.td.find_all('div', {'class':'gs_gray'}))[1].text #contains page numbers, but we cannot remove because the conference may have commas
     venue = venue[:venue.rfind(',')] #gets rid of the extra year at the end
     if (venue.find('…') != -1 or venue.find('...') != -1):
-        (venue, numAuthors) = furtherRequest(pub, 'Check Publication', beginningString=venue)
+        if venues.check(venue,completion=.25):
+            (ven, numAuthors) = furtherRequest(pub, 'Check Publication', beginningString=venue)
+        return False
     else:
         if (venue.rfind(',') == -1):
             return False
         pages = venue[venue.rfind(',')+1:]
         if (not checkPages(pages)):
-            #print('Failure: Invalid Pages')
+            print('Failure: Invalid Pages')
             return False
         venue = venue[:venue.rfind(',')]
-    
-    print(venue)
-
-
+        ven = venues.check(venue)
+    if (ven == False):
+        return False
     auths = pub.td.div.text    
     if (numAuthors != -1):
         pass
@@ -80,7 +85,9 @@ def scrapeInfo(pub, auth_name,institution):
     else:
         numAuthors = furtherRequest(pub, 'Authors')[1]
     pub_info['Adjusted Count'] = 1/numAuthors
-    #print(pub_info['Adjusted Count'])
+    pub_info['Venue'] = ven
+
+    return pub_info
 
 
 def check_end(parse): # checks to see if this page is the page after the final urls
@@ -129,7 +136,9 @@ def getPages(query, institution):
 
 
 def main(query, institution,csv_file):
-    getPages(query, institution)
+    pages = getPages(query, institution)
+    print(getPages(query, institution))
+    print(len(pages))
 
 if __name__ == "__main__":
-    main('https://scholar.google.com/citations?hl=en&user=ni_ZrQQAAAAJ','Boston University', 'publication_information.csv')
+    main('https://scholar.google.com/citations?hl=en&user=5pKTRxEAAAAJ','Cargenie Mellon University', 'publication_information.csv')
