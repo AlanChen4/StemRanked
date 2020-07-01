@@ -38,7 +38,7 @@ def check_end(parse): # checks to see if this page is the page after the final u
 def getUrlsPerPage(query, proxy_cycle): # scrapes all urls from a given page of the author profile
     #proxy = {'https': next(proxy_cycle)}
     #auth_info = ses.get(url = query, timeout = 10, proxies = proxy)
-    auth_info = ses.get(url=query)
+    auth_info = ses.get(url=query, proxies = {'https':'3.16.222.132:3838'})
     if (auth_info.status_code < 300 and auth_info.status_code >=200):
         parse = BeautifulSoup(auth_info.text, "html.parser")
         atags = parse.find_all('a')
@@ -106,7 +106,7 @@ def cleanPages(pages):
     return (int(start_end[0]), int(start_end[1]))
 
 def getAuthor(query):
-    val = ses.get(url=query)
+    val = ses.get(url=query, proxies = {'https':'3.16.222.132:3838'})
     soup = BeautifulSoup(val.text, 'html.parser')
     return soup.find_all('div', {'id':'gsc_prf_in'})[0].text
 
@@ -139,7 +139,7 @@ def pub_clean(pub_info, query): # convert authors from string to list and pages 
 def scrapePub(pub, auth_profile, proxy_cycle):
     #proxy = {'https': next(proxy_cycle)}
     #paper = ses.get(url = pub, timeout = 10, proxies = proxy)
-    paper = ses.get(url=pub)
+    paper = ses.get(url=pub, proxies = {'https':'3.16.222.132:3838'})
     if (paper.status_code < 300 and paper.status_code >= 200):
         parse = BeautifulSoup(paper.text, "html.parser")
         divisions = parse.find_all('div')
@@ -209,4 +209,4 @@ def main(csv_file, authName, institution, query):
 
 
 if __name__ == "__main__":
-    main("publication_information.csv", "Ketan Mayer-Pagel", 'University of North Carolina at Chapel Hill', 'https://scholar.google.com/citations?user=S4GP-G4AAAAJ&hl=en&oi=ao')
+    main("publication_information.csv", "Eric Xing", 'Cargenie Mellon University', 'https://scholar.google.com/citations?user=5pKTRxEAAAAJ&hl=en&oi=ao')
