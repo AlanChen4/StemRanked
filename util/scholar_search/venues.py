@@ -47,7 +47,7 @@ venue_dictionary = {
         'Biomedical Engineering': None,
         'Computational Mechanics': None,
         'Control and Systems Engineering': None,
-        'Electrical and Electronics Engineering': None,
+        'Electrical, Electronics, and Computer Engineering': None,
         'Industrial and Manufacturing Engineering': None,
         'Mechanical Engineering': None,
 
