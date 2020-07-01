@@ -21,8 +21,8 @@ def get_proxy_local(path, n=50):
             break
         if check_proxy(p, 'https'):
             proxy_working.append(p)
-            print(f'[Added] {p}')
-    print(f'{len(proxy_working)} total working proxies returned')
+            print(f'[Added Proxy ({len(proxy_working)} total)] {p}')
+    print(f'[Complete] {len(proxy_working)} total working proxies returned')
 
     return proxy_working
 
@@ -42,7 +42,7 @@ def get_proxy_online(n=45):
         print(f'[{proxy_resp.status_code}] could not fetch proxy list')
         return
 
-    print(f'Fetched {len(proxy_list)} proxies')
+    print(f'[Start] {len(proxy_list)} proxies')
 
     # create list of working proxies only
     proxy_working = []
@@ -51,7 +51,7 @@ def get_proxy_online(n=45):
             break
         if check_proxy(p, 'http'):
             proxy_working.append(p)
-    print(f'{len(proxy_working)} total working proxies returned')
+    print(f'[Complete] {len(proxy_working)} total working proxies returned')
 
     return proxy_working
 
