@@ -110,3 +110,11 @@ def check(venue, completion = 1): #checks if 50% of keywords are matched
                 pass
     return False
     
+def findSubject(venue):
+    for subject in venue_dictionary:
+        for area in venue_dictionary[subject]:
+            if (venue in list(venue_dictionary[subject][area].keys())):
+                return subject
+    return False
+
+
