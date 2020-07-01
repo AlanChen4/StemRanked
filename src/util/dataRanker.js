@@ -94,24 +94,6 @@ function getInstitutions(institutions) {
 
 }
 
-// Returns a dictionary that has the institution names, areas, and adjusted counts
-/*function rankingsInfo(currentCollegeInfo) {
-    let rank_dic = {};
-    for (let college in Object.keys(currentCollegeInfo)) {
-        if (!(rank_dic.hasOwnProperty(currentCollegeInfo[college][1]))) {
-            rank_dic[(currentCollegeInfo[college])[1]] = {};
-            getInstitutions((currentCollegeInfo[college])[1]);
-        }
-        if (!(Object.keys(rank_dic[(currentCollegeInfo[college])[1]]).includes(confAreas(currentCollegeInfo[college][2])))) {
-            rank_dic[(currentCollegeInfo[college])[1]][confAreas(currentCollegeInfo[college][2])] = currentCollegeInfo[college][3];
-        }
-        else {
-            rank_dic[(currentCollegeInfo[college])[1]][confAreas(currentCollegeInfo[college][2])] += currentCollegeInfo[college][3];
-        }
-    }
-    return rank_dic
-} */
-
 function rankingsInfo(currentCollegeInfo) {
     let rank_dic = {};
     for (let i = 0; i < currentCollegeInfo.length; i++) {
