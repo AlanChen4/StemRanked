@@ -1,4 +1,4 @@
-import requests, csv, re, venues
+import requests, csv, re, venues, os
 from bs4 import BeautifulSoup
 
 session = requests.Session()
@@ -55,7 +55,7 @@ def scrapeInfo(pub, auth_name,institution):
     pub_info = dict()
     pub_info['Year'] = list(pub.find_all('td',{'class':'gsc_a_y'}))[0].span.text  
     if (pub_info['Year'] == ''):
-        print('Failure: No Year')
+        #print('Failure: No Year')
         return False 
     pub_info['Author'] = auth_name 
     pub_info['Institution'] = institution
@@ -71,7 +71,7 @@ def scrapeInfo(pub, auth_name,institution):
             return False
         pages = venue[venue.rfind(',')+1:]
         if (not checkPages(pages)):
-            print('Failure: Invalid Pages')
+            #print('Failure: Invalid Pages')
             return False
         venue = venue[:venue.rfind(',')]
         ven = venues.check(venue)
@@ -84,8 +84,8 @@ def scrapeInfo(pub, auth_name,institution):
         numAuthors = len(list(auths.split(',')))
     else:
         numAuthors = furtherRequest(pub, 'Authors')[1]
-    pub_info['Adjusted Count'] = 1/numAuthors
     pub_info['Venue'] = ven
+    pub_info['Adjusted Count'] = 1/numAuthors
 
     return pub_info
 
@@ -134,11 +134,38 @@ def getPages(query, institution):
         #time.sleep(2) # hopefully enough not to get banned
     return pubs
 
+def makeFile(loc):
+    loc = './data/'+loc
+    if (not os.path.isfile(loc)):
+        with open(loc, 'w') as f:
+            writer = csv.writer(f)
+            writer.writerow(['Author', 'Institution', 'Venue', 'Year', 'Ajusted Count'])
 
-def main(query, institution,csv_file):
-    pages = getPages(query, institution)
-    print(getPages(query, institution))
-    print(len(pages))
+def write(qualified_Pubs):
+    information = dict()
+    for item in qualified_Pubs:
+        information[(item['Author'], item['Institution'], item['Year'], item['Venue'])] = information.get((item['Author'], item['Institution'], item['Year'], item['Venue']),0)+item['Adjusted Count']
+    subject_info = dict()
+    for key in information.keys():
+        subject = venues.findSubject(key[3])
+        subject = re.sub(r' ','_', subject)
+        try:
+            subject_info[subject].append([key[0],key[1],key[2],key[3],information[(key[0],key[1],key[2],key[3])]])
+        except:
+            subject_info[subject] = list()
+    for subject in subject_info.keys():
+        makeFile(subject)
+        with open('./data/'+subject, 'a') as f:
+            writer = csv.writer(f)
+            for item in subject_info[subject]:
+                writer.writerow([item[0], item[1], item[3], item[2], item[4]])
+                
+
+    
+
+def main(query, institution):
+    qualified_Pubs = getPages(query, institution)
+    write(qualified_Pubs)
 
 if __name__ == "__main__":
-    main('https://scholar.google.com/citations?hl=en&user=5pKTRxEAAAAJ','Cargenie Mellon University', 'publication_information.csv')
+    main('https://scholar.google.com/citations?hl=en&user=5pKTRxEAAAAJ','Cargenie Mellon University')
