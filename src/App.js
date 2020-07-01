@@ -1,13 +1,13 @@
 import React from 'react';
 import './App.css';
-import InputForm from './InputForm';
+import RankingInputForm from './components/RankingInputForm';
 
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <InputForm />
+        <RankingInputForm />
       </header>
     </div>
   );

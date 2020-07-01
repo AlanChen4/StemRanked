@@ -1,22 +1,19 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import rankings from './util/dataRanker';
+import rankings from '../util/dataRanker';
+import './InputForm.css';
 
-function InputForm() {
+
+function RankingInputForm() {
     const [selectedSubject, setSelectedSubject] = useState('test');
-    const [submittedSubject, setSubmittedSubject] = useState('test');
   
     const onSubjectChange = (event) => {
         setSelectedSubject(event.target.value);
     }
-    const formSubmit = (event) => {
-        event.preventDefault();
-        setSubmittedSubject(selectedSubject);
-    }
   
     return(
-      <div>
-        <form onSubmit={formSubmit}>
+      <div className="Wrapper">
+        <form className="Input">
           Subject:
           <br />
           <label>
@@ -32,28 +29,22 @@ function InputForm() {
           <label>
             <input
               type="radio"
-              value="namh"
-              checked={selectedSubject === "namh"}
+              value="Emery Computer Science"
+              checked={selectedSubject === "Emery Computer Science"}
               onChange={onSubjectChange}
             />
-            namh
+            Emery Computer Science
           </label>
-          <div>
-            Selected subject is: {selectedSubject}
-          </div>
-          <input type="submit" value="Submit" />
-          <div>Submitted subject is: {submittedSubject}</div>
         </form>
-        <br />
-        <div>
-          Ranked List for {submittedSubject}:
+        <div className="Rankings">
+          Ranked List for {selectedSubject}:
+          <RankedSchoolList subject={selectedSubject} />
         </div>
-        <SchoolRankingList subject={submittedSubject} />
       </div>
     );
   }
   
-function SchoolRankingList(props) {
+function RankedSchoolList(props) {
     const [ranks, setRanks] = useState({});
     let school_ranks = [];
   
@@ -66,7 +57,9 @@ function SchoolRankingList(props) {
     }, [props.subject]); // eslint-disable-line
     
     for (const [key, value] of Object.entries(ranks)) { // eslint-disable-line
-        school_ranks.push(key);
+        if (value !== undefined) { // temporary if statement to catch bugged rankings TODO: figure out why some ranking values become undefined
+          school_ranks.push(key);
+        }
     }
   
     return (
@@ -76,4 +69,4 @@ function SchoolRankingList(props) {
     );
 }
 
-export default InputForm;
+export default RankingInputForm;

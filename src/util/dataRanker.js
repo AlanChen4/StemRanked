@@ -42,12 +42,17 @@ let colleges = [];
 // Returns the final rankings from dictionary that contains the average count and institutions
 function ranks(counts) {
     let averageCount = [];
+
+    console.log('Right before the first loop in ranks()', counts);
     for (let i = 0; i < Object.keys(counts).length; i++) {
         averageCount.push(counts[colleges[i]]);
     }
+    console.log('Right after the first loop in ranks()', averageCount);
+
     // points.sort(function(a, b){return a - b});
     averageCount.sort(function (a, b) { return a - b });
     averageCount.reverse();
+
     let final_rank = {};
     for (let j = 0; j < Object.keys(counts).length; j++) {
         for (let x = 0; x < averageCount.length; x++) {
