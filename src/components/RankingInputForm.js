@@ -5,7 +5,7 @@ import './RankingInputForm.css';
 
 
 function RankingInputForm() {
-  const [selectedSubject, setSelectedSubject] = useState('Emery Computer Science');
+  const [selectedSubject, setSelectedSubject] = useState('test');
 
   const onSubjectChange = (event) => {
     setSelectedSubject(event.target.value);
@@ -57,11 +57,7 @@ function RankedSchoolList(props) {
   }, [props.subject]); // eslint-disable-line
 
   for (const [key, value] of Object.entries(ranks)) { // eslint-disable-line
-    /*if (value !== undefined) { // temporary if statement to catch bugged rankings TODO: figure out why some ranking values become undefined
-      school_ranks.push(key);
-    } */
-    // Added value to the statement
-    school_ranks.push(key, value);
+    school_ranks.push(key);
   }
 
   return (

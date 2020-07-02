@@ -35,20 +35,13 @@ let areaDict = {
 
 }
 
-// Global array that has the institutions
-// rank_dic[colleges[0]] <-- all the areas and it's values in Imperial College London key
-
 // Returns the final rankings from dictionary that contains the average count and institutions
 function ranks(counts,colleges) {
     let averageCount = [];
 
-    console.log('Right before the first loop in ranks()', counts);
     for (let i = 0; i < Object.keys(counts).length; i++) {
-        //Added this statement to log all the college names
-        console.log((Object.keys(counts))[i]);
         averageCount.push(counts[colleges[i]]);
     }
-    console.log('Right after the first loop in ranks()', averageCount);
 
     // points.sort(function(a, b){return a - b});
     averageCount.sort(function (a, b) { return a - b });
