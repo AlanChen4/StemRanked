@@ -32,7 +32,7 @@ async function readCSV(subject) {
     // TODO: see if parseInt() and parseFloat() is faster than dynamicTyping
     if (file === './data/generated-author-info.csv') {
         for (let info of results.data) {
-            parsed.push([info.dept, info.name, info.area, info.adjustedcount, info.year]);
+            parsed.push([info.Institution, info.Author, info.Venue, info.AdjustedCount, info.Year]);
         }
         return parsed;
     }
