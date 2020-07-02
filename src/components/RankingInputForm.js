@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import rankings from '../util/dataRanker';
-import './InputForm.css';
+import './RankingInputForm.css';
 
 
 function RankingInputForm() {
