@@ -45,6 +45,8 @@ function ranks(counts) {
 
     console.log('Right before the first loop in ranks()', counts);
     for (let i = 0; i < Object.keys(counts).length; i++) {
+        //Added this statement to log all the college names
+        console.log((Object.keys(counts))[i]);
         averageCount.push(counts[colleges[i]]);
     }
     console.log('Right after the first loop in ranks()', averageCount);
