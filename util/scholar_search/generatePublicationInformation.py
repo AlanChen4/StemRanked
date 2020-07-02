@@ -135,11 +135,11 @@ def getPages(query, institution):
     return pubs
 
 def makeFile(loc):
-    loc = './data/'+loc
+    loc = './data/'+loc+'.csv'
     if (not os.path.isfile(loc)):
         with open(loc, 'w') as f:
             writer = csv.writer(f)
-            writer.writerow(['Author', 'Institution', 'Venue', 'Year', 'Ajusted Count'])
+            writer.writerow(['Author', 'Institution', 'Venue', 'Year', 'AjustedCount'])
 
 def write(qualified_Pubs):
     information = dict()
@@ -155,7 +155,7 @@ def write(qualified_Pubs):
             subject_info[subject] = list()
     for subject in subject_info.keys():
         makeFile(subject)
-        with open('./data/'+subject, 'a') as f:
+        with open('./data/'+subject+'.csv', 'a') as f:
             writer = csv.writer(f)
             for item in subject_info[subject]:
                 writer.writerow([item[0], item[1], item[3], item[2], item[4]])
@@ -168,4 +168,4 @@ def main(query, institution):
     write(qualified_Pubs)
 
 if __name__ == "__main__":
-    main('https://scholar.google.com/citations?hl=en&user=5pKTRxEAAAAJ','Cargenie Mellon University')
+    main('https://scholar.google.com/citations?hl=en&user=rXYLXJMAAAAJ','Columbia University')
