@@ -76,9 +76,9 @@ venue_dictionary = {
 }
 
 
-def check(venue, completion = 1): #checks if 50% of keywords are matched
+def check(venue, completion = 1): 
     nonKeywords = ['of','on','and','the','for','in']
-    print(venue)
+    #print(venue)
     try:
         re.sub(r",", "", venue)
     except:
@@ -95,7 +95,11 @@ def check(venue, completion = 1): #checks if 50% of keywords are matched
                             return acronym
                         return True
                     keywords = list(venue_dictionary[subject][area][acronym].split(' '))
+                    print(keywords)
                     for word in keywords:
+                        print (word)
+                    for word in keywords:
+                        print(word)
                         word = word.lower(); word = word.strip()
                         if (word in nonKeywords):
                             keywords.remove(word)
@@ -118,3 +122,6 @@ def findSubject(venue):
     return False
 
 
+print(check('2009 IEEE Conference on Computer Vision and Pattern Recognition'))
+
+['IEEE', 'Conference', 'Computer', 'Vision', 'Pattern', 'Recognition']
