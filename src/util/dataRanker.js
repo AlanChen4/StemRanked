@@ -36,11 +36,10 @@ let areaDict = {
 }
 
 // Global array that has the institutions
-let colleges = [];
 // rank_dic[colleges[0]] <-- all the areas and it's values in Imperial College London key
 
 // Returns the final rankings from dictionary that contains the average count and institutions
-function ranks(counts) {
+function ranks(counts,colleges) {
     let averageCount = [];
 
     console.log('Right before the first loop in ranks()', counts);
@@ -96,18 +95,18 @@ function confAreas(conferences) {
 }
 
 // Adds the institution name to the global array 'colleges
-function getInstitutions(institutions) {
+function getInstitutions(institutions,colleges) {
     colleges.push(institutions);
 
 }
 
 // Created a dictionary from the publications that contains the institution names, areas, and the adjusted count
-function rankingsInfo(currentCollegeInfo) {
+function rankingsInfo(currentCollegeInfo,colleges) {
     let rank_dic = {};
     for (let i = 0; i < currentCollegeInfo.length; i++) {
         if (!(rank_dic.hasOwnProperty(currentCollegeInfo[i][0]))) {
             rank_dic[(currentCollegeInfo[i][0])] = {}
-            getInstitutions((currentCollegeInfo[i])[0]);
+            getInstitutions((currentCollegeInfo[i])[0],colleges);
         }
         if (!(Object.keys(rank_dic[(currentCollegeInfo[i][0])]).includes(confAreas(currentCollegeInfo[i][2])))) {
             rank_dic[(currentCollegeInfo[i][0])][confAreas(currentCollegeInfo[i][2])] = currentCollegeInfo[i][3];
@@ -133,26 +132,21 @@ function yearCheck(collegeInfo) {
 
 // Logs everythin on console in the local browser
 async function rankings(subject) {
+    let colleges = [];
 
-    console.log('Making call to readCSV')
     let collegeInfo = await readCSV(subject);
     console.log('Result of readCSV call', collegeInfo);
 
-    console.log('Making call to yearCheck');
     let currentCollegeInfo = yearCheck(collegeInfo);
     console.log('Result of yearCheck call', currentCollegeInfo);
 
-    console.log('Making call to rankingsInfo');
-    let rank_dic = rankingsInfo(currentCollegeInfo);
+    let rank_dic = rankingsInfo(currentCollegeInfo,colleges);
     console.log('Result of rankingsInfo call', rank_dic);
 
-    console.log('Making call to avgCount');
     let counts = avgCount(rank_dic);
     console.log('Result of avgCount call', counts);
-    //console.log(counts[colleges[1]]);
 
-    console.log('Making call to ranks');
-    let final = ranks(counts);
+    let final = ranks(counts,colleges);
     console.log('Result of ranks call', final);
 
     return final;
