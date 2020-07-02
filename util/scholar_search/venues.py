@@ -15,7 +15,7 @@ venue_dictionary = {
         'Human Computer Interaction': {'CHI':'Conference on Human Factors in Computing Systems','UIST':'ACM International Conference on Multimedia'},
         'Software Engineering and Programming Languages': {'ICSE':'International Conference on Software Engineering','PLDI':'ACM SIGPLAN Conference on Programming Language Design and Implementation', 'FSE':'ACM SIGSOFT International Symposium on Foundations of Software Engineering'},
         'Computational Theory and Mathematics': {'STOC':'ACM Symposium on Theory of Computing', 'EUROCRYPT':'International Conference on Theory and Applications of Cryptographic Techniques'},
-        'Web, Mobile, and Multimedia Technologies': {'WWW':'International World Wide Web Conferences', 'UbiComp':'ACM Conference on Pervasive and Ubiquitous Computing'},
+        'Web, Mobile, and Multimedia Technologies': {'WWW':'International World Wide Web Conference', 'UbiComp':'ACM Conference on Pervasive and Ubiquitous Computing'},
         'Computational Linguistics and Speech Processing': {'ACL':'Meeting of the Association for Computational Linguistics', 'EMNLP':'Conference on Empirical Methods in Natural Language Processing', 'NAACL':'Conference of the North American Chapter of the Association for Computational Linguistics Human Language Technologies'}
     },
 
@@ -95,15 +95,11 @@ def check(venue, completion = 1):
                             return acronym
                         return True
                     keywords = list(venue_dictionary[subject][area][acronym].split(' '))
-                    print(keywords)
                     for word in keywords:
-                        print (word)
-                    for word in keywords:
-                        print(word)
-                        word = word.lower(); word = word.strip()
                         if (word in nonKeywords):
                             keywords.remove(word)
-                            continue
+                    for word in keywords:
+                        word = word.lower(); word = word.strip()
                         if (ven.find(word) != -1):
                             count+=1
                     if (count>=round(len(keywords)*completion)):
@@ -122,6 +118,3 @@ def findSubject(venue):
     return False
 
 
-print(check('2009 IEEE Conference on Computer Vision and Pattern Recognition'))
-
-['IEEE', 'Conference', 'Computer', 'Vision', 'Pattern', 'Recognition']
