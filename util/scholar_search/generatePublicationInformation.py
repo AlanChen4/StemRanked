@@ -1,4 +1,4 @@
-import requests, csv, re
+import requests, csv, re, venues, os
 from bs4 import BeautifulSoup
 
 session = requests.Session()
@@ -36,11 +36,14 @@ def furtherRequest(pub, requestType, beginningString = ''):
                 if (divs[0].text != 'Scholar articles' and divs[0].text != 'Description'):
                     if (divs[1].text.find(beginningString) != -1):
                         venue = divs[1].text
+        area = venues.check(venue)
+        if (area is None):
+            return False
                 
         for item in table:
             if (list(item.find_all('div',{'class':'gsc_vcd_field'}))[0].text == 'Authors'):
                 numAuthors = len(list(list(item.find_all('div',{'class':'gsc_vcd_value'}))[0].text.split(',')))
-        return (venue, numAuthors)
+        return (area, numAuthors)
     else:
         print(f"Paper Request Failed: {baseUrl+additionalUrl}\t\t{paper.status_code}")
         exit()
@@ -56,10 +59,13 @@ def scrapeInfo(pub, auth_name,institution):
         return False 
     pub_info['Author'] = auth_name 
     pub_info['Institution'] = institution
+    ven = None
     venue = list(pub.td.find_all('div', {'class':'gs_gray'}))[1].text #contains page numbers, but we cannot remove because the conference may have commas
     venue = venue[:venue.rfind(',')] #gets rid of the extra year at the end
     if (venue.find('…') != -1 or venue.find('...') != -1):
-        (venue, numAuthors) = furtherRequest(pub, 'Check Publication', beginningString=venue)
+        if venues.check(venue,completion=.25):
+            (ven, numAuthors) = furtherRequest(pub, 'Check Publication', beginningString=venue)
+        return False
     else:
         if (venue.rfind(',') == -1):
             return False
@@ -68,10 +74,9 @@ def scrapeInfo(pub, auth_name,institution):
             #print('Failure: Invalid Pages')
             return False
         venue = venue[:venue.rfind(',')]
-    
-    print(venue)
-
-
+        ven = venues.check(venue)
+    if (ven == False):
+        return False
     auths = pub.td.div.text    
     if (numAuthors != -1):
         pass
@@ -79,8 +84,10 @@ def scrapeInfo(pub, auth_name,institution):
         numAuthors = len(list(auths.split(',')))
     else:
         numAuthors = furtherRequest(pub, 'Authors')[1]
+    pub_info['Venue'] = ven
     pub_info['Adjusted Count'] = 1/numAuthors
-    #print(pub_info['Adjusted Count'])
+
+    return pub_info
 
 
 def check_end(parse): # checks to see if this page is the page after the final urls
@@ -127,9 +134,38 @@ def getPages(query, institution):
         #time.sleep(2) # hopefully enough not to get banned
     return pubs
 
+def makeFile(loc):
+    loc = './data/'+loc
+    if (not os.path.isfile(loc)):
+        with open(loc, 'w') as f:
+            writer = csv.writer(f)
+            writer.writerow(['Author', 'Institution', 'Venue', 'Year', 'Ajusted Count'])
 
-def main(query, institution,csv_file):
-    getPages(query, institution)
+def write(qualified_Pubs):
+    information = dict()
+    for item in qualified_Pubs:
+        information[(item['Author'], item['Institution'], item['Year'], item['Venue'])] = information.get((item['Author'], item['Institution'], item['Year'], item['Venue']),0)+item['Adjusted Count']
+    subject_info = dict()
+    for key in information.keys():
+        subject = venues.findSubject(key[3])
+        subject = re.sub(r' ','_', subject)
+        try:
+            subject_info[subject].append([key[0],key[1],key[2],key[3],information[(key[0],key[1],key[2],key[3])]])
+        except:
+            subject_info[subject] = list()
+    for subject in subject_info.keys():
+        makeFile(subject)
+        with open('./data/'+subject, 'a') as f:
+            writer = csv.writer(f)
+            for item in subject_info[subject]:
+                writer.writerow([item[0], item[1], item[3], item[2], item[4]])
+                
+
+    
+
+def main(query, institution):
+    qualified_Pubs = getPages(query, institution)
+    write(qualified_Pubs)
 
 if __name__ == "__main__":
-    main('https://scholar.google.com/citations?hl=en&user=ni_ZrQQAAAAJ','Boston University', 'publication_information.csv')
+    main('https://scholar.google.com/citations?hl=en&user=5pKTRxEAAAAJ','Cargenie Mellon University')
