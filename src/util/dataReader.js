@@ -36,7 +36,6 @@ async function readCSV(subject) {
         }
         return parsed;
     }
-
     for (let info of results.data) {
         parsed.push([info.Institution, info.Author, info.Conference, 1 / info.NumAuthors, info.Year]);
     }
