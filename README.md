@@ -4,7 +4,7 @@ GOTO metrics-based rankings generalized for a multitude of STEM field majors.
 ## Methodology
 The rankings system is based off of an adjusted count found from the number of publications each institution has after 2009 in amajor conferences. An average count is then created based off of the user's selection of areas.
 
-$$averageCount = \sqrt[N]{\prod_{i=1}^N(adjustedCounts_i + 1)}$$
+![equation](/public/ranking_equation.jpg)
 
 Institutions with the highest average count are highest in the rankings.
 

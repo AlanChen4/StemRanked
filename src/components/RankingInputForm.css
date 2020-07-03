@@ -1,0 +1,11 @@
+.Wrapper {
+    display: flex;
+}
+
+.Input {
+    flex: 1;
+}
+
+.Rankings {
+    flex: 1;
+}
