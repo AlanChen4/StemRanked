@@ -6,16 +6,29 @@ import './RankingInputForm.css';
 
 function RankingInputForm() {
   const [selectedSubject, setSelectedSubject] = useState('test');
+  const [loadingDataStatus, setLoadingDataStatus] = useState(false);
+  const [ranks, setRanks] = useState({});
+  
+  // Wait for CSV parsing and rankings function to finish (runs on every render)
+  useEffect(() => {
+    const fetchData = async (subject) => {
+      const result = await rankings(subject);
+      setRanks(result);
+      setLoadingDataStatus(false);
+    };
+    fetchData(selectedSubject);
+  }, [selectedSubject]); // eslint-disable-line
 
   const onSubjectChange = (event) => {
     setSelectedSubject(event.target.value);
+    setLoadingDataStatus(true);
   }
 
   return (
     <div className="Wrapper">
       <form className="Input">
         Subject:
-          <br />
+        <br />
         <label>
           <input
             type="radio"
@@ -23,8 +36,8 @@ function RankingInputForm() {
             checked={selectedSubject === "test"}
             onChange={onSubjectChange}
           />
-            test
-          </label>
+          test
+        </label>
         <br />
         <label>
           <input
@@ -33,33 +46,22 @@ function RankingInputForm() {
             checked={selectedSubject === "Emery Computer Science"}
             onChange={onSubjectChange}
           />
-            Emery Computer Science
-          </label>
+          Emery Computer Science
+        </label>
       </form>
       <div className="Rankings">
         Ranked List for {selectedSubject}:
-          <RankedSchoolList subject={selectedSubject} />
+        {loadingDataStatus ? <p>Loading Data...</p> : <RankedSchoolList data={ranks} />}
       </div>
     </div>
   );
 }
 
 function RankedSchoolList(props) {
-  const [ranks, setRanks] = useState({});
   let school_ranks = [];
-
-  useEffect(() => {
-    const fetchData = async (subject) => {
-      const result = await rankings(subject);
-      setRanks(result);
-    };
-    fetchData(props.subject);
-  }, [props.subject]); // eslint-disable-line
-
-  for (const [key, value] of Object.entries(ranks)) { // eslint-disable-line
+  for (const [key, value] of Object.entries(props.data)) { // eslint-disable-line
     school_ranks.push(key);
   }
-
   return (
     <ol>
       {school_ranks.map(school => <li key={school}>{school}</li>)}

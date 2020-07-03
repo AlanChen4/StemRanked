@@ -43,7 +43,6 @@ function ranks(counts,colleges) {
         averageCount.push(counts[colleges[i]]);
     }
 
-    // points.sort(function(a, b){return a - b});
     averageCount.sort(function (a, b) { return a - b });
     averageCount.reverse();
 
@@ -83,14 +82,12 @@ function confAreas(conferences) {
         }
 
     }
-    //return conferences;
     return ("Cannot find area")
 }
 
-// Adds the institution name to the global array 'colleges
+// Adds the institution name to the global array 'colleges'
 function getInstitutions(institutions,colleges) {
     colleges.push(institutions);
-
 }
 
 // Created a dictionary from the publications that contains the institution names, areas, and the adjusted count
@@ -133,13 +130,13 @@ async function rankings(subject) {
     let currentCollegeInfo = yearCheck(collegeInfo);
     console.log('Result of yearCheck call', currentCollegeInfo);
 
-    let rank_dic = rankingsInfo(currentCollegeInfo,colleges);
+    let rank_dic = rankingsInfo(currentCollegeInfo, colleges);
     console.log('Result of rankingsInfo call', rank_dic);
 
     let counts = avgCount(rank_dic);
     console.log('Result of avgCount call', counts);
 
-    let final = ranks(counts,colleges);
+    let final = ranks(counts, colleges);
     console.log('Result of ranks call', final);
 
     return final;

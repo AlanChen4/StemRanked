@@ -24,12 +24,11 @@ async function readCSV(subject) {
     })
     let parsed = [];
 
-    console.log('Subject:', subject);
+    //console.log('Subject:', subject);
 
     const file = files[subject];
     const results = await papaPromise(file);
 
-    // TODO: see if parseInt() and parseFloat() is faster than dynamicTyping
     if (file === './data/generated-author-info.csv') {
         for (let info of results.data) {
             parsed.push([info.Institution, info.Author, info.Venue, info.AdjustedCount, info.Year]);
