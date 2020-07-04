@@ -1,5 +1,8 @@
 import requests, csv, re, venues, os
 from bs4 import BeautifulSoup
+from scraper_helper import get_proxy_local, gen_headers
+from itertools import cycle
+from requests.exceptions import Timeout, ProxyError, ConnectionError
 
 session = requests.Session()
 
@@ -168,4 +171,4 @@ def main(query, institution):
     write(qualified_Pubs)
 
 if __name__ == "__main__":
-    main('https://scholar.google.com/citations?hl=en&user=rXYLXJMAAAAJ','Columbia University')
+    main('https://scholar.google.com/citations?hl=en&user=bqL73OkAAAAJ','dfasdfadfasdf')
