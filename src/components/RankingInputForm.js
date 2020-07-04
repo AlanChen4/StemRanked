@@ -2,7 +2,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import rankings from '../util/dataRanker';
 import './RankingInputForm.css';
-import { currentColleges } from '../util/dataRanker';
+import Button from 'react-bootstrap/Button';
 
 function RankingInputForm() {
   const [selectedSubject, setSelectedSubject] = useState('test');
@@ -24,32 +24,19 @@ function RankingInputForm() {
     setLoadingDataStatus(true);
   }
 
+  const onSubChange = (value) => {
+    setSelectedSubject(value);
+    setLoadingDataStatus(true)
+  }
+
   return (
     <div className="Wrapper">
       <form className="Input">
         Subject:
-        <br />
-        <label>
-          <input
-            type="radio"
-            value="test"
-            checked={selectedSubject === "test"}
-            onChange={onSubjectChange}
-          />
-          test
-        </label>
-        <br />
-        <label>
-          <input
-            type="radio"
-            value="Emery Computer Science"
-            checked={selectedSubject === "Emery Computer Science"}
-            onChange={onSubjectChange}
-          />
-          Emery Computer Science
-        </label>
       </form>
       <div className="Rankings">
+        <Button variant="primary" onClick={() => onSubChange('Emery Computer Science')}>Computer Science</Button>{' '}
+        <Button variant="primary" onClick={() => onSubChange('test')}>Test</Button>{' '}
         Ranked List for {selectedSubject}:
         <table>
           <thead>
@@ -81,7 +68,7 @@ function RankedSchoolList(props) {
 
       <td>
         <ol>
-          {school_ranks.map(school => <li key={school}>{school}</li>)}
+          {school_ranks.map(school => <li><tr key={school}><td className="temp">{school}</td></tr></li>)}
         </ol>
       </td>
     </tr>
