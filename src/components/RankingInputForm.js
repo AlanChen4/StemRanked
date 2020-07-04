@@ -2,13 +2,13 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import rankings from '../util/dataRanker';
 import './RankingInputForm.css';
-
+import { currentColleges } from '../util/dataRanker';
 
 function RankingInputForm() {
   const [selectedSubject, setSelectedSubject] = useState('test');
   const [loadingDataStatus, setLoadingDataStatus] = useState(false);
   const [ranks, setRanks] = useState({});
-  
+
   // Wait for CSV parsing and rankings function to finish (runs on every render)
   useEffect(() => {
     const fetchData = async (subject) => {
@@ -51,21 +51,40 @@ function RankingInputForm() {
       </form>
       <div className="Rankings">
         Ranked List for {selectedSubject}:
-        {loadingDataStatus ? <p>Loading Data...</p> : <RankedSchoolList data={ranks} />}
+        <table>
+          <thead>
+            <tr>
+              <th>Institution</th>
+            </tr>
+          </thead>
+          <tbody >
+            {loadingDataStatus ? <p>Loading Data...</p> : <RankedSchoolList data={ranks} />}
+          </tbody>
+        </table>
       </div>
     </div>
   );
 }
-
+// {school_ranks.map(school => <li key={school}>{school}</li>)}
 function RankedSchoolList(props) {
   let school_ranks = [];
   for (const [key, value] of Object.entries(props.data)) { // eslint-disable-line
     school_ranks.push(key);
   }
+  let institutionArray = [];
+  for (let i = 0; i < school_ranks.length; i++) {
+    institutionArray.push({ 'Rank': i + 1, 'Institution': school_ranks[i] });
+  }
+
   return (
-    <ol>
-      {school_ranks.map(school => <li key={school}>{school}</li>)}
-    </ol>
+    <tr>
+
+      <td>
+        <ol>
+          {school_ranks.map(school => <li key={school}>{school}</li>)}
+        </ol>
+      </td>
+    </tr>
   );
 }
 
