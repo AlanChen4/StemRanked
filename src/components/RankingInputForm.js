@@ -2,7 +2,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import rankings from '../util/dataRanker';
 import './RankingInputForm.css';
-import { ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
+import { Accordion, Button, Card, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
 
 function RankingInputForm() {
   const [selectedSubject, setSelectedSubject] = useState('test');
@@ -43,6 +43,7 @@ function RankingInputForm() {
             Life Sciences
           </ToggleButton>
         </ToggleButtonGroup>
+        <br />
         Ranked List for {selectedSubject}:
         <table>
           <thead>
@@ -56,13 +57,6 @@ function RankingInputForm() {
     </div>
   );
 }
-/*
-<ToggleButtonGroup type="radio" name="subjects" defaultValue={selectedSubject}>
-        <ToggleButton value="test" onChange={(event) => onSubjectChange(event.currentTarget.value)}>test</ToggleButton>
-        <ToggleButton value="Emery Computer Science" onChange={(event) => onSubjectChange(event.currentTarget.value)}>Emery Computer Science</ToggleButton>
-        <ToggleButton value="Life Sciences" onChange={(event) => onSubjectChange(event.currentTarget.value)}>Life Sciences</ToggleButton>
-      </ToggleButtonGroup>
-*/
 
 function RankedSchoolList(props) {
   let school_ranks = [];
@@ -72,8 +66,27 @@ function RankedSchoolList(props) {
 
   return (
     <tbody>
-      {school_ranks.map(school => <tr key={school}><td>{school}</td></tr>)}
+      {school_ranks.map(school => <tr key={school}><td><SchoolAuthorRanks school={school} /></td></tr>)}
     </tbody>
+  );
+}
+
+function SchoolAuthorRanks(props) {
+  // code to rank authors goes here
+
+  return (
+    <Accordion>
+      <Card>
+        <Accordion.Toggle className="Accordion" as={Button} variant="link" eventKey="0">
+          <Card.Header className="Accordion">
+            {props.school}
+          </Card.Header>
+        </Accordion.Toggle>
+        <Accordion.Collapse eventKey="0">
+          <Card.Body className="Accordion">Author Ranks Here</Card.Body>
+        </Accordion.Collapse>
+      </Card>
+    </Accordion>
   );
 }
 
