@@ -20,14 +20,42 @@ def checkPages(pages):
     except:
         return False
 
-def furtherRequest(pub, requestType, beginningString = ''):
+def furtherRequest(pub, requestType,proxy_list,proxy_cycle,strict, beginningString = ''):
     requestFlag = (requestType == 'Check Publication')
     baseUrl = 'https://scholar.google.com'
     additionalUrl = pub.td.a['data-href']
-    paper = session.get(url=baseUrl+additionalUrl)
     numAuthors = -1
     venue = None
     area = None
+    
+    try:
+        proxy_ip = next(proxy_cycle)
+        proxy = {'https': proxy_ip}
+        paper = session.get(url=baseUrl+additionalUrl, headers=gen_headers(baseUrl), proxies=proxy)
+    except ProxyError:
+        # remove proxy if strict is True
+        if strict:
+            proxy_list.remove(proxy_ip)
+            proxy_cycle = cycle(proxy_list)
+            print(f'[ProxyError-Removed] {len(proxy_list)} proxies remaining')
+        else:
+            print(f'[ProxyError] [Strict: False] {proxy_ip}')
+    except IndexError as e:
+        print(e)
+        proxy_list.remove(proxy_ip)
+        proxy_cycle = cycle(proxy_list)
+        print(f'[IP Ban] Removed proxy, {len(proxy_list)} remaining')
+    
+    except StopIteration:
+        print('[Stopped] No proxies remaining')
+        quit()
+
+    except (Timeout, ConnectionError) as e:
+        print(e)
+        furtherRequest(pub, requestType,proxy_list,proxy_cycle,strict, beginningString)
+        return 
+
+
 
     if (paper.status_code<300 and paper.status_code>=200):
         soup = BeautifulSoup(paper.text, 'html.parser')
@@ -53,7 +81,7 @@ def furtherRequest(pub, requestType, beginningString = ''):
         
 
 
-def scrapeInfo(pub, auth_name,institution):
+def scrapeInfo(pub, proxy_list,proxy_cycle,strict, auth_name,institution):
     numAuthors = -1
     pub_info = dict()
     pub_info['Year'] = list(pub.find_all('td',{'class':'gsc_a_y'}))[0].span.text  
@@ -67,7 +95,7 @@ def scrapeInfo(pub, auth_name,institution):
     venue = venue[:venue.rfind(',')] #gets rid of the extra year at the end
     if (venue.find('…') != -1 or venue.find('...') != -1):
         if venues.check(venue,completion=.25):
-            (ven, numAuthors) = furtherRequest(pub, 'Check Publication', beginningString=venue)
+            (ven, numAuthors) = furtherRequest(pub, 'Check Publication', proxy_list,proxy_cycle,strict, beginningString=venue)
         return False
     else:
         if (venue.rfind(',') == -1):
@@ -86,7 +114,7 @@ def scrapeInfo(pub, auth_name,institution):
     elif (auths.find('...') == -1):
         numAuthors = len(list(auths.split(',')))
     else:
-        numAuthors = furtherRequest(pub, 'Authors')[1]
+        numAuthors = furtherRequest(pub, 'Authors', proxy_list,proxy_cycle,strict)[1]
     pub_info['Venue'] = ven
     pub_info['Adjusted Count'] = 1/numAuthors
 
@@ -103,16 +131,45 @@ def check_end(parse): # checks to see if this page is the page after the final u
         pass
     return False
 
-def getPubs(query, institution):
+def getPubs(query,add_on, institution,proxy_list,proxy_cycle,strict):
     informationCollection = [] #holds all valid publication information
-    auth_info = session.get(url=query)
+    try:
+        proxy_ip = next(proxy_cycle)
+        proxy = {'https': proxy_ip}
+        auth_info = session.get(url=query+add_on, headers=gen_headers(query), proxies=proxy)
+    except ProxyError:
+        # remove proxy if strict is True
+        if strict:
+            proxy_list.remove(proxy_ip)
+            proxy_cycle = cycle(proxy_list)
+            print(f'[ProxyError-Removed] {len(proxy_list)} proxies remaining')
+        else:
+            print(f'[ProxyError] [Strict: False] {proxy_ip}')
+    except IndexError as e:
+        print(e)
+        proxy_list.remove(proxy_ip)
+        proxy_cycle = cycle(proxy_list)
+        print(f'[IP Ban] Removed proxy, {len(proxy_list)} remaining')
+    
+    except StopIteration:
+        print('[Stopped] No proxies remaining')
+        quit()
+
+    except (Timeout, ConnectionError) as e:
+        print(e)
+        getPubs(query, add_on, institution,proxy_cycle)
+        return 
+
+
+
+    
     if (auth_info.status_code < 300 and auth_info.status_code >=200):
         soup = BeautifulSoup(auth_info.text, "html.parser")
         if (check_end(soup)): # exits if this is the page after the final page (triggers the flag in getPages)
             return ([], True)
         publications = list(soup.find_all('tr',{'class': 'gsc_a_tr'}))
         for pub in publications:
-            pub_info = scrapeInfo(pub, auth_name = soup.find_all('div', {'id':'gsc_prf_in'})[0].text, institution=institution)
+            pub_info = scrapeInfo(pub, proxy_list,proxy_cycle,strict, auth_name = soup.find_all('div', {'id':'gsc_prf_in'})[0].text, institution=institution)
             if (pub_info == False):
                 continue
             informationCollection.append(pub_info)
@@ -122,16 +179,20 @@ def getPubs(query, institution):
         exit()
 
 
-def getPages(query, institution): 
+def getPages(query, institution, proxy_path,proxy_num=10, strict=False): 
     '''google scholar only allows a max of 100 results per page, this function helps alter the url
     and send multiple requests to get the valid urls from all pages of the author profile'''
+    proxy_list = get_proxy_local(proxy_path, n=proxy_num)
+    proxy_cycle = cycle(proxy_list)
+    #proxy_ip = next(proxy_cycle)
+
     article_start = 0 
     stop_trigger = False # triggers when page displays "There are no articles in this profile" which is the page after the final page
     pubs = []
     while (not stop_trigger):
         add_on = f"&cstart={article_start}&pagesize=100" 
         print(query + add_on)
-        (pub, stop_trigger) = getPubs(query + add_on, institution)
+        (pub, stop_trigger) = getPubs(query, add_on, institution,proxy_list,proxy_cycle,strict)
         pubs += pub
         article_start += 100 # to move to the next 100 publications
         #time.sleep(2) # hopefully enough not to get banned
@@ -167,7 +228,7 @@ def write(qualified_Pubs):
     
 
 def main(query, institution):
-    qualified_Pubs = getPages(query, institution)
+    qualified_Pubs = getPages(query, institution,'proxies.txt',proxy_num=20, strict=True)
     write(qualified_Pubs)
 
 if __name__ == "__main__":
