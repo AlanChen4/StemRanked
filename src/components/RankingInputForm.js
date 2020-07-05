@@ -2,7 +2,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import rankings from '../util/dataRanker';
 import './RankingInputForm.css';
-import Button from 'react-bootstrap/Button';
+import { ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
 
 function RankingInputForm() {
   const [selectedSubject, setSelectedSubject] = useState('test');
@@ -20,23 +20,29 @@ function RankingInputForm() {
   }, [selectedSubject]); // eslint-disable-line
 
   const onSubjectChange = (event) => {
-    setSelectedSubject(event.target.value);
+    setSelectedSubject(event.currentTarget.value);
     setLoadingDataStatus(true);
-  }
-
-  const onSubChange = (value) => {
-    setSelectedSubject(value);
-    setLoadingDataStatus(true)
   }
 
   return (
     <div className="Wrapper">
-      <form className="Input">
+      <div className="Input">
         Subject:
-      </form>
+      </div>
       <div className="Rankings">
-        <Button variant="primary" onClick={() => onSubChange('Emery Computer Science')}>Computer Science</Button>{' '}
-        <Button variant="primary" onClick={() => onSubChange('test')}>Test</Button>{' '}
+        <ToggleButtonGroup type="radio" name='subjects' defaultValue={selectedSubject}>
+          <ToggleButton value="test" onChange={onSubjectChange}>
+            test
+          </ToggleButton>
+          &nbsp;
+          <ToggleButton value="Emery Computer Science" onChange={onSubjectChange}>
+            Emery Computer Science
+          </ToggleButton>
+          &nbsp;
+          <ToggleButton value="Life Sciences" onChange={onSubjectChange}>
+            Life Sciences
+          </ToggleButton>
+        </ToggleButtonGroup>
         Ranked List for {selectedSubject}:
         <table>
           <thead>
@@ -44,15 +50,20 @@ function RankingInputForm() {
               <th>Institution</th>
             </tr>
           </thead>
-          <tbody >
-            {loadingDataStatus ? <p>Loading Data...</p> : <RankedSchoolList data={ranks} />}
-          </tbody>
+          {loadingDataStatus ? <tbody><tr><td>Loading Data...</td></tr></tbody> : <RankedSchoolList data={ranks} />}
         </table>
       </div>
     </div>
   );
 }
-// {school_ranks.map(school => <li key={school}>{school}</li>)}
+/*
+<ToggleButtonGroup type="radio" name="subjects" defaultValue={selectedSubject}>
+        <ToggleButton value="test" onChange={(event) => onSubjectChange(event.currentTarget.value)}>test</ToggleButton>
+        <ToggleButton value="Emery Computer Science" onChange={(event) => onSubjectChange(event.currentTarget.value)}>Emery Computer Science</ToggleButton>
+        <ToggleButton value="Life Sciences" onChange={(event) => onSubjectChange(event.currentTarget.value)}>Life Sciences</ToggleButton>
+      </ToggleButtonGroup>
+*/
+
 function RankedSchoolList(props) {
   let school_ranks = [];
   for (const [key, value] of Object.entries(props.data)) { // eslint-disable-line
@@ -64,14 +75,9 @@ function RankedSchoolList(props) {
   }
 
   return (
-    <tr>
-
-      <td>
-        <ol>
-          {school_ranks.map(school => <li><tr key={school}><td className="temp">{school}</td></tr></li>)}
-        </ol>
-      </td>
-    </tr>
+    <tbody>
+      {school_ranks.map(school => <tr key={school}><td>{school}</td></tr>)}
+    </tbody>
   );
 }
 
