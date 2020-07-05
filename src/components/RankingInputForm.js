@@ -2,7 +2,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import rankings from '../util/dataRanker';
 import './RankingInputForm.css';
-import { ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
+import { Spinner, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
 
 function RankingInputForm() {
   const [selectedSubject, setSelectedSubject] = useState('test');
@@ -50,19 +50,12 @@ function RankingInputForm() {
               <th>Institution</th>
             </tr>
           </thead>
-          {loadingDataStatus ? <tbody><tr><td>Loading Data...</td></tr></tbody> : <RankedSchoolList data={ranks} />}
+          {loadingDataStatus ? <tbody><tr><td>Loading Data...<br /><Spinner animation="border" variant="primary" /></td></tr></tbody> : <RankedSchoolList data={ranks} />}
         </table>
       </div>
     </div>
   );
 }
-/*
-<ToggleButtonGroup type="radio" name="subjects" defaultValue={selectedSubject}>
-        <ToggleButton value="test" onChange={(event) => onSubjectChange(event.currentTarget.value)}>test</ToggleButton>
-        <ToggleButton value="Emery Computer Science" onChange={(event) => onSubjectChange(event.currentTarget.value)}>Emery Computer Science</ToggleButton>
-        <ToggleButton value="Life Sciences" onChange={(event) => onSubjectChange(event.currentTarget.value)}>Life Sciences</ToggleButton>
-      </ToggleButtonGroup>
-*/
 
 function RankedSchoolList(props) {
   let school_ranks = [];
