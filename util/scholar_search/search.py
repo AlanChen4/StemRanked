@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 from csv import writer
 from itertools import cycle
 from requests.exceptions import Timeout, ProxyError, ConnectionError
-from scraper_helper import get_proxy_local, gen_headers
+from proxy_checker import get_proxy_local, gen_headers
 
 
 session = requests.Session()
@@ -42,7 +42,7 @@ def get_profile(name, uni_email):
 
 
 def get_faculty(email_domain, proxy_path, starting_author=None,
-                limit=1000000, proxy_num=10, strict=False):
+                limit=1000000, proxy_thread=10, strict=False):
     '''
     appends to a .csv in data/profiles.csv with scholar profile links
     related to an email domain
@@ -51,7 +51,7 @@ def get_faculty(email_domain, proxy_path, starting_author=None,
     :param str proxy_path: Path to the text file containing the list of proxies
     :param str starting_author: Start searching from this author ID, instead of base search
     :param int limit: Maximum number of results to be searched for
-    :param int proxy_num: Number of proxies to use
+    :param int proxy_thread: Number of threads to use when checking proxies
     :param boolean strict: While False, proxies will be removed when IP banned'''
 
     # debugging variables
@@ -64,7 +64,7 @@ def get_faculty(email_domain, proxy_path, starting_author=None,
     base_url += email_domain
 
     # set up proxies
-    proxy_list = get_proxy_local(proxy_path, n=proxy_num)
+    proxy_list = get_proxy_local(proxy_path, thread_limit=proxy_thread)
     proxy_cycle = cycle(proxy_list)
     proxy_ip = next(proxy_cycle)
 
@@ -188,7 +188,7 @@ def main():
             starting_author=None,
             limit=None,
             strict=False,
-            proxy_num=20)
+            proxy_thread=20)
 
 
 if __name__ == '__main__':
