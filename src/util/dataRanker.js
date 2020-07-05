@@ -36,7 +36,7 @@ let areaDict = {
 }
 
 // Returns the final rankings from dictionary that contains the average count and institutions
-function ranks(counts,colleges) {
+function ranks(counts, colleges) {
     let averageCount = [];
 
     for (let i = 0; i < Object.keys(counts).length; i++) {
@@ -86,17 +86,17 @@ function confAreas(conferences) {
 }
 
 // Adds the institution name to the global array 'colleges'
-function getInstitutions(institutions,colleges) {
+function getInstitutions(institutions, colleges) {
     colleges.push(institutions);
 }
 
 // Created a dictionary from the publications that contains the institution names, areas, and the adjusted count
-function rankingsInfo(currentCollegeInfo,colleges) {
+function rankingsInfo(currentCollegeInfo, colleges) {
     let rank_dic = {};
     for (let i = 0; i < currentCollegeInfo.length; i++) {
         if (!(rank_dic.hasOwnProperty(currentCollegeInfo[i][0]))) {
             rank_dic[(currentCollegeInfo[i][0])] = {}
-            getInstitutions((currentCollegeInfo[i])[0],colleges);
+            getInstitutions((currentCollegeInfo[i])[0], colleges);
         }
         if (!(Object.keys(rank_dic[(currentCollegeInfo[i][0])]).includes(confAreas(currentCollegeInfo[i][2])))) {
             rank_dic[(currentCollegeInfo[i][0])][confAreas(currentCollegeInfo[i][2])] = currentCollegeInfo[i][3];
@@ -107,6 +107,19 @@ function rankingsInfo(currentCollegeInfo,colleges) {
     }
     return rank_dic;
 
+} function areaCheck(currentCollegeInfo, area) {
+    if (area.length === 0) {
+        return currentCollegeInfo;
+    }
+    let final_colleges = [];
+    for (let j = 0; j < area.length; j++) {
+        for (let i = 0; i < currentCollegeInfo.length; i++) {
+            if (confAreas(currentCollegeInfo[i][2]) === area[j]) {
+                final_colleges.push(currentCollegeInfo[i]);
+            }
+        }
+    }
+    return final_colleges;
 }
 
 // Checks to make sure that each publication isn't before 2010
@@ -130,7 +143,10 @@ async function rankings(subject) {
     let currentCollegeInfo = yearCheck(collegeInfo);
     console.log('Result of yearCheck call', currentCollegeInfo);
 
-    let rank_dic = rankingsInfo(currentCollegeInfo, colleges);
+    let final_colleges = areaCheck(currentCollegeInfo, ['ops']);
+    console.log('The filtered data', final_colleges);
+
+    let rank_dic = rankingsInfo(final_colleges, colleges);
     console.log('Result of rankingsInfo call', rank_dic);
 
     let counts = avgCount(rank_dic);
