@@ -69,10 +69,6 @@ function RankedSchoolList(props) {
   for (const [key, value] of Object.entries(props.data)) { // eslint-disable-line
     school_ranks.push(key);
   }
-  let institutionArray = [];
-  for (let i = 0; i < school_ranks.length; i++) {
-    institutionArray.push({ 'Rank': i + 1, 'Institution': school_ranks[i] });
-  }
 
   return (
     <tbody>
