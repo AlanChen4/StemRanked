@@ -48,6 +48,7 @@ function RankingInputForm() {
         <table>
           <thead>
             <tr>
+              <th>#</th>
               <th>Institution</th>
             </tr>
           </thead>
@@ -66,7 +67,7 @@ function RankedSchoolList(props) {
 
   return (
     <tbody>
-      {school_ranks.map(school => <tr key={school}><td><SchoolAuthorRanks school={school} /></td></tr>)}
+      {school_ranks.map((school, i) => <tr key={school}><td>{i + 1}</td><td><SchoolAuthorRanks school={school} /></td></tr>)}
     </tbody>
   );
 }
