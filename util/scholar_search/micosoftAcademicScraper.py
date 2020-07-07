@@ -1,4 +1,4 @@
-import requests,json, sys, csv
+import requests,json, sys, csv, re, os
 path_to_scholar_search = '/Users/slahade/documents/github/stemranked/util/faculty_search'
 sys.path.append(path_to_scholar_search)
 import academic, venues
@@ -69,6 +69,34 @@ def getInstitutionAuths(institution, subject):
             (auth, authID) = getAuthorIds(auth, top_authors)
             genPublications(auth,authID,institution)
 
+def makeFile(loc):
+    loc = './data/'+loc+'.csv'
+    if (not os.path.isfile(loc)):
+        with open(loc, 'w') as f:
+            writer = csv.writer(f)
+            writer.writerow(['Author', 'Institution', 'Venue', 'Year', 'AjustedCount'])
 
-print(genPublications("Eric P. Xing","Composite(AA.AuId=351197510)", 'Carnegie Mellon University'))
+def write(qualified_Pubs):
+    information = dict()
+    for item in qualified_Pubs:
+        information[(item['Author'], item['Institution'], item['Year'], item['Venue'])] = information.get((item['Author'], item['Institution'], item['Year'], item['Venue']),0)+item['Adjusted Count']
+    subject_info = dict()
+    for key in information.keys():
+        subject = venues.findSubject(key[3])
+        subject = re.sub(r' ','_', subject)
+        try:
+            subject_info[subject].append([key[0],key[1],key[2],key[3],information[(key[0],key[1],key[2],key[3])]])
+        except:
+            subject_info[subject] = list()
+    for subject in subject_info.keys():
+        makeFile(subject)
+        with open('./data/'+subject+'.csv', 'a') as f:
+            writer = csv.writer(f)
+            for item in subject_info[subject]:
+                writer.writerow([item[0], item[1], item[3], item[2], item[4]])
+
+publications = genPublications("Eric P. Xing","Composite(AA.AuId=351197510)", 'Carnegie Mellon University')
+write(publications)
+
+
 
