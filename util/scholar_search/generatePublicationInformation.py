@@ -1,8 +1,7 @@
 import requests, csv, re, venues, os
 from bs4 import BeautifulSoup
-from scraper_helper import get_proxy_local, gen_headers
+import proxy_checker
 from itertools import cycle
-from requests.exceptions import Timeout, ProxyError, ConnectionError
 
 session = requests.Session()
 
@@ -20,15 +19,19 @@ def checkPages(pages):
     except:
         return False
 
-def furtherRequest(pub, requestType, beginningString = ''):
+def furtherRequest(pub, proxylist, proxyCycle, referrer, requestType, beginningString = ''):
     requestFlag = (requestType == 'Check Publication')
     baseUrl = 'https://scholar.google.com'
     additionalUrl = pub.td.a['data-href']
-    paper = session.get(url=baseUrl+additionalUrl)
     numAuthors = -1
     venue = None
     area = None
 
+    header = proxy_checker.gen_headers(referrer)
+    proxyIp = next(proxyCycle)
+    proxy = {'https': proxyIp['https'].split('://')[1]}
+
+    paper = session.get(url=baseUrl+additionalUrl)
     if (paper.status_code<300 and paper.status_code>=200):
         soup = BeautifulSoup(paper.text, 'html.parser')
         table = list(soup.find_all('div',{'id':'gsc_vcd_table'}))[0]
@@ -50,10 +53,42 @@ def furtherRequest(pub, requestType, beginningString = ''):
     else:
         print(f"Paper Request Failed: {baseUrl+additionalUrl}\t\t{paper.status_code}")
         exit()
+
+    '''try:
+        paper = session.get(url=baseUrl+additionalUrl, headers = header, proxies = proxy, timeout = 3)
+        if (paper.status_code<300 and paper.status_code>=200):
+            soup = BeautifulSoup(paper.text, 'html.parser')
+            table = list(soup.find_all('div',{'id':'gsc_vcd_table'}))[0]
+            if (requestFlag):
+                beginningString = beginningString[:round(len(beginningString)/4)]
+                for item in table:                
+                    divs = item.find_all('div')
+                    if (divs[0].text != 'Scholar articles' and divs[0].text != 'Description'):
+                        if (divs[1].text.find(beginningString) != -1):
+                            venue = divs[1].text
+            area = venues.check(venue)
+            if (area is None):
+                return False
+                    
+            for item in table:
+                if (list(item.find_all('div',{'class':'gsc_vcd_field'}))[0].text == 'Authors'):
+                    numAuthors = len(list(list(item.find_all('div',{'class':'gsc_vcd_value'}))[0].text.split(',')))
+            return (area, numAuthors)
+        else:
+            print(f"Paper Request Failed: {baseUrl+additionalUrl}\t\t{paper.status_code}")
+            exit()
+    except:
+        proxylist.remove(proxyIp)
+        if (len(proxylist) <= 0):
+            print('Proxy List is Empty')
+            quit()
+        else: 
+            print(f"The Proxy List's Length is {len(proxylist)}")
+            return furtherRequest(pub, proxylist, proxyCycle, referrer, requestType, beginningString)'''
         
 
 
-def scrapeInfo(pub, auth_name,institution):
+def scrapeInfo(pub, proxylist, proxyCycle, newQuery, auth_name,institution):
     numAuthors = -1
     pub_info = dict()
     pub_info['Year'] = list(pub.find_all('td',{'class':'gsc_a_y'}))[0].span.text  
@@ -67,7 +102,7 @@ def scrapeInfo(pub, auth_name,institution):
     venue = venue[:venue.rfind(',')] #gets rid of the extra year at the end
     if (venue.find('…') != -1 or venue.find('...') != -1):
         if venues.check(venue,completion=.25):
-            (ven, numAuthors) = furtherRequest(pub, 'Check Publication', beginningString=venue)
+            (ven, numAuthors) = furtherRequest(pub, proxylist, proxyCycle, newQuery, 'Check Publication', beginningString=venue)
         return False
     else:
         if (venue.rfind(',') == -1):
@@ -86,7 +121,7 @@ def scrapeInfo(pub, auth_name,institution):
     elif (auths.find('...') == -1):
         numAuthors = len(list(auths.split(',')))
     else:
-        numAuthors = furtherRequest(pub, 'Authors')[1]
+        numAuthors = furtherRequest(pub, proxylist, proxyCycle, newQuery,'Authors')[1]
     pub_info['Venue'] = ven
     pub_info['Adjusted Count'] = 1/numAuthors
 
@@ -103,35 +138,53 @@ def check_end(parse): # checks to see if this page is the page after the final u
         pass
     return False
 
-def getPubs(query, institution):
+def getPubs(query,add_on, institution, proxylist, proxyCycle):
     informationCollection = [] #holds all valid publication information
-    auth_info = session.get(url=query)
-    if (auth_info.status_code < 300 and auth_info.status_code >=200):
-        soup = BeautifulSoup(auth_info.text, "html.parser")
-        if (check_end(soup)): # exits if this is the page after the final page (triggers the flag in getPages)
-            return ([], True)
-        publications = list(soup.find_all('tr',{'class': 'gsc_a_tr'}))
-        for pub in publications:
-            pub_info = scrapeInfo(pub, auth_name = soup.find_all('div', {'id':'gsc_prf_in'})[0].text, institution=institution)
-            if (pub_info == False):
-                continue
-            informationCollection.append(pub_info)
-        return (informationCollection, False)
-    else:
-        print(f"Author Request Failed\t\t{auth_info.status_code}")
-        exit()
+    header = proxy_checker.gen_headers(query)
+    newQuery = query+add_on
+    proxyIp = next(proxyCycle)
+    proxy = {'https': proxyIp['https'].split('://')[1]}
+    try:
+        auth_info = session.get(url=newQuery, headers = header, proxies = proxy, timeout = 3)
+        print(proxy)
+        if (auth_info.status_code < 300 and auth_info.status_code >=200):
+            soup = BeautifulSoup(auth_info.text, "html.parser")
+            if (check_end(soup)): # exits if this is the page after the final page (triggers the flag in getPages)
+                return ([], True)
+            publications = list(soup.find_all('tr',{'class': 'gsc_a_tr'}))
+            for pub in publications:
+                pub_info = scrapeInfo(pub, proxylist, proxyCycle, newQuery, auth_name = soup.find_all('div', {'id':'gsc_prf_in'})[0].text, institution=institution)
+                if (pub_info == False):
+                    continue
+                informationCollection.append(pub_info)
+            return (informationCollection, False)
+        else:
+            print(f"Author Request Failed\t\t{auth_info.status_code}")
+            exit()
+    except:
+        print(proxylist)
+        print(proxyIp)
+        proxylist.remove(proxyIp)
+        if (len(proxylist) <= 0):
+            print('Proxy List is Empty')
+            quit()
+        else: 
+            print(f"The Proxy List's Length is {len(proxylist)}")
+            proxyCycle = cycle(proxylist)
+            return getPubs(query,add_on, institution, proxylist, proxyCycle)
 
 
-def getPages(query, institution): 
+def getPages(query, institution, proxylist): 
     '''google scholar only allows a max of 100 results per page, this function helps alter the url
     and send multiple requests to get the valid urls from all pages of the author profile'''
     article_start = 0 
     stop_trigger = False # triggers when page displays "There are no articles in this profile" which is the page after the final page
     pubs = []
+    proxyCycle = cycle(proxylist)
     while (not stop_trigger):
         add_on = f"&cstart={article_start}&pagesize=100" 
         print(query + add_on)
-        (pub, stop_trigger) = getPubs(query + add_on, institution)
+        (pub, stop_trigger) = getPubs(query, add_on, institution, proxylist, proxyCycle)
         pubs += pub
         article_start += 100 # to move to the next 100 publications
         #time.sleep(2) # hopefully enough not to get banned
@@ -167,7 +220,8 @@ def write(qualified_Pubs):
     
 
 def main(query, institution):
-    qualified_Pubs = getPages(query, institution)
+    proxylist = proxy_checker.get_proxy_local('proxies.txt',20)
+    qualified_Pubs = getPages(query, institution, proxylist)
     write(qualified_Pubs)
 
 if __name__ == "__main__":
