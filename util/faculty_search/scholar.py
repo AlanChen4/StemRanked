@@ -146,6 +146,9 @@ def get_profile(page_html):
     current_profiles = BeautifulSoup(page_html, 'html.parser')
     current_profiles = current_profiles.find_all('h3', class_='gs_ai_name')
     for p in current_profiles:
-            profiles.append(p.text)
+        name = p.text
+        url = 'https://scholar.google.com' + str(p.a['href'])
+        result = p.text + ', ' + url
+        profiles.append(result)
     return profiles
 
