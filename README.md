@@ -29,6 +29,3 @@ Intended for Unix/Linux/Ubuntu OSs and Python 3
 ### Backend
 - Enter the virtual env with `source .venv/bin/activate`
 - Do Python stuff
-
-## TODO
-- 
