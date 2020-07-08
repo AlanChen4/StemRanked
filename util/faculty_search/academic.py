@@ -7,7 +7,6 @@ from fake_useragent import UserAgent
 session = requests.Session()
 
 def get_academic(uni_name, field, limit):
-    # TODO: return author ID with the name
     endpoint, af_id, f_id = get_authors_endpoint(uni_name, field)
     endpoint += str(limit)
     print(f'[Endpoint] {endpoint}')
@@ -18,7 +17,9 @@ def get_academic(uni_name, field, limit):
         top_authors_json = json.loads(top_authors.text)
         for author in top_authors_json['te']:
             if af_id == author['ci']['id']:
-                authors_list.append(author['an'])
+                name = author['an']
+                author_id = str(author['id'])
+                authors_list.append(name + ', ' + author_id)
         print(f'[Finished] {len(authors_list)} total authors found')
         return authors_list
     else:
