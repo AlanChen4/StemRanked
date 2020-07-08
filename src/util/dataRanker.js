@@ -201,12 +201,13 @@ async function rankings(subject) {
     let currentCollegeInfo = yearCheck(collegeInfo);
     console.log('Result of yearCheck call', currentCollegeInfo);
 
-    let final_colleges = areaCheck(currentCollegeInfo, []);
+    let final_colleges = areaCheck(currentCollegeInfo, ['vision', 'crypt']);
     console.log('The filtered data', final_colleges);
 
-    let rankAuthors = AuthorList(final_colleges, institutionAuthors)
+    let rankAuthors = AuthorList(final_colleges, institutionAuthors);
     console.log('The adjusted count per author', rankAuthors);
-    console.log('Authors', AuthorRank(rankAuthors, institutionAuthors))
+    let finalAuthors = AuthorRank(rankAuthors, institutionAuthors);
+    console.log('Authors', finalAuthors);
 
     let rank_dic = rankingsInfo(final_colleges, colleges);
     console.log('Result of rankingsInfo call', rank_dic);
@@ -217,7 +218,7 @@ async function rankings(subject) {
     let final = ranks(counts, colleges);
     console.log('Result of ranks call', final);
 
-    return final;
+    return [final, finalAuthors];
 }
 
 export default rankings;

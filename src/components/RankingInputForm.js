@@ -8,12 +8,15 @@ function RankingInputForm() {
   const [selectedSubject, setSelectedSubject] = useState('test');
   const [loadingDataStatus, setLoadingDataStatus] = useState(false);
   const [ranks, setRanks] = useState({});
+  const [authorRanks, setAuthorRanks] = useState({});
 
   // Wait for CSV parsing and rankings function to finish (runs on every render)
   useEffect(() => {
     const fetchData = async (subject) => {
-      const result = await rankings(subject);
+
+      const [result, authorRanks] = await rankings(subject);
       setRanks(result);
+      setAuthorRanks(authorRanks);
       setLoadingDataStatus(false);
     };
     fetchData(selectedSubject);
@@ -52,7 +55,7 @@ function RankingInputForm() {
               <th>Institution</th>
             </tr>
           </thead>
-          {loadingDataStatus ? <tbody><tr><td>Loading Data...<br /><Spinner animation="border" variant="primary" /></td></tr></tbody> : <RankedSchoolList data={ranks} />}
+          {loadingDataStatus ? <tbody><tr><td>Loading Data...<br /><Spinner animation="border" variant="primary" /></td></tr></tbody> : <RankedSchoolList data={ranks} authors={authorRanks} />}
         </table>
       </div>
     </div>
@@ -67,13 +70,18 @@ function RankedSchoolList(props) {
 
   return (
     <tbody>
-      {school_ranks.map((school, i) => <tr key={school}><td>{i + 1}</td><td><SchoolAuthorRanks school={school} /></td></tr>)}
+      {school_ranks.map((school, i) => <tr key={school} ><td>{i + 1}</td><td><SchoolAuthorRanks school={school} author={props.authors} /></td></tr>)}
     </tbody>
   );
 }
 
 function SchoolAuthorRanks(props) {
   // code to rank authors goes here
+  let author_ranks = props.author[props.school];
+
+  /*for (const [key, value] of Object.entries(props.author)) {
+    author_ranks.push(value);
+  } */
 
   return (
     <Accordion>
@@ -84,7 +92,7 @@ function SchoolAuthorRanks(props) {
           </Card.Header>
         </Accordion.Toggle>
         <Accordion.Collapse eventKey="0">
-          <Card.Body className="Accordion">Author Ranks Here</Card.Body>
+          <Card.Body className="Accordion"><ol>{author_ranks.map(author => <li>{author}</li>)}</ol></Card.Body>
         </Accordion.Collapse>
       </Card>
     </Accordion>
