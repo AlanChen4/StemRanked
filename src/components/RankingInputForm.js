@@ -14,9 +14,9 @@ function RankingInputForm() {
   useEffect(() => {
     const fetchData = async (subject) => {
 
-      const [result, authorRanks] = await rankings(subject);
+      const [result, authorRankings] = await rankings(subject);
       setRanks(result);
-      setAuthorRanks(authorRanks);
+      setAuthorRanks(authorRankings);
       setLoadingDataStatus(false);
     };
     fetchData(selectedSubject);
@@ -77,12 +77,12 @@ function RankedSchoolList(props) {
 
 function SchoolAuthorRanks(props) {
   // code to rank authors goes here
-  let author_ranks = props.author[props.school];
+  const author_ranks = props.author[props.school];
 
   /*for (const [key, value] of Object.entries(props.author)) {
     author_ranks.push(value);
   } */
-
+  console.log(author_ranks);
   return (
     <Accordion>
       <Card>
@@ -98,5 +98,5 @@ function SchoolAuthorRanks(props) {
     </Accordion>
   );
 }
-
+// <ol>{author_ranks.map(author => <li>{author}</li>)}</ol>
 export default RankingInputForm;
