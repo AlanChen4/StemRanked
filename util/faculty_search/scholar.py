@@ -47,6 +47,16 @@ def get_scholar(email_domain, proxy_path, starting_author=None,
                 proxies=proxy)
         if starting_author == None:
             add_profiles(profiles, base_resp.text)
+        try:
+            soup = BeautifulSoup(base_resp.text, 'html.parser')
+            nav_btns = soup.find_all('button', attrs={'aria-label': True})
+            next_btn = list(filter(lambda x: x['aria-label'] == 'Next', nav_btns))
+            next_link = next_btn[0]['onclick'][17:-1]
+        except IndexError:
+            print('[Fail] Base search resulted in IP Ban')
+            return get_scholar(email_domain, proxy_path,
+                    starting_author=starting_author,
+                    limit=limit, strict=strict)
 
         # set next_resp as base_rep if there is >1 pages of results
         next_resp = base_resp
@@ -54,10 +64,9 @@ def get_scholar(email_domain, proxy_path, starting_author=None,
     # try again if base search fails 
     except Exception as e:
         print(f'[Fail] Base search failed {e}')
-        get_scholar(email_domain, proxy_path,
+        return get_scholar(email_domain, proxy_path,
                 starting_author=starting_author,
                 limit=limit, strict=strict)
-        return
 
     while True:
         try:
