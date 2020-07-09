@@ -180,10 +180,10 @@ function areaCheck(currentCollegeInfo, area) {
 }
 
 // Checks to make sure that each publication isn't before 2010
-function yearCheck(collegeInfo) {
+function yearCheck(collegeInfo, startYear, endYear) {
     let currentInfo = [];
     for (let i = 0; i < collegeInfo.length; i++) {
-        if (collegeInfo[i][4] >= 2010) {
+        if ((collegeInfo[i][4] >= startYear) && collegeInfo[i][4] <= endYear) {
             currentInfo.push(collegeInfo[i]);
         }
     }
@@ -198,11 +198,11 @@ async function rankings(subject) {
     let collegeInfo = await readCSV(subject);
     console.log('Result of readCSV call', collegeInfo);
 
-    let currentCollegeInfo = yearCheck(collegeInfo);
+    let currentCollegeInfo = yearCheck(collegeInfo, 2005, 2010);
     console.log('Result of yearCheck call', currentCollegeInfo);
 
     // 'vision', "plan", "soft", "ops", "metrics", "mobile", "hpc", "bed", "da", "mod", "sec", "comm", "arch", "log", "act", "mlmining", "compgraph", "ir", "chi", "nlp", "robotics", "crypt", "bio", "visual", "ecom", "ai"
-    let final_colleges = areaCheck(currentCollegeInfo, ['vision']);
+    let final_colleges = areaCheck(currentCollegeInfo, []);
     console.log('The filtered data', final_colleges);
 
     let rankAuthors = AuthorList(final_colleges, institutionAuthors);
