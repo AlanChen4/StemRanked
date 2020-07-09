@@ -1,12 +1,48 @@
-import requests,json, sys, csv, re, os
-path_to_scholar_search = '/Users/slahade/documents/github/stemranked/util/faculty_search'
-sys.path.append(path_to_scholar_search)
-import academic, venues
+import requests,json, sys, csv, re, os, time
+path_to_faculty_search = '/Users/slahade/documents/github/stemranked/util/faculty_search'
+sys.path.append(path_to_faculty_search)
+import academic, venues, multiprocessing
 
 session = requests.Session()
 pageThreshold = 6
 
-def genPublications(auth, authID, institution):
+'''def genPublicationsPerPage(authID, institution, skip):
+    data = {
+                "query":auth,
+                "queryExpression":authID,
+                "filters":[],"orderBy":0,
+                "skip":skip,
+                "sortAscending":True,
+                "take":10,
+                "includeCitationContexts":False,
+                "authorId":351197510,
+                "profileId":""
+                }
+    val = session.post('https://academic.microsoft.com/api/search', json = data)
+    parsed = json.loads(val.text)
+    try:
+        for paper in parsed['pr']:
+            adjustedCount = 1/int(paper['paper']['tac'])
+            year = str(paper['paper']['v']['publishedDate'].split('-')[0])
+            venue = paper['paper']['v']['displayName']
+            length = int(paper['paper']['v']['lastPage']) - int(paper['paper']['v']['firstPage'])
+            if (length < pageThreshold):
+                continue
+            ven = venues.check(venue)
+            if (ven == False):
+                continue
+            pub = {
+                'Author':auth,
+                'Institution':institution,
+                'Year': year,
+                'Venue': ven,
+                'Adjusted Count': adjustedCount
+            }
+            publications.append(pub)
+    except:
+        continue'''
+
+def genPublications(auth, authID, institution): #numProcessses
     skip = 0
     publications = []
     for skip in range(0,500,10):
@@ -23,35 +59,40 @@ def genPublications(auth, authID, institution):
                 }
         val = session.post('https://academic.microsoft.com/api/search', json = data)
         parsed = json.loads(val.text)
-        for paper in parsed['pr']:
-            adjustedCount = 1/int(paper['paper']['tac'])
-            try:
-                year = str(paper['paper']['v']['publishedDate'].split('-')[0])
-                venue = paper['paper']['v']['displayName']
-                length = int(paper['paper']['v']['lastPage']) - int(paper['paper']['v']['firstPage'])
-                if (length < pageThreshold):
-                    continue
-                ven = venues.check(venue)
-                if (ven == False):
-                    continue
-                pub = {
-                    'Author':auth,
-                    'Institution':institution,
-                    'Year': year,
-                    'Venue': ven,
-                    'Adjusted Count': adjustedCount
-                }
-                publications.append(pub)
-            except:
-                continue
+        try:
+            for paper in parsed['pr']:
+                try:
+                    print(paper['paper']['v'])
+                    adjustedCount = 1/int(paper['paper']['tac'])
+                    year = str(paper['paper']['v']['publishedDate'].split('-')[0])
+                    venue = paper['paper']['v']['displayName']
+                    length = int(paper['paper']['v']['lastPage']) - int(paper['paper']['v']['firstPage'])
+                    if (length < pageThreshold):
+                        continue
+                    ven = venues.check(venue)
+                    if (ven == False):
+                        continue
+                    pub = {
+                        'Author':auth,
+                        'Institution':institution,
+                        'Year': year,
+                        'Venue': ven,
+                        'Adjusted Count': adjustedCount
+                    }
+                    publications.append(pub)
+                except:
+                    pass
+        except Exception as e:
+            print(f'ERROR: {e}')
     return publications
     
-def getAuthorNames(csvFile):
+def getAuthorNames(csvFile, domain):
     authors = []
     with open(csvFile, 'r') as f:
         reader = csv.reader(f)
         for row in reader:
-            authors.append(row[0])
+            if (row[1] == domain):
+                authors.append(row[0])
     return authors
 
 def getAuthorIds(auth, top_authors):
@@ -60,14 +101,30 @@ def getAuthorIds(auth, top_authors):
         if (author['an'].strip() == auth.strip()):
             return (auth, author['pqe'])
 
-def getInstitutionAuths(institution, subject):
+def getInst(domain):
+    dic = dict()
+    with open ('./data/institution_domains.csv') as f:
+        reader = csv.reader(f)
+        for row in reader:
+            dic[row[1].split('.')[0]] = row[0]
+    return dic[domain]
+
+def getInstitutionPubs(institution, subject):
     endpoint = academic.get_authors_endpoint(institution, subject)[0]
     endpoint+=str(1000)
     top_authors = session.get(endpoint)
+    publications = []
     if 200 <= top_authors.status_code < 300:
-        for auth in getAuthorNames('microsoftAcademicAuthors.csv'):
+        for auth in getAuthorNames('microsoftAcademicAuthors.csv', institution):
+            a = time.time()
             (auth, authID) = getAuthorIds(auth, top_authors)
-            genPublications(auth,authID,institution)
+            pub = genPublications(auth,authID,getInst(institution))
+            b = time.time()
+            write(pub)
+            publications += pub
+            t = b-a
+            print(f'{auth}\t\t{authID}\t\t{(t)}')
+    return publications
 
 def makeFile(loc):
     loc = './data/'+loc+'.csv'
@@ -95,8 +152,19 @@ def write(qualified_Pubs):
             for item in subject_info[subject]:
                 writer.writerow([item[0], item[1], item[3], item[2], item[4]])
 
-publications = genPublications("Eric P. Xing","Composite(AA.AuId=351197510)", 'Carnegie Mellon University')
-write(publications)
+def writeTestCSV(domain = 'cmu'):
+    with open('microsoftAcademicAuthors.csv','w') as f:
+        writer = csv.writer(f)
+        for item in academic.get_top_authors('cmu','Computer Science',1000):
+            writer.writerow([item,'cmu'])
+
+
+def main(institution):
+    publications = genPublications("Eric P. Xing","Composite(AA.AuId=351197510)", 'Carnegie Mellon University')
+    write(publications)
+    #getInstitutionPubs('cmu','computer science')
+if __name__ == "__main__":
+    main('cmu')
 
 
 
