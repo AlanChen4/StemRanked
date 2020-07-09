@@ -202,7 +202,7 @@ async function rankings(subject) {
     console.log('Result of yearCheck call', currentCollegeInfo);
 
     // 'vision', "plan", "soft", "ops", "metrics", "mobile", "hpc", "bed", "da", "mod", "sec", "comm", "arch", "log", "act", "mlmining", "compgraph", "ir", "chi", "nlp", "robotics", "crypt", "bio", "visual", "ecom", "ai"
-    let final_colleges = areaCheck(currentCollegeInfo, []);
+    let final_colleges = areaCheck(currentCollegeInfo, ['vision']);
     console.log('The filtered data', final_colleges);
 
     let rankAuthors = AuthorList(final_colleges, institutionAuthors);

@@ -70,19 +70,14 @@ function RankedSchoolList(props) {
 
   return (
     <tbody>
-      {school_ranks.map((school, i) => <tr key={school} ><td>{i + 1}</td><td><SchoolAuthorRanks school={school} author={props.authors} /></td></tr>)}
+      {school_ranks.map((school, i) => <tr key={school} ><td>{i + 1}</td><td><SchoolAuthorRanks school={school} authors={props.authors} /></td></tr>)}
     </tbody>
   );
 }
 
 function SchoolAuthorRanks(props) {
-  // code to rank authors goes here
-  const author_ranks = props.author[props.school];
-
-  /*for (const [key, value] of Object.entries(props.author)) {
-    author_ranks.push(value);
-  } */
-  console.log(author_ranks);
+  const author_ranks = props.authors[props.school];
+  
   return (
     <Accordion>
       <Card>
@@ -92,11 +87,13 @@ function SchoolAuthorRanks(props) {
           </Card.Header>
         </Accordion.Toggle>
         <Accordion.Collapse eventKey="0">
-          <Card.Body className="Accordion"><ol>{author_ranks.map(author => <li>{author}</li>)}</ol></Card.Body>
+          <Card.Body className="Accordion">
+            {author_ranks === undefined ? <div>Loading Data...<br /><Spinner animation="border" variant="primary" /></div> : <ol>{author_ranks.map((author, i) => <li key={i}>{author}</li>)}</ol>}
+          </Card.Body>
         </Accordion.Collapse>
       </Card>
     </Accordion>
   );
 }
-// <ol>{author_ranks.map(author => <li>{author}</li>)}</ol>
+
 export default RankingInputForm;
