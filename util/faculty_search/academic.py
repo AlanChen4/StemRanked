@@ -11,15 +11,13 @@ def get_academic(uni_name, field, limit):
     endpoint += str(limit)
     print(f'[Endpoint] {endpoint}')
 
-    authors_list = []
+    authors_list = {}
     top_authors = session.get(endpoint)
     if 200 <= top_authors.status_code < 300:
         top_authors_json = json.loads(top_authors.text)
         for author in top_authors_json['te']:
             if af_id == author['ci']['id']:
-                name = author['an']
-                author_id = str(author['id'])
-                authors_list.append(name + ', ' + author_id)
+                authors_list[author['an']] = author['id']
         print(f'[Finished] {len(authors_list)} total authors found')
         return authors_list
     else:

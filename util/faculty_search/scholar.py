@@ -24,7 +24,7 @@ def get_scholar(email_domain, proxy_path, starting_author=None,
     :param boolean strict: While False, proxies will be removed when IP banned'''
 
     # final list being returned
-    profiles = []
+    profiles = {}
 
     # debugging variables
     start_time = time.time()
@@ -46,7 +46,7 @@ def get_scholar(email_domain, proxy_path, starting_author=None,
                 headers=gen_headers(referer),
                 proxies=proxy)
         if starting_author == None:
-            profiles += get_profile(base_resp.text)
+            add_profiles(profiles, base_resp.text)
 
         # set next_resp as base_rep if there is >1 pages of results
         next_resp = base_resp
@@ -93,7 +93,7 @@ def get_scholar(email_domain, proxy_path, starting_author=None,
                                 timeout=10,
                                 headers=gen_headers(referer),
                                 proxies=proxy)
-                        profiles += get_profile(next_resp.text)
+                        add_profiles(profiles, next_resp.text)
                         time_record = str(time.time() - start_time)
                         print(f'[{time_record}] collected #{len(profiles)}')
                     except Timeout:
@@ -136,19 +136,17 @@ def get_scholar(email_domain, proxy_path, starting_author=None,
     return profiles
 
 
-def get_profile(page_html):
+def add_profiles(profiles, page_html):
     '''returns the names of the google scholar profiles from
     a scholar web search
 
+    :param dict profiles: dictionary containing the name and info of each author
     :param str page_html: html of the google scholar profile search result
     '''
-    profiles = []
     current_profiles = BeautifulSoup(page_html, 'html.parser')
     current_profiles = current_profiles.find_all('h3', class_='gs_ai_name')
     for p in current_profiles:
-        name = p.text
         url = 'https://scholar.google.com' + str(p.a['href'])
-        result = p.text + ', ' + url
-        profiles.append(result)
+        profiles[p.text] = url
     return profiles
 
