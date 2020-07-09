@@ -1,14 +1,34 @@
+import csv
 import json
-import time
 import requests
+import time
 
 from bs4 import BeautifulSoup
-from csv import writer
 from itertools import cycle
 from requests.exceptions import Timeout, ProxyError, ConnectionError
 
 from academic import get_academic
 from scholar import get_scholar
+
+
+def clean_authors(scholar, academic):
+    # combine information for authors on both scholar and academic
+    combined = academic.copy()
+    for author in scholar:
+        if author in combined:
+            # append the scholar link to the end of the academic id
+            combined[author] = str(combined[author]) + '_' + str(scholar[author])
+        else:
+            combined[author] = scholar[author]
+
+    return combined
+
+
+def write_to_csv(profiles, name='output'):
+    with open(f'output/{name}.csv', 'a+', newline='', encoding='utf-8') as f:
+        w = csv.writer(f)
+        for author, info in profiles.items():
+            w.writerow([author, info])
 
 
 if __name__ == '__main__':
@@ -23,8 +43,5 @@ if __name__ == '__main__':
             'unc',
             'computer science',
             500)
-    combined = list(set(scholar + academic))
-    for prof in combined:
-        print(prof)
-
-
+    combined = clean_authors(scholar, academic)
+    write_to_csv(combined)
