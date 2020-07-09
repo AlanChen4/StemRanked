@@ -29,7 +29,6 @@ class ProxyThread(threading.Thread):
         :param list good_proxies: List containing all proxies that work
         '''
         proxy = {'https': 'https://' + ip}
-        print(f'[Start Check] {proxy}')
         try:
             res = requests.get('https://api.ipify.org/',
                     proxies=proxy,
@@ -56,6 +55,7 @@ def get_proxy_local(path, thread_limit):
         proxy_list.append(line)
 
     # spawn worker threads
+    print('[Start] Begin checking proxies')
     start_time = time.time()
     workers = []
     good_proxies = []
