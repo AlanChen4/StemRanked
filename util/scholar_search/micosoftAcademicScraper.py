@@ -6,7 +6,8 @@ import academic, venues, multiprocessing
 session = requests.Session()
 pageThreshold = 6
 
-'''def genPublicationsPerPage(authID, institution, skip):
+def genPublicationsPerPage(auth, authID, institution, skip, pubs):
+    publications = []
     data = {
                 "query":auth,
                 "queryExpression":authID,
@@ -22,68 +23,42 @@ pageThreshold = 6
     parsed = json.loads(val.text)
     try:
         for paper in parsed['pr']:
-            adjustedCount = 1/int(paper['paper']['tac'])
-            year = str(paper['paper']['v']['publishedDate'].split('-')[0])
-            venue = paper['paper']['v']['displayName']
-            length = int(paper['paper']['v']['lastPage']) - int(paper['paper']['v']['firstPage'])
-            if (length < pageThreshold):
-                continue
-            ven = venues.check(venue)
-            if (ven == False):
-                continue
-            pub = {
-                'Author':auth,
-                'Institution':institution,
-                'Year': year,
-                'Venue': ven,
-                'Adjusted Count': adjustedCount
-            }
-            publications.append(pub)
-    except:
-        continue'''
+            try:
+                #print(paper['paper']['v'])
+                adjustedCount = 1/int(paper['paper']['tac'])
+                year = str(paper['paper']['v']['publishedDate'].split('-')[0])
+                venue = paper['paper']['v']['displayName']
+                length = int(paper['paper']['v']['lastPage']) - int(paper['paper']['v']['firstPage'])
+                if (length < pageThreshold):
+                    continue
+                ven = venues.check(venue)
+                if (ven == False):
+                    continue
+                pub = {
+                    'Author':auth,
+                    'Institution':institution,
+                    'Year': year,
+                    'Venue': ven,
+                    'Adjusted Count': adjustedCount
+                }
+                publications.append(pub)
+            except:
+                pass
+    except Exception as e:
+            print(f'ERROR: {e}')
+
+    pubs+=publications
 
 def genPublications(auth, authID, institution): #numProcessses
     skip = 0
     publications = []
+    workers = []
     for skip in range(0,500,10):
-        data = {
-                "query":auth,
-                "queryExpression":authID,
-                "filters":[],"orderBy":0,
-                "skip":skip,
-                "sortAscending":True,
-                "take":10,
-                "includeCitationContexts":False,
-                "authorId":351197510,
-                "profileId":""
-                }
-        val = session.post('https://academic.microsoft.com/api/search', json = data)
-        parsed = json.loads(val.text)
-        try:
-            for paper in parsed['pr']:
-                try:
-                    print(paper['paper']['v'])
-                    adjustedCount = 1/int(paper['paper']['tac'])
-                    year = str(paper['paper']['v']['publishedDate'].split('-')[0])
-                    venue = paper['paper']['v']['displayName']
-                    length = int(paper['paper']['v']['lastPage']) - int(paper['paper']['v']['firstPage'])
-                    if (length < pageThreshold):
-                        continue
-                    ven = venues.check(venue)
-                    if (ven == False):
-                        continue
-                    pub = {
-                        'Author':auth,
-                        'Institution':institution,
-                        'Year': year,
-                        'Venue': ven,
-                        'Adjusted Count': adjustedCount
-                    }
-                    publications.append(pub)
-                except:
-                    pass
-        except Exception as e:
-            print(f'ERROR: {e}')
+            workers.append(multiprocessing.Process(target=genPublicationsPerPage, args = (auth, authID, institution, skip, publications)))
+    for worker in workers:
+        worker.start()
+    for worker in workers:
+        worker.join()
     return publications
     
 def getAuthorNames(csvFile, domain):
@@ -160,9 +135,12 @@ def writeTestCSV(domain = 'cmu'):
 
 
 def main(institution):
+    a = time.time()
     publications = genPublications("Eric P. Xing","Composite(AA.AuId=351197510)", 'Carnegie Mellon University')
+    b = time.time()
     write(publications)
     #getInstitutionPubs('cmu','computer science')
+    print(f'TIME TAKEN FOR EXECUTION: {(b-a)}')
 if __name__ == "__main__":
     main('cmu')
 
