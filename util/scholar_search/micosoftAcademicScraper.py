@@ -1,7 +1,7 @@
 import requests,json, sys, csv, re, os, time
 path_to_faculty_search = '/Users/slahade/documents/github/stemranked/util/faculty_search'
 sys.path.append(path_to_faculty_search)
-import academic, venues, multiprocessing
+import academic, venues, threading
 
 session = requests.Session()
 pageThreshold = 6
@@ -54,7 +54,7 @@ def genPublications(auth, authID, institution): #numProcessses
     publications = []
     workers = []
     for skip in range(0,500,10):
-            workers.append(multiprocessing.Process(target=genPublicationsPerPage, args = (auth, authID, institution, skip, publications)))
+            workers.append(threading.Thread(target=genPublicationsPerPage, args = (auth, authID, institution, skip, publications)))
     for worker in workers:
         worker.start()
     for worker in workers:
