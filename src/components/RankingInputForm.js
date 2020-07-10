@@ -56,7 +56,11 @@ function RankingInputForm() {
             Life Sciences
           </ToggleButton>
         </ToggleButtonGroup>
-        <Button onClick={addAI}>Add AI</Button>
+        <Form>
+          <Form.Group>
+            <Form.Check type="checkbox" label="Artificial Intelligence" onClick={addAI} />
+          </Form.Group>
+        </Form>
         <br />
         Ranked List for {selectedSubject}:
         <table>
