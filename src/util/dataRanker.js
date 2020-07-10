@@ -6,6 +6,8 @@ import { findAllByRole, findAllByTestId } from '@testing-library/react';
 //!(rank_dic.hasOwnProperty(currentCollegeInfo[i][1]))
 
 // Dictionary in which the keys are areas and the values are conferences
+var subjects = [];
+
 let areaDict = {
     "vision": ['cvpr', 'iccv', 'eccv'],
     "plan": ['popl', 'pldi', 'oopsla', 'icfp'],
@@ -179,7 +181,7 @@ function areaCheck(currentCollegeInfo, area) {
     return final_colleges;
 }
 
-// Checks to make sure that each publication isn't before 2010
+// Checks to make sure that each publication isn't before the startYear and it isn't after the endYear
 function yearCheck(collegeInfo, startYear, endYear) {
     let currentInfo = [];
     for (let i = 0; i < collegeInfo.length; i++) {
@@ -191,18 +193,17 @@ function yearCheck(collegeInfo, startYear, endYear) {
 }
 
 // Logs everythin on console in the local browser
-async function rankings(subject) {
+async function rankings(subject, subAreas, startYr, endYr) {
     let institutionAuthors = [];
     let colleges = [];
-
     let collegeInfo = await readCSV(subject);
     console.log('Result of readCSV call', collegeInfo);
 
-    let currentCollegeInfo = yearCheck(collegeInfo, 2005, 2010);
+    let currentCollegeInfo = yearCheck(collegeInfo, startYr, endYr);
     console.log('Result of yearCheck call', currentCollegeInfo);
 
     // 'vision', "plan", "soft", "ops", "metrics", "mobile", "hpc", "bed", "da", "mod", "sec", "comm", "arch", "log", "act", "mlmining", "compgraph", "ir", "chi", "nlp", "robotics", "crypt", "bio", "visual", "ecom", "ai"
-    let final_colleges = areaCheck(currentCollegeInfo, []);
+    let final_colleges = areaCheck(currentCollegeInfo, subAreas);
     console.log('The filtered data', final_colleges);
 
     let rankAuthors = AuthorList(final_colleges, institutionAuthors);

@@ -2,19 +2,19 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import rankings from '../util/dataRanker';
 import './RankingInputForm.css';
-import { Accordion, Button, Card, Spinner, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
+import { Accordion, Button, Card, Spinner, ToggleButton, ToggleButtonGroup, Form } from 'react-bootstrap';
 
+var subAreas = ['vision'];
 function RankingInputForm() {
   const [selectedSubject, setSelectedSubject] = useState('test');
   const [loadingDataStatus, setLoadingDataStatus] = useState(false);
   const [ranks, setRanks] = useState({});
   const [authorRanks, setAuthorRanks] = useState({});
-
   // Wait for CSV parsing and rankings function to finish (runs on every render)
   useEffect(() => {
     const fetchData = async (subject) => {
-
-      const [result, authorRankings] = await rankings(subject);
+      const [result, authorRankings] = await rankings(subject, subAreas, 2005, 2020);
+      console.log('Current contents of subAreas:', subAreas);
       setRanks(result);
       setAuthorRanks(authorRankings);
       setLoadingDataStatus(false);
@@ -26,7 +26,17 @@ function RankingInputForm() {
     setSelectedSubject(event.currentTarget.value);
     setLoadingDataStatus(true);
   }
-
+  let i = 0;
+  function addAI() {
+    let index = subAreas.indexOf('ai');
+    if (index > -1) {
+      subAreas.splice(index, 1);
+    }
+    else {
+      subAreas.push('ai');
+    }
+    console.log(subAreas);
+  }
   return (
     <div className="Wrapper">
       <div className="Input">
@@ -46,6 +56,7 @@ function RankingInputForm() {
             Life Sciences
           </ToggleButton>
         </ToggleButtonGroup>
+        <Button onClick={addAI}>Add AI</Button>
         <br />
         Ranked List for {selectedSubject}:
         <table>
@@ -77,7 +88,7 @@ function RankedSchoolList(props) {
 
 function SchoolAuthorRanks(props) {
   const author_ranks = props.authors[props.school];
-  
+
   return (
     <Accordion>
       <Card>
