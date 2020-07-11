@@ -1,9 +1,9 @@
 import time
+import random
 import requests
 
 from bs4 import BeautifulSoup
 from csv import writer
-from itertools import cycle
 from requests.exceptions import Timeout, ProxyError, ConnectionError
 from proxy import get_proxy_local, gen_headers
 
@@ -36,8 +36,7 @@ def get_scholar(email_domain, proxy_path, starting_author=None,
 
     # set up proxies
     proxy_list = get_proxy_local(proxy_path, thread_limit=proxy_thread)
-    proxy_cycle = cycle(proxy_list)
-    proxy = next(proxy_cycle)
+    proxy = random.choice(proxy_list)
 
     # initial search for base results
     try:
@@ -46,17 +45,21 @@ def get_scholar(email_domain, proxy_path, starting_author=None,
                 headers=gen_headers(referer),
                 proxies=proxy)
         if starting_author == None:
-            add_profiles(profiles, base_resp.text)
+            base_check = add_profiles(profiles, base_resp.text)
         try:
             soup = BeautifulSoup(base_resp.text, 'html.parser')
             nav_btns = soup.find_all('button', attrs={'aria-label': True})
             next_btn = list(filter(lambda x: x['aria-label'] == 'Next', nav_btns))
             next_link = next_btn[0]['onclick'][17:-1]
         except IndexError:
-            print('[Fail] Base search resulted in IP Ban')
-            return get_scholar(email_domain, proxy_path,
-                    starting_author=starting_author,
-                    limit=limit, strict=strict)
+            # checks if first page is only page
+            if len(base_check) > 0:
+                return profiles
+            else:
+                print('[Fail] Base search resulted in IP Ban')
+                return get_scholar(email_domain, proxy_path,
+                        starting_author=starting_author,
+                        limit=limit, strict=strict)
 
         # set next_resp as base_rep if there is >1 pages of results
         next_resp = base_resp
@@ -70,7 +73,7 @@ def get_scholar(email_domain, proxy_path, starting_author=None,
 
     while True:
         try:
-            proxy = next(proxy_cycle)
+            proxy = random.choice(proxy_list)
 
             soup = BeautifulSoup(next_resp.text, 'html.parser')
             nav_btns = soup.find_all('button', attrs={'aria-label': True})
@@ -128,14 +131,12 @@ def get_scholar(email_domain, proxy_path, starting_author=None,
                     print(e)
                     break
             # IndexError mean IP Ban
-            except IndexError as e:
+            except IndexError:
                 proxy_list.remove(proxy)
-                proxy_cycle = cycle(proxy_list)
                 print(f'[IP Ban] Removed {proxy["https"]}, {len(proxy_list)} remaining')
                 next_resp = old_resp
-        except IndexError as e:
+        except IndexError:
             proxy_list.remove(proxy)
-            proxy_cycle = cycle(proxy_list)
             print(f'[IP Ban] Removed proxy, {len(proxy_list)} remaining')
             next_resp = old_resp
         except StopIteration:
