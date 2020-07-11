@@ -165,7 +165,7 @@ function AuthorList(final_colleges, institutionAuthors) {
     return author_rank_dic;
 
 }
-
+// Checks to see if the area that the user inputsis matches the publication area
 function areaCheck(currentCollegeInfo, area) {
     if (area.length === 0) {
         return currentCollegeInfo;
@@ -181,7 +181,7 @@ function areaCheck(currentCollegeInfo, area) {
     return final_colleges;
 }
 
-// Checks to make sure that each publication isn't before the startYear and it isn't after the endYear
+//Uses the user's entry of start year and end year to filter out publications in a given timeline.
 function yearCheck(collegeInfo, startYear, endYear) {
     let currentInfo = [];
     for (let i = 0; i < collegeInfo.length; i++) {
