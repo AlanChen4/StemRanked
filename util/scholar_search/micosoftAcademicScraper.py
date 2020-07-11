@@ -1,12 +1,10 @@
 import requests,json, sys, csv, re, os, time
 path_to_faculty_search = '/Users/slahade/documents/github/stemranked/util/faculty_search'
 sys.path.append(path_to_faculty_search)
-import academic, venues, threading, multiprocessing
+import academic, venues, threading
 
 session = requests.Session()
 pageThreshold = 6
-
-
 
 def genPublicationsPerPage(auth, authID, institution, skip, pubs):
     publications = []
@@ -47,12 +45,11 @@ def genPublicationsPerPage(auth, authID, institution, skip, pubs):
             except:
                 pass
     except Exception as e:
-            print(f'ERROR: {e}\t\t{parsed}')
+            print(f'ERROR: {e}')
 
     pubs+=publications
 
 def genPublications(auth, authID, institution): #numProcessses
-    start = time.time()
     skip = 0
     publications = []
     workers = []
@@ -62,10 +59,7 @@ def genPublications(auth, authID, institution): #numProcessses
         worker.start()
     for worker in workers:
         worker.join()
-    end = time.time()
-    write(publications)
-    print(f'{auth}\t\t{authID}\t\t{(end-start)}')
-    #return publications
+    return publications
     
 def getAuthorNames(csvFile, domain):
     authors = []
@@ -95,25 +89,16 @@ def getInstitutionPubs(institution, subject):
     endpoint+=str(1000)
     top_authors = session.get(endpoint)
     publications = []
-    auths = []
-    requests = []
     if 200 <= top_authors.status_code < 300:
         for auth in getAuthorNames('microsoftAcademicAuthors.csv', institution):
-            auths.append(getAuthorIds(auth, top_authors)) #(auth, authID)
-        for (auth, authID) in auths:
-            requests.append(multiprocessing.Process(target=genPublications, args=(auth,authID,getInst(institution))))
-        for item in requests:
-            item.start()
-        for item in requests:
-            item.join()
-            '''
             a = time.time()
+            (auth, authID) = getAuthorIds(auth, top_authors)
             pub = genPublications(auth,authID,getInst(institution))
             b = time.time()
             write(pub)
             publications += pub
             t = b-a
-            print(f'{auth}\t\t{authID}\t\t{(t)}')'''
+            print(f'{auth}\t\t{authID}\t\t{(t)}')
     return publications
 
 def makeFile(loc):
@@ -151,10 +136,10 @@ def writeTestCSV(domain = 'cmu'):
 
 def main(institution):
     a = time.time()
-    #publications = genPublications("Eric P. Xing","Composite(AA.AuId=351197510)", 'Carnegie Mellon University')
-    #write(publications)
-    getInstitutionPubs('cmu','computer science')
+    publications = genPublications("Eric P. Xing","Composite(AA.AuId=351197510)", 'Carnegie Mellon University')
     b = time.time()
+    write(publications)
+    #getInstitutionPubs('cmu','computer science')
     print(f'TIME TAKEN FOR EXECUTION: {(b-a)}')
 if __name__ == "__main__":
     main('cmu')
