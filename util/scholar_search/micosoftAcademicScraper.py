@@ -54,10 +54,10 @@ def genPublications(auth, authID, institution): #numProcessses
     skip = 0
     publications = []
     '''FOR SELF:im gonna split them into tens and if one gets the pr error then its gonna not do anything after that set of tens'''
-    for i in range(0,500,100):
+    for i in range(0,500,500):
         workers = []
         pr_error_trigger = [False]
-        for skip in range(i,i+100,10):
+        for skip in range(i,i+500,10):
             workers.append(threading.Thread(target=genPublicationsPerPage, args = (auth, authID, institution, skip, publications,pr_error_trigger)))
         for worker in workers:
             worker.start()
@@ -91,7 +91,7 @@ def getInst(domain):
     return dic[domain]
 
 def getInstitutionPubs(institution, subject):
-    endpoint = academic.get_authors_endpoint(institution, subject)[0]
+    '''endpoint = academic.get_authors_endpoint(institution, subject)[0]
     endpoint+=str(1000)
     top_authors = session.get(endpoint)
     publications = []
@@ -104,7 +104,17 @@ def getInstitutionPubs(institution, subject):
             write(pub)
             publications += pub
             t = b-a
-            print(f'{auth}\t\t{authID}\t\t{(t)}')
+            print(f'{auth}\t\t{authID}\t\t{(t)}')'''
+    publications = []
+    authors = academic.get_academic(institution,subject,1000)
+    for auth in authors.keys():
+        a = time.time()
+        authID = f'Composite(AA.AuId={authors[auth]})'
+        pub = genPublications(auth,authID,institution)
+        b = time.time()
+        write(pub)
+        publications += pub
+        print(f'{auth}\t\t{authID}\t\t{(b-a)}')
     return publications
 
 def makeFile(loc):
@@ -138,8 +148,7 @@ def writeTestCSV(domain = 'cmu'):
         writer = csv.writer(f)
         for item in academic.get_top_authors('cmu','Computer Science',1000):
             writer.writerow([item,'cmu'])
-
-
+    
 def main(institution):
     a = time.time()
     #publications = genPublications("Christoph Dann","Composite(AA.AuId=2504896833)", 'Carnegie Mellon University')
@@ -148,7 +157,6 @@ def main(institution):
     #write(publications)
     print(f'TIME TAKEN FOR EXECUTION: {(b-a)}')
 if __name__ == "__main__":
-    main('cmu')
-
+    main('Massachusetts Institute of Technology')
 
 
