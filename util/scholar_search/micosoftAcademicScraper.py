@@ -6,7 +6,7 @@ import academic, venues, threading
 session = requests.Session()
 pageThreshold = 6
 
-def genPublicationsPerPage(auth, authID, institution, skip, pubs):
+def genPublicationsPerPage(auth, authID, institution, skip, pubs, pr_error_trigger):
     publications = []
     data = {
                 "query":auth,
@@ -46,19 +46,25 @@ def genPublicationsPerPage(auth, authID, institution, skip, pubs):
                 pass
     except Exception as e:
             print(f'ERROR: {e}')
+            pr_error_trigger[0] = True
 
     pubs+=publications
 
 def genPublications(auth, authID, institution): #numProcessses
     skip = 0
     publications = []
-    workers = []
-    for skip in range(0,500,10):
-            workers.append(threading.Thread(target=genPublicationsPerPage, args = (auth, authID, institution, skip, publications)))
-    for worker in workers:
-        worker.start()
-    for worker in workers:
-        worker.join()
+    '''FOR SELF:im gonna split them into tens and if one gets the pr error then its gonna not do anything after that set of tens'''
+    for i in range(0,500,100):
+        workers = []
+        pr_error_trigger = [False]
+        for skip in range(i,i+100,10):
+            workers.append(threading.Thread(target=genPublicationsPerPage, args = (auth, authID, institution, skip, publications,pr_error_trigger)))
+        for worker in workers:
+            worker.start()
+        for worker in workers:
+            worker.join()
+        if (pr_error_trigger[0]):
+            break
     return publications
     
 def getAuthorNames(csvFile, domain):
@@ -136,10 +142,10 @@ def writeTestCSV(domain = 'cmu'):
 
 def main(institution):
     a = time.time()
-    publications = genPublications("Eric P. Xing","Composite(AA.AuId=351197510)", 'Carnegie Mellon University')
+    #publications = genPublications("Christoph Dann","Composite(AA.AuId=2504896833)", 'Carnegie Mellon University')
+    getInstitutionPubs(institution,'computer science')
     b = time.time()
-    write(publications)
-    #getInstitutionPubs('cmu','computer science')
+    #write(publications)
     print(f'TIME TAKEN FOR EXECUTION: {(b-a)}')
 if __name__ == "__main__":
     main('cmu')
