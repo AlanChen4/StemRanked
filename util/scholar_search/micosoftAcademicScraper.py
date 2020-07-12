@@ -1,7 +1,7 @@
 import requests,json, sys, csv, re, os, time
 path_to_faculty_search = '/Users/slahade/documents/github/stemranked/util/faculty_search'
 sys.path.append(path_to_faculty_search)
-import academic, venues, threading
+import academic, venues, threading, multiprocessing
 
 session = requests.Session()
 pageThreshold = 6
@@ -114,7 +114,7 @@ def getInstitutionPubs(institution, subject):
         b = time.time()
         write(pub)
         publications += pub
-        print(f'{auth}\t\t{authID}\t\t{(b-a)}')
+        print(f'{auth}\t\t{authID}\t\t{(b-a)}\t\t{institution}')
     return publications
 
 def makeFile(loc):
@@ -150,13 +150,20 @@ def writeTestCSV(domain = 'cmu'):
             writer.writerow([item,'cmu'])
     
 def main(institution):
-    a = time.time()
+    
     #publications = genPublications("Christoph Dann","Composite(AA.AuId=2504896833)", 'Carnegie Mellon University')
     getInstitutionPubs(institution,'computer science')
-    b = time.time()
+    
     #write(publications)
-    print(f'TIME TAKEN FOR EXECUTION: {(b-a)}')
+    
 if __name__ == "__main__":
-    main('Massachusetts Institute of Technology')
-
+    a = time.time()
+    inst1 = multiprocessing.Process(target= main, args=('Carnegie Mellon University',))
+    inst2 = multiprocessing.Process(target= main, args=('Massachusetts Institute of Technology',))
+    inst1.start()
+    inst2.start()
+    inst1.join()
+    inst2.join()
+    b = time.time()
+    print(f'TIME TAKEN FOR EXECUTION: {(b-a)}')
 
