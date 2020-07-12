@@ -1,5 +1,5 @@
 import requests,json, sys, csv, re, os, time
-path_to_faculty_search = '/Users/slahade/documents/github/stemranked/util/faculty_search'
+path_to_faculty_search = '../faculty_search'
 sys.path.append(path_to_faculty_search)
 import academic, venues, threading, multiprocessing
 
