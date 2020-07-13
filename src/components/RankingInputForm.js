@@ -4,12 +4,12 @@ import rankings from '../util/dataRanker';
 import './RankingInputForm.css';
 import { Accordion, Button, Card, Spinner, ToggleButton, ToggleButtonGroup, Form } from 'react-bootstrap';
 
-var subAreas = ['vision'];
 function RankingInputForm() {
   const [selectedSubject, setSelectedSubject] = useState('test');
   const [loadingDataStatus, setLoadingDataStatus] = useState(false);
   const [ranks, setRanks] = useState({});
   const [authorRanks, setAuthorRanks] = useState({});
+  const [subAreas, setSubAreas] = useState(['plan']);
   // Wait for CSV parsing and rankings function to finish (runs on every render)
   useEffect(() => {
     const fetchData = async (subject) => {
@@ -20,23 +20,38 @@ function RankingInputForm() {
       setLoadingDataStatus(false);
     };
     fetchData(selectedSubject);
-  }, [selectedSubject]); // eslint-disable-line
+  }, [selectedSubject, subAreas]); // eslint-disable-line
 
   const onSubjectChange = (event) => {
     setSelectedSubject(event.currentTarget.value);
     setLoadingDataStatus(true);
   }
-  let i = 0;
   function addAI() {
-    let index = subAreas.indexOf('ai');
-    if (index > -1) {
-      subAreas.splice(index, 1);
+    if (selectedSubject === 'Emery Computer Science') {
+      let temp = subAreas;
+      let index = temp.indexOf('ai');
+      if (index > -1) {
+        temp.splice(index, 1);
+        setSubAreas(temp);
+      }
+      else {
+        temp.push('ai');
+        setSubAreas(temp);
+      }
+      const updateRankings = async () => {
+        setLoadingDataStatus(true);
+        const [result, authorRankings] = await rankings('Emery Computer Science', subAreas, 2005, 2020);
+        console.log('Current contents of subAreas:', subAreas);
+        setRanks(result);
+        setAuthorRanks(authorRankings);
+        setLoadingDataStatus(false);
+      }
+      updateRankings();
+      //rankings('Emery Computer Science', subAreas, 2005, 2010);
+
     }
-    else {
-      subAreas.push('ai');
-    }
-    console.log(subAreas);
   }
+
   return (
     <div className="Wrapper">
       <div className="Input">
