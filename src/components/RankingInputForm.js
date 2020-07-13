@@ -9,7 +9,7 @@ function RankingInputForm() {
   const [loadingDataStatus, setLoadingDataStatus] = useState(false);
   const [ranks, setRanks] = useState({});
   const [authorRanks, setAuthorRanks] = useState({});
-  const [subAreas, setSubAreas] = useState(['plan']);
+  const [subAreas, setSubAreas] = useState([]);
   // Wait for CSV parsing and rankings function to finish (runs on every render)
   useEffect(() => {
     const fetchData = async (subject) => {
@@ -26,16 +26,16 @@ function RankingInputForm() {
     setSelectedSubject(event.currentTarget.value);
     setLoadingDataStatus(true);
   }
-  function addAI() {
+  function addBlank(subjectArea) {
     if (selectedSubject === 'Emery Computer Science') {
       let temp = subAreas;
-      let index = temp.indexOf('ai');
+      let index = temp.indexOf(subjectArea);
       if (index > -1) {
         temp.splice(index, 1);
         setSubAreas(temp);
       }
       else {
-        temp.push('ai');
+        temp.push(subjectArea);
         setSubAreas(temp);
       }
       const updateRankings = async () => {
@@ -73,7 +73,32 @@ function RankingInputForm() {
         </ToggleButtonGroup>
         <Form>
           <Form.Group>
-            <Form.Check type="checkbox" label="Artificial Intelligence" onClick={addAI} />
+            <Form.Check type="checkbox" label="Computer Vision" onClick={() => addBlank('vision')} />
+            <Form.Check type="checkbox" label="Programming Languages" onClick={() => addBlank('plan')} />
+            <Form.Check type="checkbox" label="Software Engineering" onClick={() => addBlank('soft')} />
+            <Form.Check type="checkbox" label="Operating Systems" onClick={() => addBlank('ops')} />
+            <Form.Check type="checkbox" label="Measurement and perf. analysis" onClick={() => addBlank('vision')} />
+            <Form.Check type="checkbox" label="Mobile Computing" onClick={() => addBlank('mobile')} />
+            <Form.Check type="checkbox" label="High Performance Computing" onClick={() => addBlank('hpc')} />
+            <Form.Check type="checkbox" label="Embeddec and real-time systems" onClick={() => addBlank('bed')} />
+            <Form.Check type="checkbox" label="Design Automation" onClick={() => addBlank('da')} />
+            <Form.Check type="checkbox" label="Databases" onClick={() => addBlank('mod')} />
+            <Form.Check type="checkbox" label="Computer Security" onClick={() => addBlank('sec')} />
+            <Form.Check type="checkbox" label="Computer Networks" onClick={() => addBlank('comm')} />
+            <Form.Check type="checkbox" label="Computer Architeture" onClick={() => addBlank('arch')} />
+            <Form.Check type="checkbox" label="Logic and Verification" onClick={() => addBlank('log')} />
+            <Form.Check type="checkbox" label="Algorithms and Complexity" onClick={() => addBlank('act')} />
+            <Form.Check type="checkbox" label="Machine Learning and Data Mining" onClick={() => addBlank('mlmining')} />
+            <Form.Check type="checkbox" label="Computer Graphics" onClick={() => addBlank('compgraph')} />
+            <Form.Check type="checkbox" label="The Web and Information Retrieval" onClick={() => addBlank('ir')} />
+            <Form.Check type="checkbox" label="Human Computer Interaction" onClick={() => addBlank('chi')} />
+            <Form.Check type="checkbox" label="Natural Language Processing" onClick={() => addBlank('nlp')} />
+            <Form.Check type="checkbox" label="Robotics" onClick={() => addBlank('robotics')} />
+            <Form.Check type="checkbox" label="Cryptography" onClick={() => addBlank('crypt')} />
+            <Form.Check type="checkbox" label="Computer Biology and Bioinformatics" onClick={() => addBlank('bio')} />
+            <Form.Check type="checkbox" label="Visualization" onClick={() => addBlank('visual')} />
+            <Form.Check type="checkbox" label="Ecomonics and Computation" onClick={() => addBlank('ecom')} />
+            <Form.Check type="checkbox" label="Artificial Intelligence" onClick={() => addBlank('ai')} />
           </Form.Group>
         </Form>
         <br />
