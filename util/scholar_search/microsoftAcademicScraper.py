@@ -11,7 +11,8 @@ def genPublicationsPerPage(auth, authID, institution, skip, pubs, pr_error_trigg
     data = {
                 "query":auth,
                 "queryExpression":authID,
-                "filters":[],"orderBy":0,
+                "filters":[],
+                "orderBy":3,
                 "skip":skip,
                 "sortAscending":True,
                 "take":10,
@@ -54,10 +55,10 @@ def genPublications(auth, authID, institution): #numProcessses
     skip = 0
     publications = []
     '''FOR SELF:im gonna split them into tens and if one gets the pr error then its gonna not do anything after that set of tens'''
-    for i in range(0,500,500):
+    for i in range(0,500,100):
         workers = []
         pr_error_trigger = [False]
-        for skip in range(i,i+500,10):
+        for skip in range(i,i+100,10):
             workers.append(threading.Thread(target=genPublicationsPerPage, args = (auth, authID, institution, skip, publications,pr_error_trigger)))
         for worker in workers:
             worker.start()
@@ -149,21 +150,28 @@ def writeTestCSV(domain = 'cmu'):
         for item in academic.get_top_authors('cmu','Computer Science',1000):
             writer.writerow([item,'cmu'])
     
-def main(institution):
+def main(institutions, subject):
     
-    #publications = genPublications("Christoph Dann","Composite(AA.AuId=2504896833)", 'Carnegie Mellon University')
-    getInstitutionPubs(institution,'computer science')
-    
-    #write(publications)
-    
-if __name__ == "__main__":
-    a = time.time()
-    inst1 = multiprocessing.Process(target= main, args=('Carnegie Mellon University',))
-    inst2 = multiprocessing.Process(target= main, args=('Massachusetts Institute of Technology',))
+    #publications = genPublications("Eric P. Xing","Composite(AA.AuId=351197510)", 'Carnegie Mellon University')
+    #getInstitutionPubs(institution1,'computer science')
+    '''inst1 = multiprocessing.Process(target= getInstitutionPubs, args=(institution1, subject))
+    inst2 = multiprocessing.Process(target= getInstitutionPubs, args=(institution2, subject))
     inst1.start()
     inst2.start()
     inst1.join()
-    inst2.join()
+    inst2.join()'''
+    #write(publications)
+    inst = []
+    for institution in institutions:
+        inst.append(multiprocessing.Process(target= getInstitutionPubs, args=(institution, subject)))
+    for institution in inst:
+        institution.start()
+    for institution in inst:
+        institution.join()
+    
+if __name__ == "__main__":
+    a = time.time()
+    main(['Carnegie Mellon University', 'Massachussets Institute of Technology'], 'Computer Science')
     b = time.time()
     print(f'TIME TAKEN FOR EXECUTION: {(b-a)}')
 
