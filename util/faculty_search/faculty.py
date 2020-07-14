@@ -31,15 +31,18 @@ def clean_middle_name(first, second):
     removes middle names from authors. This reduces error caused by
     middle names being listed different for the same people on different
     platforms.'''
-    for name in first.keys():
-        split_name = name.split()
-        no_middle_name = split_name[0] + ' ' + split_name[-1]
-        first[name] = first.pop(no_middle_name)
+    first_copy = first.copy()
+    second_copy = second.copy()
 
-    for name in second.keys():
+    for name in first_copy.keys():
         split_name = name.split()
         no_middle_name = split_name[0] + ' ' + split_name[-1]
-        second[name] = second.pop(no_middle_name)
+        first[no_middle_name] = first.pop(name)
+
+    for name in second_copy.keys():
+        split_name = name.split()
+        no_middle_name = split_name[0] + ' ' + split_name[-1]
+        second[no_middle_name] = second.pop(name)
 
     return first, second
 
@@ -78,7 +81,7 @@ def get_faculty(email_domain='example.edu', proxy_path='proxies/proxies.txt',
 
     # academic
     print('[Start] Academic Scraper')
-    academic = get_academic(uni_name=uni_name, field=field, academic_limit=academic_limit)
+    academic = get_academic(uni_name=uni_name, field=field, limit=academic_limit)
 
     # cleaning functions
     print('[Start] Cleaning')
