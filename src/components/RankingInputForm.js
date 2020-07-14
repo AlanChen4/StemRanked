@@ -11,25 +11,30 @@ function RankingInputForm() {
   const [authorRanks, setAuthorRanks] = useState({});
   const [subAreas, setSubAreas] = useState([]);
   const [startyear, setStartYear] = useState([]);
-  const [endyear, setEndYear] = useState([]);
   // Wait for CSV parsing and rankings function to finish (runs on every render)
   useEffect(() => {
     const fetchData = async (subject) => {
-      const [result, authorRankings] = await rankings(subject, subAreas, 2005, 2020);
+      const [result, authorRankings] = await rankings(subject, subAreas, startyear, 2020);
       console.log('Current contents of subAreas:', subAreas);
+      console.log('Current Start Year', startyear);
       setRanks(result);
       setAuthorRanks(authorRankings);
       setLoadingDataStatus(false);
     };
     fetchData(selectedSubject);
-  }, [selectedSubject, subAreas]); // eslint-disable-line
+  }, [selectedSubject, subAreas, startyear]); // eslint-disable-line
 
   const onSubjectChange = (event) => {
     setSelectedSubject(event.currentTarget.value);
     setLoadingDataStatus(true);
   }
   function yearBlank(startYr) {
-    setStartYear(startYr)
+    if (selectedSubject === 'Emery Computer Science') {
+      setStartYear(startYr);
+    }
+    else {
+      startYr = 2005;
+    }
     const updateRankings = async () => {
       setLoadingDataStatus(true);
       const [result, authorRankings] = await rankings('Emery Computer Science', subAreas, startyear, 2020);
@@ -128,7 +133,7 @@ function RankingInputForm() {
         <Dropdown>
           <Dropdown.Toggle variant="success" id="dropdown-basic">Start Year</Dropdown.Toggle>
           <Dropdown.Menu>
-            {startYears.map((startyear) => <Dropdown.Item onClick={() => yearBlank(startyear, endyear)}>{startyear}</Dropdown.Item>)}
+            {startYears.map((startyear) => <Dropdown.Item onClick={() => yearBlank(startyear)}>{startyear}</Dropdown.Item>)}
           </Dropdown.Menu>
         </Dropdown>
         <br />
