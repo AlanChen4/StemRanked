@@ -10,6 +10,8 @@ function RankingInputForm() {
   const [ranks, setRanks] = useState({});
   const [authorRanks, setAuthorRanks] = useState({});
   const [subAreas, setSubAreas] = useState([]);
+  const [startyear, setStartYear] = useState([]);
+  const [endyear, setEndYear] = useState([]);
   // Wait for CSV parsing and rankings function to finish (runs on every render)
   useEffect(() => {
     const fetchData = async (subject) => {
@@ -26,6 +28,19 @@ function RankingInputForm() {
     setSelectedSubject(event.currentTarget.value);
     setLoadingDataStatus(true);
   }
+  function yearBlank(startYr) {
+    setStartYear(startYr)
+    const updateRankings = async () => {
+      setLoadingDataStatus(true);
+      const [result, authorRankings] = await rankings('Emery Computer Science', subAreas, startyear, 2020);
+      console.log('Current start year:', startyear);
+      setRanks(result);
+      setAuthorRanks(authorRankings);
+      setLoadingDataStatus(false);
+    }
+    updateRankings();
+  }
+
   function addBlank(subjectArea) {
     if (selectedSubject === 'Emery Computer Science') {
       let temp = subAreas;
@@ -40,7 +55,7 @@ function RankingInputForm() {
       }
       const updateRankings = async () => {
         setLoadingDataStatus(true);
-        const [result, authorRankings] = await rankings('Emery Computer Science', subAreas, 2005, 2020);
+        const [result, authorRankings] = await rankings('Emery Computer Science', subAreas, startyear, 2020);
         console.log('Current contents of subAreas:', subAreas);
         setRanks(result);
         setAuthorRanks(authorRankings);
@@ -51,6 +66,8 @@ function RankingInputForm() {
 
     }
   }
+
+
   let subjectAreaInfo = [
     ['Computer Vision', 'vision'],
     ['Programming Languages', 'plan'],
@@ -83,10 +100,6 @@ function RankingInputForm() {
   for (let i = 1970; i < 2020; i++) {
     startYears.push(i);
   }
-  let endYears = [];
-  for (let i = 1970; i < 2020; i++) {
-    endYears.push(i);
-  }
 
   return (
     <div className="Wrapper">
@@ -115,13 +128,7 @@ function RankingInputForm() {
         <Dropdown>
           <Dropdown.Toggle variant="success" id="dropdown-basic">Start Year</Dropdown.Toggle>
           <Dropdown.Menu>
-            {startYears.map((startyear) => <Dropdown.Item>{startyear}</Dropdown.Item>)}
-          </Dropdown.Menu>
-        </Dropdown>
-        <Dropdown>
-          <Dropdown.Toggle variant="success" id="dropdown-basic">End Year</Dropdown.Toggle>
-          <Dropdown.Menu>
-            {endYears.map((endyear) => <Dropdown.Item>{endyear}</Dropdown.Item>)}
+            {startYears.map((startyear) => <Dropdown.Item onClick={() => yearBlank(startyear, endyear)}>{startyear}</Dropdown.Item>)}
           </Dropdown.Menu>
         </Dropdown>
         <br />
