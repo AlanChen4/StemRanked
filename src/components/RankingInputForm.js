@@ -2,7 +2,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import rankings from '../util/dataRanker';
 import './RankingInputForm.css';
-import { Accordion, Button, Card, Spinner, ToggleButton, ToggleButtonGroup, Form } from 'react-bootstrap';
+import { Accordion, Button, Card, Spinner, ToggleButton, ToggleButtonGroup, Form, Dropdown } from 'react-bootstrap';
 
 function RankingInputForm() {
   const [selectedSubject, setSelectedSubject] = useState('test');
@@ -52,6 +52,15 @@ function RankingInputForm() {
     }
   }
 
+  let startYears = [];
+  for (let i = 1970; i < 2020; i++) {
+    startYears.push(i);
+  }
+  let endYears = [];
+  for (let i = 1970; i < 2020; i++) {
+    endYears.push(i);
+  }
+
   return (
     <div className="Wrapper">
       <div className="Input">
@@ -99,8 +108,21 @@ function RankingInputForm() {
             <Form.Check type="checkbox" label="Visualization" onClick={() => addBlank('visual')} />
             <Form.Check type="checkbox" label="Ecomonics and Computation" onClick={() => addBlank('ecom')} />
             <Form.Check type="checkbox" label="Artificial Intelligence" onClick={() => addBlank('ai')} />
+            <Form.Check type="checkbox" label="Artificial Intelligence" />
           </Form.Group>
         </Form>
+        <Dropdown>
+          <Dropdown.Toggle variant="success" id="dropdown-basic">Start Year</Dropdown.Toggle>
+          <Dropdown.Menu>
+            {startYears.map((startyear) => <Dropdown.Item>{startyear}</Dropdown.Item>)}
+          </Dropdown.Menu>
+        </Dropdown>
+        <Dropdown>
+          <Dropdown.Toggle variant="success" id="dropdown-basic">End Year</Dropdown.Toggle>
+          <Dropdown.Menu>
+            {endYears.map((endyear) => <Dropdown.Item>{endyear}</Dropdown.Item>)}
+          </Dropdown.Menu>
+        </Dropdown>
         <br />
         Ranked List for {selectedSubject}:
         <table>
