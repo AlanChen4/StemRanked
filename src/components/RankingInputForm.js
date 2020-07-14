@@ -51,7 +51,34 @@ function RankingInputForm() {
 
     }
   }
-
+  let subjectAreaInfo = [
+    ['Computer Vision', 'vision'],
+    ['Programming Languages', 'plan'],
+    ['Software Engineering', 'soft'],
+    ['Operating Systems', 'ops'],
+    ['Measurement and Perf. Analysis', 'imc'],
+    ['Mobile Computing', 'mobile'],
+    ['High Performance Computing', 'hpc'],
+    ['Embeddec and real-time systems', 'bed'],
+    ['Design Automation', 'da'],
+    ['Databases', 'mod'],
+    ['Computer Security', 'sec'],
+    ['Computer Networks', 'comm'],
+    ['Computer Architecture', 'arch'],
+    ['Logic and Verification', 'log'],
+    ['Algorithms and Complexity', 'act'],
+    ['Machine Learning and Data Mining', 'mlmining'],
+    ['Computer Graphics', 'compgraph'],
+    ['The Web and Information Retrieval', 'ir'],
+    ['Human Computer Interaction', 'chi'],
+    ['Natural Language Processing', 'nlp'],
+    ['Robotics', 'robotics'],
+    ['Cryptography', 'crypt'],
+    ['Computer Biology and Bioinformatics', 'bio'],
+    ['Visualization', 'visual'],
+    ['Ecomonics and Computation', 'ecom'],
+    ['Artificial Intelligence', 'ai']
+  ];
   let startYears = [];
   for (let i = 1970; i < 2020; i++) {
     startYears.push(i);
@@ -82,33 +109,7 @@ function RankingInputForm() {
         </ToggleButtonGroup>
         <Form>
           <Form.Group>
-            <Form.Check type="checkbox" label="Computer Vision" onClick={() => addBlank('vision')} />
-            <Form.Check type="checkbox" label="Programming Languages" onClick={() => addBlank('plan')} />
-            <Form.Check type="checkbox" label="Software Engineering" onClick={() => addBlank('soft')} />
-            <Form.Check type="checkbox" label="Operating Systems" onClick={() => addBlank('ops')} />
-            <Form.Check type="checkbox" label="Measurement and perf. analysis" onClick={() => addBlank('vision')} />
-            <Form.Check type="checkbox" label="Mobile Computing" onClick={() => addBlank('mobile')} />
-            <Form.Check type="checkbox" label="High Performance Computing" onClick={() => addBlank('hpc')} />
-            <Form.Check type="checkbox" label="Embeddec and real-time systems" onClick={() => addBlank('bed')} />
-            <Form.Check type="checkbox" label="Design Automation" onClick={() => addBlank('da')} />
-            <Form.Check type="checkbox" label="Databases" onClick={() => addBlank('mod')} />
-            <Form.Check type="checkbox" label="Computer Security" onClick={() => addBlank('sec')} />
-            <Form.Check type="checkbox" label="Computer Networks" onClick={() => addBlank('comm')} />
-            <Form.Check type="checkbox" label="Computer Architeture" onClick={() => addBlank('arch')} />
-            <Form.Check type="checkbox" label="Logic and Verification" onClick={() => addBlank('log')} />
-            <Form.Check type="checkbox" label="Algorithms and Complexity" onClick={() => addBlank('act')} />
-            <Form.Check type="checkbox" label="Machine Learning and Data Mining" onClick={() => addBlank('mlmining')} />
-            <Form.Check type="checkbox" label="Computer Graphics" onClick={() => addBlank('compgraph')} />
-            <Form.Check type="checkbox" label="The Web and Information Retrieval" onClick={() => addBlank('ir')} />
-            <Form.Check type="checkbox" label="Human Computer Interaction" onClick={() => addBlank('chi')} />
-            <Form.Check type="checkbox" label="Natural Language Processing" onClick={() => addBlank('nlp')} />
-            <Form.Check type="checkbox" label="Robotics" onClick={() => addBlank('robotics')} />
-            <Form.Check type="checkbox" label="Cryptography" onClick={() => addBlank('crypt')} />
-            <Form.Check type="checkbox" label="Computer Biology and Bioinformatics" onClick={() => addBlank('bio')} />
-            <Form.Check type="checkbox" label="Visualization" onClick={() => addBlank('visual')} />
-            <Form.Check type="checkbox" label="Ecomonics and Computation" onClick={() => addBlank('ecom')} />
-            <Form.Check type="checkbox" label="Artificial Intelligence" onClick={() => addBlank('ai')} />
-            <Form.Check type="checkbox" label="Artificial Intelligence" />
+            {subjectAreaInfo.map((subArea) => <Form.Check type="checkbox" label={subArea[0]} onClick={() => addBlank(subArea[1])} />)}
           </Form.Group>
         </Form>
         <Dropdown>
