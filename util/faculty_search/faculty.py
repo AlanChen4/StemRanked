@@ -11,8 +11,10 @@ from academic import get_academic
 from scholar import get_scholar
 
 
-def clean_authors(scholar, academic):
-    # combine information for authors on both scholar and academic
+def clean_duplicates(scholar, academic):
+    '''
+    removes authors that are found within both the academic list
+    and the scholar list.'''
     combined = academic.copy()
     for author in scholar:
         if author in combined:
@@ -24,24 +26,27 @@ def clean_authors(scholar, academic):
     return combined
 
 
+def clean_middle_name(first, second):
+    '''
+    removes middle names from authors. This reduces error caused by
+    middle names being listed different for the same people on different
+    platforms.'''
+    for name in first.keys():
+        split_name = name.split()
+        no_middle_name = split_name[0] + ' ' + split_name[-1]
+        first[name] = first.pop(no_middle_name)
+
+    for name in second.keys():
+        split_name = name.split()
+        no_middle_name = split_name[0] + ' ' + split_name[-1]
+        second[name] = second.pop(no_middle_name)
+
+    return first, second
+
+
 def write_to_csv(profiles, name='output'):
     with open(f'output/{name}.csv', 'a+', newline='', encoding='utf-8') as f:
         w = csv.writer(f)
         for author, info in profiles.items():
             w.writerow([author, info])
 
-
-if __name__ == '__main__':
-    scholar = get_scholar(
-            'cs.unc.edu',
-            'proxies/proxies.txt',
-            starting_author=None,
-            limit=10000,
-            strict=False,
-            proxy_thread=50)
-    academic = get_academic(
-            'unc',
-            'computer science',
-            500)
-    combined = clean_authors(scholar, academic)
-    write_to_csv(combined)
