@@ -49,4 +49,43 @@ def write_to_csv(profiles, name='output'):
         w = csv.writer(f)
         for author, info in profiles.items():
             w.writerow([author, info])
+        print('[Finished] Output to .CSV complete')
+
+
+def get_faculty(email_domain='example.edu', proxy_path='proxies/proxies.txt',
+                starting_author=None,limit=1000000, proxy_thread=10, strict=False,
+                uni_name='example university', field='example field', academic_limit=500,
+                output_name='output'):
+    '''
+    combines the scholar and academic scraper into one unified function
+
+    :param email_domain: scholar
+    :param proxy_path: scholar
+    :param starting_author: scholar
+    :param limit: scholar
+    :param proxy_thread: scholar
+    :param strict: scholar
+    :param uni_name: academic
+    :param field: academic
+    :param academic_limit: academic
+    :param output_name: output to csv'''
+
+    # scholar
+    print('[Start] Scholar Scraper')
+    scholar = get_scholar(email_domain=email_domain, proxy_path=proxy_path,
+            starting_author=starting_author, limit=limit, proxy_thread=proxy_thread,
+            strict=strict)
+
+    # academic
+    print('[Start] Academic Scraper')
+    academic = get_academic(uni_name=uni_name, field=field, academic_limit=academic_limit)
+
+    # cleaning functions
+    print('[Start] Cleaning')
+    scholar, academic = clean_middle_name(scholar, academic)
+    combined = clean_duplicates(scholar, academic)
+
+    # output to file
+    print('[Start] Output to .CSV')
+    write_to_csv(combined, output_name)
 
