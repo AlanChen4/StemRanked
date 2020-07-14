@@ -11,8 +11,10 @@ from academic import get_academic
 from scholar import get_scholar
 
 
-def clean_authors(scholar, academic):
-    # combine information for authors on both scholar and academic
+def clean_duplicates(scholar, academic):
+    '''
+    removes authors that are found within both the academic list
+    and the scholar list.'''
     combined = academic.copy()
     for author in scholar:
         if author in combined:
@@ -24,24 +26,69 @@ def clean_authors(scholar, academic):
     return combined
 
 
+def clean_middle_name(first, second):
+    '''
+    removes middle names from authors. This reduces error caused by
+    middle names being listed different for the same people on different
+    platforms.'''
+    first_copy = first.copy()
+    second_copy = second.copy()
+
+    for name in first_copy.keys():
+        split_name = name.split()
+        no_middle_name = split_name[0] + ' ' + split_name[-1]
+        first[no_middle_name] = first.pop(name)
+
+    for name in second_copy.keys():
+        split_name = name.split()
+        no_middle_name = split_name[0] + ' ' + split_name[-1]
+        second[no_middle_name] = second.pop(name)
+
+    return first, second
+
+
 def write_to_csv(profiles, name='output'):
     with open(f'output/{name}.csv', 'a+', newline='', encoding='utf-8') as f:
         w = csv.writer(f)
         for author, info in profiles.items():
             w.writerow([author, info])
+        print('[Finished] Output to .CSV complete')
 
 
-if __name__ == '__main__':
-    scholar = get_scholar(
-            'cs.unc.edu',
-            'proxies/proxies.txt',
-            starting_author=None,
-            limit=10000,
-            strict=False,
-            proxy_thread=50)
-    academic = get_academic(
-            'unc',
-            'computer science',
-            500)
-    combined = clean_authors(scholar, academic)
-    write_to_csv(combined)
+def get_faculty(email_domain='example.edu', proxy_path='proxies/proxies.txt',
+                starting_author=None,limit=1000000, proxy_thread=10, strict=False,
+                uni_name='example university', field='example field', academic_limit=500,
+                output_name='output'):
+    '''
+    combines the scholar and academic scraper into one unified function
+
+    :param email_domain: scholar
+    :param proxy_path: scholar
+    :param starting_author: scholar
+    :param limit: scholar
+    :param proxy_thread: scholar
+    :param strict: scholar
+    :param uni_name: academic
+    :param field: academic
+    :param academic_limit: academic
+    :param output_name: output to csv'''
+
+    # scholar
+    print('[Start] Scholar Scraper')
+    scholar = get_scholar(email_domain=email_domain, proxy_path=proxy_path,
+            starting_author=starting_author, limit=limit, proxy_thread=proxy_thread,
+            strict=strict)
+
+    # academic
+    print('[Start] Academic Scraper')
+    academic = get_academic(uni_name=uni_name, field=field, limit=academic_limit)
+
+    # cleaning functions
+    print('[Start] Cleaning')
+    scholar, academic = clean_middle_name(scholar, academic)
+    combined = clean_duplicates(scholar, academic)
+
+    # output to file
+    print('[Start] Output to .CSV')
+    write_to_csv(combined, output_name)
+
