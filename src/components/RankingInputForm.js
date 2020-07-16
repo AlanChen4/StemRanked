@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import rankings from '../util/dataRanker';
+import { subjectAreaInfo } from '../constants';
 import './RankingInputForm.css';
 import { Accordion, Button, Card, Spinner, ToggleButton, ToggleButtonGroup, Form, Dropdown } from 'react-bootstrap';
 
@@ -72,39 +73,6 @@ function RankingInputForm() {
     }
   }
 
-
-  let subjectAreaInfo =
-  {
-    'Emery Computer Science': [
-      ['Computer Vision', 'vision'],
-      ['Programming Languages', 'plan'],
-      ['Software Engineering', 'soft'],
-      ['Operating Systems', 'ops'],
-      ['Measurement and Perf. Analysis', 'imc'],
-      ['Mobile Computing', 'mobile'],
-      ['High Performance Computing', 'hpc'],
-      ['Embeddec and real-time systems', 'bed'],
-      ['Design Automation', 'da'],
-      ['Databases', 'mod'],
-      ['Computer Security', 'sec'],
-      ['Computer Networks', 'comm'],
-      ['Computer Architecture', 'arch'],
-      ['Logic and Verification', 'log'],
-      ['Algorithms and Complexity', 'act'],
-      ['Machine Learning and Data Mining', 'mlmining'],
-      ['Computer Graphics', 'compgraph'],
-      ['The Web and Information Retrieval', 'ir'],
-      ['Human Computer Interaction', 'chi'],
-      ['Natural Language Processing', 'nlp'],
-      ['Robotics', 'robotics'],
-      ['Cryptography', 'crypt'],
-      ['Computer Biology and Bioinformatics', 'bio'],
-      ['Visualization', 'visual'],
-      ['Ecomonics and Computation', 'ecom'],
-      ['Artificial Intelligence', 'ai']],
-    'test': [['Ketan Mayer Patel Subarea', 'foweifjewoifj']],
-    'Life Sciences': [['okay', 'okay']]
-  };
   let startYears = [];
   for (let i = 1970; i < 2020; i++) {
     startYears.push(i);
@@ -131,13 +99,13 @@ function RankingInputForm() {
         </ToggleButtonGroup>
         <Form>
           <Form.Group>
-            {subjectAreaInfo[selectedSubject].map((subArea) => <Form.Check type="checkbox" label={subArea[0]} onClick={() => addBlank(subArea[1])} />)}
+            {subjectAreaInfo[selectedSubject].map((subArea) => <Form.Check key={subArea[0]} type="checkbox" label={subArea[0]} onClick={() => addBlank(subArea[1])} />)}
           </Form.Group>
         </Form>
         <Dropdown>
           <Dropdown.Toggle variant="success" id="dropdown-basic">Start Year: {startyear}</Dropdown.Toggle>
           <Dropdown.Menu>
-            {startYears.map((startyear) => <Dropdown.Item onClick={() => yearBlank(startyear)}>{startyear}</Dropdown.Item>)}
+            {startYears.map((startyear) => <Dropdown.Item key={startyear} onClick={() => yearBlank(startyear)}>{startyear}</Dropdown.Item>)}
           </Dropdown.Menu>
         </Dropdown>
         <br />
