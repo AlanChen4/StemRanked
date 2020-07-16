@@ -27,6 +27,7 @@ function RankingInputForm() {
 
   const onSubjectChange = (event) => {
     setSelectedSubject(event.currentTarget.value);
+    console.log('Subject selected', event.currentTarget.value);
     setLoadingDataStatus(true);
   }
   function yearBlank(startYr) {
@@ -91,6 +92,22 @@ function RankingInputForm() {
           &nbsp;
           <ToggleButton value="Emery Computer Science" onChange={onSubjectChange}>
             Emery Computer Science
+          </ToggleButton>
+          &nbsp;
+          <ToggleButton value="Chemistry" onChange={onSubjectChange}>
+            Chemistry
+          </ToggleButton>
+          &nbsp;
+          <ToggleButton value="Engineering" onChange={onSubjectChange}>
+            Engineering
+          </ToggleButton>
+          &nbsp;
+          <ToggleButton value="Mathematics" onChange={onSubjectChange}>
+            Mathematics
+          </ToggleButton>
+          &nbsp;
+          <ToggleButton value="Physics" onChange={onSubjectChange}>
+            Physics
           </ToggleButton>
           &nbsp;
           <ToggleButton value="Life Sciences" onChange={onSubjectChange}>
