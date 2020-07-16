@@ -40,23 +40,40 @@ let areaDict = {
 // Returns the final rankings from dictionary that contains the average count and institutions
 function ranks(counts, colleges) {
     let averageCount = [];
+    let collegeList = [];
 
     for (let i = 0; i < Object.keys(counts).length; i++) {
         averageCount.push(counts[colleges[i]]);
+        collegeList.push(colleges[i]);
     }
 
-    averageCount.sort(function (a, b) { return a - b });
-    averageCount.reverse();
+    let n = averageCount.length;
 
+    // One by one move boundary of unsorted subarray 
+    for (let i = 0; i < n - 1; i++) {
+        // Find the minimum element in unsorted array 
+        let max_idx = i;
+        for (let j = i + 1; j < n; j++)
+            if (averageCount[j] > averageCount[max_idx])
+                max_idx = j;
+
+        // Swap the found minimum element with the first 
+        // element 
+        let temp = averageCount[max_idx];
+        averageCount[max_idx] = averageCount[i];
+        averageCount[i] = temp;
+
+        let temp2 = collegeList[max_idx];
+        collegeList[max_idx] = collegeList[i];
+        collegeList[i] = temp2;
+    }
     let final_rank = {};
-    for (let j = 0; j < Object.keys(counts).length; j++) {
-        for (let x = 0; x < averageCount.length; x++) {
-            if (counts[colleges[x]] === averageCount[j]) {
-                final_rank[colleges[x]] = averageCount[j];
-            }
-        }
+    for (let i = 0; i < averageCount.length; i++) {
+        final_rank[collegeList[i]] = averageCount[i];
     }
+
     return final_rank;
+
 }
 
 // Returns a dictionary with average count and institutions from a dictionary that has the institution, areas, and adjusted count
@@ -65,15 +82,13 @@ function avgCount(rank_dic) {
     let counts = {};
     for (let inst of Object.keys(rank_dic)) {
         let prod = 1;
-        let numAreas = 5;
+        let numAreas = 33;
         for (let area of Object.keys(rank_dic[inst])) {
-            numAreas++;
-            prod *= (rank_dic[inst][area] + 1)
+            prod *= (rank_dic[inst][area] + 1);
         }
-
-        counts[inst] = Math.pow(prod, (1 / numAreas))
+        counts[inst] = Math.pow(prod, (1 / numAreas));
     }
-    return (counts)
+    return counts;
 }
 
 // Returns the areas based on what the conference is
