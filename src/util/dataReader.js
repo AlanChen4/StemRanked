@@ -3,8 +3,8 @@ import * as Papa from 'papaparse';
 async function readCSV(subject) {
     const files = {
         'test': './data/publication_information.csv',
-        'Emery Computer Science': './data/Computer_Science.csv', // ./data/generated-author-info.csv
-        'Computer Science': '',
+        'Emery Computer Science': './data/generated-author-info.csv', // ./data/generated-author-info.csv
+        'Computer Science': './data/Computer_Science.csv',
         'Life Sciences': '',
         'Chemistry': '',
         'Engineering': '',
@@ -36,7 +36,7 @@ async function readCSV(subject) {
         return parsed;
     }
     for (let info of results.data) {
-        parsed.push([info.Institution, info.Author, info.Conference, 1 / info.NumAuthors, info.Year]);
+        parsed.push([info.Institution, info.Author, info.Venue, info.AdjustedCount, info.Year]);
     }
     return parsed;
 }

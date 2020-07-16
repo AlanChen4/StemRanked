@@ -6,7 +6,6 @@ import { findAllByRole, findAllByTestId } from '@testing-library/react';
 //!(rank_dic.hasOwnProperty(currentCollegeInfo[i][1]))
 
 // Dictionary in which the keys are areas and the values are conferences
-var subjects = [];
 
 let areaDict = {
     "vision": ['cvpr', 'iccv', 'eccv'],

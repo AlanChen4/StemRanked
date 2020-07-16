@@ -31,15 +31,10 @@ function RankingInputForm() {
     setLoadingDataStatus(true);
   }
   function yearBlank(startYr) {
-    if (selectedSubject === 'Emery Computer Science') {
-      setStartYear(startYr);
-    }
-    else {
-      startYr = 2005;
-    }
+    setStartYear(startYr);
     const updateRankings = async () => {
       setLoadingDataStatus(true);
-      const [result, authorRankings] = await rankings('Emery Computer Science', subAreas, startyear, 2020);
+      const [result, authorRankings] = await rankings(selectedSubject, subAreas, startyear, 2020);
       console.log('Current start year:', startyear);
       setRanks(result);
       setAuthorRanks(authorRankings);
@@ -49,29 +44,26 @@ function RankingInputForm() {
   }
 
   function addBlank(subjectArea) {
-    if (selectedSubject === 'Emery Computer Science') {
-      let temp = subAreas;
-      let index = temp.indexOf(subjectArea);
-      if (index > -1) {
-        temp.splice(index, 1);
-        setSubAreas(temp);
-      }
-      else {
-        temp.push(subjectArea);
-        setSubAreas(temp);
-      }
-      const updateRankings = async () => {
-        setLoadingDataStatus(true);
-        const [result, authorRankings] = await rankings('Emery Computer Science', subAreas, startyear, 2020);
-        console.log('Current contents of subAreas:', subAreas);
-        setRanks(result);
-        setAuthorRanks(authorRankings);
-        setLoadingDataStatus(false);
-      }
-      updateRankings();
-      //rankings('Emery Computer Science', subAreas, 2005, 2010);
-
+    let temp = subAreas;
+    let index = temp.indexOf(subjectArea);
+    if (index > -1) {
+      temp.splice(index, 1);
+      setSubAreas(temp);
     }
+    else {
+      temp.push(subjectArea);
+      setSubAreas(temp);
+    }
+    const updateRankings = async () => {
+      setLoadingDataStatus(true);
+      const [result, authorRankings] = await rankings(selectedSubject, subAreas, startyear, 2020);
+      console.log('Current contents of subAreas:', subAreas);
+      setRanks(result);
+      setAuthorRanks(authorRankings);
+      setLoadingDataStatus(false);
+    }
+    updateRankings();
+    //rankings('Emery Computer Science', subAreas, 2005, 2010);
   }
 
   let startYears = [];
@@ -104,6 +96,10 @@ function RankingInputForm() {
           &nbsp;
           <ToggleButton value="Mathematics" onChange={onSubjectChange}>
             Mathematics
+          </ToggleButton>
+          &nbsp;
+          <ToggleButton value="Computer Science" onChange={onSubjectChange}>
+            Computer Science
           </ToggleButton>
           &nbsp;
           <ToggleButton value="Physics" onChange={onSubjectChange}>
