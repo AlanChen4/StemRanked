@@ -146,11 +146,11 @@ function rankingsInfo(currentCollegeInfo, colleges) {
             rank_dic[(currentCollegeInfo[i][0])] = {}
             getInstitutions((currentCollegeInfo[i])[0], colleges);
         }
-        if (!(Object.keys(rank_dic[(currentCollegeInfo[i][0])]).includes(confAreas(currentCollegeInfo[i][2])))) {
-            rank_dic[(currentCollegeInfo[i][0])][confAreas(currentCollegeInfo[i][2])] = currentCollegeInfo[i][3];
+        if (!(Object.keys(rank_dic[(currentCollegeInfo[i][0])]).includes((currentCollegeInfo[i][2])))) {
+            rank_dic[(currentCollegeInfo[i][0])][(currentCollegeInfo[i][2])] = currentCollegeInfo[i][3];
         }
         else {
-            rank_dic[(currentCollegeInfo[i][0])][confAreas(currentCollegeInfo[i][2])] += currentCollegeInfo[i][3];
+            rank_dic[(currentCollegeInfo[i][0])][(currentCollegeInfo[i][2])] += currentCollegeInfo[i][3];
         }
     }
     return rank_dic;
