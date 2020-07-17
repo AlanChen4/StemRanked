@@ -171,7 +171,7 @@ def main(institutions, subject):
     
 if __name__ == "__main__":
     a = time.time()
-    main(['Carnegie Mellon University', 'Massachussets Institute of Technology'], 'Computer Science')
+    main([''], 'Computer Science')
     b = time.time()
     print(f'TIME TAKEN FOR EXECUTION: {(b-a)}')
 
