@@ -92,3 +92,26 @@ def get_faculty(email_domain='example.edu', proxy_path='proxies/proxies.txt',
     print('[Start] Output to .CSV')
     write_to_csv(combined, output_name)
 
+
+def get_faculty_from_list(institutions_path, field_fullname):
+    '''runs get_faculty on .csv list of universities with their domains
+
+    :param str institutions_path: path to institutions .csv file
+    :param str field_fullname: full name for field, i.e. 'Computer Science'
+
+    institutions_path .csv file should have format -(uni_name), (uni_domain)
+    '''
+    with open(institutions_path, 'r') as f:
+        uni_list = list(csv.reader(f))
+
+    for uni in uni_list:
+        # append appropriate field to end of email domain
+        field_email = uni[1] + ' ' + field_fullname
+
+        # call get_faculty for each uni in uni_list
+        print(f'[Start] Finding faculty list for {uni[0]}')
+        get_faculty(email_domain=field_email,
+                uni_name=uni[0],
+                field=field_fullname,
+                output_name=uni[0] + '_' + field_fullname)
+
