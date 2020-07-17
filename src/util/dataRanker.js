@@ -1,13 +1,14 @@
 import readCSV from './dataReader';
 import { findAllByRole, findAllByTestId } from '@testing-library/react';
+import { areaDictionary } from './constants';
 
 // Object.keys(dictionary).length <-- find the length of the dictionary
 // delete dictionary[key] <-- remove elements from a dictionary
 //!(rank_dic.hasOwnProperty(currentCollegeInfo[i][1]))
 
 // Dictionary in which the keys are areas and the values are conferences
-/*
-let areaDict = {
+
+/*let areaDict = {
     "vision": ['cvpr', 'iccv', 'eccv'],
     "plan": ['popl', 'pldi', 'oopsla', 'icfp'],
     "soft": ['icse', 'fse', 'ase', 'issta'],
@@ -36,32 +37,8 @@ let areaDict = {
     'ai': ['aaai', 'ijcai']
 
 }*/
-let areaDict = {
-    'Artificial Intelligence': ['AAAI', 'AAAI Conference on Artificial Intelligence', 'IJCAI', 'International Joint Conference on Artificial Intelligence'],
-    'Computer Vision': ['CVPR', 'Computer Vision and Pattern Recognition', 'ECCV', 'European Conference on Computer Vision', 'ICCV', 'International Conference on Computer Vision'],
-    'Machine Learning & Data Mining': ['ICML', 'International Conference on Machine Learning', 'KDD', 'Knowledge Discovery and Data Mining', 'NeurIPS', 'Neural Information Processing Systems'],
-    'Natural Language Processing': ['ACL', 'Meeting of the Association for Computational Linguistics', 'EMNLP', 'Empirical Methods in Natural Language Processing', 'NAACL', 'North American Chapter of the Association for Computational Linguistics'],
-    'The Web and Information': ['SIGIR', 'International ACM SIGIR Conference on Research and Development in Information Retrieval', 'WWW', 'The Web Conference'],
-    'Computer Architecture': ['ASPLOS', 'Architectural Support for Programming Languages and Operating Systems', 'ISCA', 'International Symposium on Computer Architecture', 'MICRO', 'International Symposium on Microarchitecture', 'HPCA', 'High-Performance Computer Architecture'],
-    'Computer Networks': ['SIGCOMM', 'ACM Special Interest Group on Data Communication', 'NSDI', 'Networked Systems Design and Implementation'],
-    'Computer Security': ['CCS', 'Computer and Communications Security', 'S&P', 'IEEE Symposium on Security and Privacy', 'USENIX', 'USENIX Security Symposium', 'NDSS', 'Network and Distributed System Security Symposium'],
-    'Databases': ['SIGMOD', 'International Conference on Management of Data', 'VLDB', 'Very Large Data Bases', 'ICDE', 'International Conference on Data Engineering', 'PODS', 'Symposium on Principles of Database Systems'],
-    'Design Automation': ['DAC', 'Design Automation Conference', 'ICCAD', 'International Conference on Computer Aided Design'],
-    'Embedded and Real-Time Systems': ['EMSOFT', 'Embedded Software', 'RTAS', 'Real Time Technology and Applications Symposium', 'RTSS', 'Real-Time Systems Symposium'],
-    'High Performance Computing': ['HPDC', 'High Performance Distributed Computing', 'ICS', 'International Conference on Supercomputing'],
-    'Mobile Computing': ['MOBICOM', 'ACM/IEEE International Conference on Mobile Computing and Networking', 'MobiSys', 'International Conference on Mobile Systems, Applications, and Services', 'SenSys', 'International Conference on Embedded Networked Sensor Systems'],
-    'Measurement and Performance Analysis': ['IMC', 'Internet Measurement Conference', 'SIGMETRICS', 'Measurement and Modeling of Computer Systems'],
-    'Operating Systems': ['OSDI', 'Operating Systems Design and Implementation', 'SOSP', 'Symposium on Operating Systems Principles', 'EuroSys', 'European Conference on Computer Systems'],
-    'Programming Languages': ['PLDI', 'Programming Language Design and Implementation', 'POPL', 'Symposium on Principles of Programming Languages', 'ICFP', 'International Conference on Functional Programming', 'OOPSLA', 'Conference on Object-Oriented Programming Systems, Languages, and Applications'],
-    'Software Engineering': ['FSE', 'Foundations of Software Engineering', 'ICSE', 'International Conference on Software Engineering', 'ISSTA', 'International Symposium on Software Testing and Analysis'],
-    'Algorithms & Complexity': ['FOCS', 'Foundations of Computer Science', 'SODA', 'Symposium on Discrete Algorithms', 'STOC', 'Symposium on the Theory of Computing', 'CRYPTO', 'International Cryptology Conference', 'EUROCRYPT', 'Theory and Application of Cryptographic Techniques'],
-    'Logic and Verification': ['CAV', 'Computer Aided Verification', 'LICS', 'Logic in Computer Science'],
-    'Comp. bio & bioinformatics': ['ISMB', 'Intelligent Systems in Molecular Biology', 'RECOMB', 'Research in Computational Molecular Biology'],
-    'Computer Graphics': ['SIGGRAPH', 'International Conference on Computer Graphics and Interactive Techniques', 'SIGGRAPH Asia', 'SIGGRAPH Conference and Exhibition on Computer Graphics and Interactive Techniques in Asia'],
-    'Human-Computer Interaction': ['CHI', 'Human Factors in Computing Systems', 'UbiComp', 'Ubiquitous Computing', 'UIST', 'User Interface Software and Technology'],
-    'Robotics': ['ICRA', 'International Conference on Robotics and Automation', 'IROS', 'Intelligent Robots and Systems', 'RSS', 'Robotics, Science and Systems'],
-    'Visualization': ['VIS', 'IEEE Transactions on Visualization and Computer Graphics']
-}
+
+let areaDict = {};
 
 // Returns the final rankings from dictionary that contains the average count and institutions
 function ranks(counts, colleges) {
@@ -126,7 +103,7 @@ function avgCount(rank_dic, subAreas) {
 }
 
 // Returns the areas based on what the conference is
-function confAreas(conferences) {
+function confAreas(conferences, areaDict) {
     for (let x = 0; x < Object.keys(areaDict).length; x++) {
         if ((areaDict[Object.keys(areaDict)[x]].includes(conferences))) {
             return (Object.keys(areaDict))[x];
@@ -221,7 +198,7 @@ function areaCheck(currentCollegeInfo, area) {
     let final_colleges = [];
     for (let j = 0; j < area.length; j++) {
         for (let i = 0; i < currentCollegeInfo.length; i++) {
-            if (confAreas(currentCollegeInfo[i][2]) === area[j]) {
+            if (confAreas(currentCollegeInfo[i][2], areaDict) === area[j]) {
                 final_colleges.push(currentCollegeInfo[i]);
             }
         }
@@ -242,6 +219,10 @@ function yearCheck(collegeInfo, startYear, endYear) {
 
 // Logs everythin on console in the local browser
 async function rankings(subject, subAreas, startYr, endYr) {
+    areaDict = areaDictionary[subject];
+    console.log(areaDict);
+    //let areaDict = areaDictionary[subject];
+    //console.log(areaDict);
     let institutionAuthors = [];
     let colleges = [];
     let collegeInfo = await readCSV(subject);
