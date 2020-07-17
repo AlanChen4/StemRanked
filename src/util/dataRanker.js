@@ -1,5 +1,6 @@
 import readCSV from './dataReader';
 import { findAllByRole, findAllByTestId } from '@testing-library/react';
+import { areaDictionary } from './constants';
 
 // Object.keys(dictionary).length <-- find the length of the dictionary
 // delete dictionary[key] <-- remove elements from a dictionary
@@ -7,7 +8,7 @@ import { findAllByRole, findAllByTestId } from '@testing-library/react';
 
 // Dictionary in which the keys are areas and the values are conferences
 
-let areaDict = {
+/*let areaDict = {
     "vision": ['cvpr', 'iccv', 'eccv'],
     "plan": ['popl', 'pldi', 'oopsla', 'icfp'],
     "soft": ['icse', 'fse', 'ase', 'issta'],
@@ -35,7 +36,9 @@ let areaDict = {
     'ecom': ['ec', 'wine', 'cse'],
     'ai': ['aaai', 'ijcai']
 
-}
+}*/
+
+let areaDict = {};
 
 // Returns the final rankings from dictionary that contains the average count and institutions
 function ranks(counts, colleges) {
@@ -77,12 +80,20 @@ function ranks(counts, colleges) {
 }
 
 // Returns a dictionary with average count and institutions from a dictionary that has the institution, areas, and adjusted count
-function avgCount(rank_dic) {
-
+function avgCount(rank_dic, subAreas) {
+    let numAreas = 0;
+    if (subAreas.length === 0) {
+        numAreas = 67;
+    }
+    else {
+        for (let i = 0; i < subAreas.length; i++) {
+            numAreas += (areaDict[subAreas[i]].length);
+        }
+    }
+    console.log('Number of Areas:', numAreas);
     let counts = {};
     for (let inst of Object.keys(rank_dic)) {
         let prod = 1;
-        let numAreas = 33;
         for (let area of Object.keys(rank_dic[inst])) {
             prod *= (rank_dic[inst][area] + 1);
         }
@@ -92,7 +103,7 @@ function avgCount(rank_dic) {
 }
 
 // Returns the areas based on what the conference is
-function confAreas(conferences) {
+function confAreas(conferences, areaDict) {
     for (let x = 0; x < Object.keys(areaDict).length; x++) {
         if ((areaDict[Object.keys(areaDict)[x]].includes(conferences))) {
             return (Object.keys(areaDict))[x];
@@ -187,7 +198,7 @@ function areaCheck(currentCollegeInfo, area) {
     let final_colleges = [];
     for (let j = 0; j < area.length; j++) {
         for (let i = 0; i < currentCollegeInfo.length; i++) {
-            if (confAreas(currentCollegeInfo[i][2]) === area[j]) {
+            if (confAreas(currentCollegeInfo[i][2], areaDict) === area[j]) {
                 final_colleges.push(currentCollegeInfo[i]);
             }
         }
@@ -208,6 +219,10 @@ function yearCheck(collegeInfo, startYear, endYear) {
 
 // Logs everythin on console in the local browser
 async function rankings(subject, subAreas, startYr, endYr) {
+    areaDict = areaDictionary[subject];
+    console.log(areaDict);
+    //let areaDict = areaDictionary[subject];
+    //console.log(areaDict);
     let institutionAuthors = [];
     let colleges = [];
     let collegeInfo = await readCSV(subject);
@@ -228,7 +243,7 @@ async function rankings(subject, subAreas, startYr, endYr) {
     let rank_dic = rankingsInfo(final_colleges, colleges);
     console.log('Result of rankingsInfo call', rank_dic);
 
-    let counts = avgCount(rank_dic);
+    let counts = avgCount(rank_dic, subAreas);
     console.log('Result of avgCount call', counts);
 
     let final = ranks(counts, colleges);
