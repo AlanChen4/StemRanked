@@ -4,7 +4,7 @@ import requests
 
 from bs4 import BeautifulSoup
 from csv import writer
-from requests.exceptions import Timeout, ProxyError, ConnectionError
+from requests.exceptions import Timeout, ProxyError, ConnectionError, ChunkedEncodingError
 from proxy import get_proxy_local, gen_headers
 
 
@@ -52,6 +52,11 @@ def get_scholar(email_domain, proxy_path, starting_author=None,
             next_btn = list(filter(lambda x: x['aria-label'] == 'Next', nav_btns))
             next_link = next_btn[0]['onclick'][17:-1]
         except IndexError:
+            # check if it was just no results returned
+            if "didn't match any user profiles" in soup.text:
+                print('[Finished] No scholar results founds')
+                return profiles
+
             # checks if first page is only page
             if len(base_check) > 0:
                 return profiles
@@ -120,6 +125,10 @@ def get_scholar(email_domain, proxy_path, starting_author=None,
                             print(f'[ProxyError-Removed] {len(proxy_list)} proxies remaining')
                         else:
                             print(f'[ProxyError] [Strict: False] {proxy}')
+                    except ChunkedEncodingError:
+                        proxy_list.remove(proxy)
+                        print(f'[CEE] Removed bad proxy')
+                        next_resp = old_resp
 
             # check if last page has been reached
             except KeyError:
