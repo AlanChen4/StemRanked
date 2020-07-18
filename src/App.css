@@ -17,7 +17,7 @@
 }
 
 .Title-Logo {
-  width: 18vw;
+  width: 15vw;
   height: auto;
 }
 
@@ -57,6 +57,8 @@
 */
 
 .GitHub-Logo {
-  /*background-color: teal;*/
   text-align: center;
+  background-color: teal;
+  position: absolute; /* change the positioning css on this to make it not absolute. justify-content, align-content, align-self, align-items? */
+  bottom: 0vh; /* change the positioning css on this to make it not absolute. justify-content, align-content, align-self, align-items? */
 }

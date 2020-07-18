@@ -44,8 +44,8 @@ function App() {
               </Row>
             </Col>
           </Row>
-          <Row className="GitHub-Logo">
-            <Col>
+          <Row >
+            <Col className="GitHub-Logo">
               GitHub Logo Here
             </Col>
           </Row>
