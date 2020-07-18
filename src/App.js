@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import RankingInputForm from './components/RankingInputForm';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Image, Container, Row, Col } from 'react-bootstrap';
 
 const subjectList = [
   'Computer Science',
@@ -20,18 +20,24 @@ function App() {
         <Col className="Sidebar">
           <Row className="Title">
             <Col>
-              STEM Ranked
+              <Image className="Title-Logo" src="./logo.png" fluid />
             </Col>
           </Row>
           <Row className="Sidebar-Links">
             <Col>
-              <Row className="Main-Links">
+              <Row className="Main-Link">
+                <Col xs={4}>
+                  <Image className="Main-Link-Icon" src="./subjects-icon.png" />
+                </Col>
                 <Col>
                   Subjects
                   {subjectList.map((subject) => <Row className="Subject-Link" key={subject}><Col>{subject}</Col></Row>)}
                 </Col>
               </Row>
-              <Row className="Main-Links">
+              <Row className="Main-Link">
+                <Col xs={4}>
+                  <Image className="Main-Link-Icon" src="./about-icon.png" />
+                </Col>
                 <Col>
                   About
                 </Col>
