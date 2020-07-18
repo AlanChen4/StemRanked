@@ -11,11 +11,11 @@
 }
 
 .Accordion {
-    background-color: #282c34;
+    background-color: var(--main-bg-color);
     font-size: calc(10px + 2vmin);
-    color: white;
+    color: var(--main-text-color);
 }
 
 .Accordion:hover {
-    color: white;
+    color: var(--main-text-color);
 }
