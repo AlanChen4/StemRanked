@@ -1,7 +1,38 @@
-.App {
-  text-align: center;
+.Main {
+  height: 100vh;
 }
 
+.Sidebar {
+  background-color: var(--sidebar-color);
+  color: var(--sidebar-active-text-color); /* will have to remove/change this to account for hovering */
+  width: 20.5vw;
+  max-width: 20.5vw;
+}
+
+.Title {
+  font-size: 45px;
+  font-weight: 500;
+  text-align: center;
+  border-bottom: 1px solid rgba(112, 112, 112, 0.25);
+  padding-top: 25px;
+  padding-bottom: 25px;
+}
+
+.Sidebar-Links {
+  /*background-color: thistle;*/
+  font-size: 25px;
+}
+
+.Main-Links {
+  margin-top: 5vh;
+}
+
+.Subject-Link {
+  margin-top: 2vh;
+  text-indent: 1vw;
+}
+
+/*
 .App-header {
   background-color: var(--main-bg-color);
   color: var(--main-text-color);
@@ -11,4 +42,10 @@
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
+}
+*/
+
+.GitHub-Logo {
+  /*background-color: teal;*/
+  text-align: center;
 }
