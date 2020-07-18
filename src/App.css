@@ -1,3 +1,5 @@
+/* Change icon height/widths to be percentage relative rather than auto */
+
 .Main {
   height: 100vh;
 }
@@ -6,7 +8,8 @@
   background-color: var(--sidebar-color);
   color: var(--sidebar-active-text-color); /* will have to remove/change this to account for hovering */
   width: 20.5vw;
-  max-width: 20.5vw;
+  max-width: 20.5vw; /* change this to non-relative width */
+  min-width: 250px;
 }
 
 .Title {
@@ -19,6 +22,7 @@
 .Title-Logo {
   width: 15vw;
   height: auto;
+  min-width: 200px;
 }
 
 .Sidebar-Links {
@@ -44,21 +48,24 @@
 }
 
 /*
-.App-header {
-  background-color: var(--main-bg-color);
-  color: var(--main-text-color);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   font-size: calc(10px + 2vmin);
-}
 */
 
 .GitHub-Logo {
   text-align: center;
-  background-color: teal;
   position: absolute; /* change the positioning css on this to make it not absolute. justify-content, align-content, align-self, align-items? */
   bottom: 0vh; /* change the positioning css on this to make it not absolute. justify-content, align-content, align-self, align-items? */
+  margin-bottom: 3vh;
+}
+
+.GitHub-Logo-Icon {
+  opacity: 0.5;
+  width: 2vw;
+  height: auto;
+}
+
+.GitHub-Logo-Icon:hover {
+  opacity: 1;
+  width: 2vw;
+  height: auto;
 }

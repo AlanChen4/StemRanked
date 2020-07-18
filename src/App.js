@@ -20,14 +20,14 @@ function App() {
         <Col className="Sidebar">
           <Row className="Title">
             <Col>
-              <Image className="Title-Logo" src="./logo.png" fluid />
+              <Image className="Title-Logo" src="./images/logo.png" fluid />
             </Col>
           </Row>
           <Row className="Sidebar-Links">
             <Col>
               <Row className="Main-Link">
                 <Col xs={4}>
-                  <Image className="Main-Link-Icon" src="./subjects-icon.png" />
+                  <Image className="Main-Link-Icon" src="./images/subjects-icon.png" />
                 </Col>
                 <Col>
                   Subjects
@@ -36,7 +36,7 @@ function App() {
               </Row>
               <Row className="Main-Link">
                 <Col xs={4}>
-                  <Image className="Main-Link-Icon" src="./about-icon.png" />
+                  <Image className="Main-Link-Icon" src="./images/about-icon.png" />
                 </Col>
                 <Col>
                   About
@@ -46,7 +46,7 @@ function App() {
           </Row>
           <Row >
             <Col className="GitHub-Logo">
-              GitHub Logo Here
+              <a href="https://github.com/AlanChen4/StemRanked" target="_blank" rel="noopener noreferrer" ><Image className="GitHub-Logo-Icon" src="./images/github-logo.png" /></a>
             </Col>
           </Row>
         </Col>
