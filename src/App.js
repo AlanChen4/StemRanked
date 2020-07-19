@@ -1,7 +1,8 @@
 import React from 'react';
+import { useState } from 'react';
 import './App.css';
 import RankingInputForm from './components/RankingInputForm';
-import { Image, Container, Row, Col } from 'react-bootstrap';
+import { Image, Container, Row, Col, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
 
 const subjectList = [
   'Computer Science',
@@ -13,8 +14,14 @@ const subjectList = [
 ]
 
 function App() {
+  const [selectedSubject, setSelectedSubject] = useState('Computer Science');
+
+  const onSubjectChange = (event) => {
+    setSelectedSubject(event.currentTarget.value);
+    console.log('Subject selected', event.currentTarget.value);
+  }
+
   return (
-    <div>
     <Container fluid>
       <Row className="Main">
         <Col className="Sidebar">
@@ -31,7 +38,9 @@ function App() {
                 </Col>
                 <Col>
                   Subjects
-                  {subjectList.map((subject) => <Row className="Subject-Link" key={subject}><Col>{subject}</Col></Row>)}
+                  <ToggleButtonGroup className="Subject-Link-Container" type="radio" name='subjects' defaultValue={selectedSubject} vertical>
+                    {subjectList.map((subject) => <Row className={selectedSubject === subject ? "Subject-Link-Active" : "Subject-Link-Inactive"} as={ToggleButton} variant="custom" value={subject} onChange={onSubjectChange} block><Col>{subject}</Col></Row>)}
+                  </ToggleButtonGroup>
                 </Col>
               </Row>
               <Row className="Main-Link">
@@ -55,7 +64,6 @@ function App() {
         </Col>
       </Row>
     </Container>
-    </div>
   );
 }
 

@@ -26,7 +26,6 @@
 }
 
 .Sidebar-Links {
-  /*background-color: thistle;*/
   font-size: 2.5vh;
   color: var(--sidebar-inactive-text-color);
 }
@@ -42,9 +41,43 @@
   margin-top: 5vh;
 }
 
-.Subject-Link {
+.Subject-Link-Container {
+  width: 13.5vw;
+}
+
+.Subject-Link-Inactive {
   margin-top: 2vh;
-  text-indent: 1vw;
+  font-size: 2.5vh;
+  color: var(--sidebar-inactive-text-color);
+  background-color: var(--sidebar-color);
+  text-align: left;
+}
+
+.Subject-Link-Inactive:hover {
+  color: var(--sidebar-active-text-color);
+  text-decoration: none;
+  background-color: var(--sidebar-color);
+}
+
+.Subject-Link-Active {
+  margin-top: 2vh;
+  font-size: 2.5vh;
+  color: var(--sidebar-active-text-color);
+  background-color: var(--sidebar-color);
+  text-align: left;
+  text-decoration: none;
+}
+
+.Subject-Link-Active:hover {
+  color: var(--sidebar-active-text-color);
+  background-color: var(--sidebar-color);
+  text-decoration: none;
+}
+
+.Subject-Link-Active:active {
+  color: var(--sidebar-active-text-color);
+  text-decoration: none;
+  background-color: var(--sidebar-color);
 }
 
 /*
