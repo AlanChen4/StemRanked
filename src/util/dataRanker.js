@@ -156,26 +156,40 @@ function AuthorList(final_colleges, institutionAuthors) {
 
 }
 // Checks to see if the area that the user inputsis matches the publication area
-function areaCheck(currentCollegeInfo, area) {
-    if (area.length === 0) {
+function areaCheck(currentCollegeInfo, area, subject) {
+    if (area.length === (Object.keys(areaDictionary[subject])).length) {
         return currentCollegeInfo;
     }
     let final_colleges = [];
-    for (let j = 0; j < area.length; j++) {
-        for (let i = 0; i < currentCollegeInfo.length; i++) {
-            if (confAreas(currentCollegeInfo[i][2], areaDict) === area[j]) {
-                final_colleges.push(currentCollegeInfo[i]);
+    if (area.length < ((Object.keys(areaDictionary[subject])).length) / 2) {
+        for (let j = 0; j < area.length; j++) {
+            for (let i = 0; i < currentCollegeInfo.length; i++) {
+                if (confAreas(currentCollegeInfo[i][2], areaDict) === area[j]) {
+                    final_colleges.push(currentCollegeInfo[i]);
+                }
             }
         }
+        return final_colleges;
     }
-    return final_colleges;
+    else {
+        let difference = (Object.keys(areaDictionary[subject])).filter(x => !area.includes(x));
+        console.log(difference);
+        for (let j = 0; j < difference.length; j++) {
+            for (let i = 0; i < currentCollegeInfo.length; i++) {
+                if (!(confAreas(currentCollegeInfo[i][2], areaDict) === difference[j])) {
+                    final_colleges.push(currentCollegeInfo[i])
+                }
+            }
+        }
+        return final_colleges;
+    }
 }
 
 //Uses the user's entry of start year and end year to filter out publications in a given timeline.
-function yearCheck(collegeInfo, startYear, endYear) {
+function yearCheck(collegeInfo, startYear) {
     let currentInfo = [];
     for (let i = 0; i < collegeInfo.length; i++) {
-        if ((collegeInfo[i][4] >= startYear) && collegeInfo[i][4] <= endYear) {
+        if ((collegeInfo[i][4] >= startYear)) {
             currentInfo.push(collegeInfo[i]);
         }
     }
@@ -183,20 +197,21 @@ function yearCheck(collegeInfo, startYear, endYear) {
 }
 
 // Logs everythin on console in the local browser
-async function rankings(subject, subAreas, startYr, endYr) {
+async function rankings(subject, subAreas, startYr) {
     areaDict = areaDictionary[subject];
     console.log(areaDict);
 
     let institutionAuthors = [];
     let colleges = [];
     let collegeInfo = await readCSV(subject);
+    console.log(subject);
     console.log('Result of readCSV call', collegeInfo);
 
-    let currentCollegeInfo = yearCheck(collegeInfo, startYr, endYr);
+    let currentCollegeInfo = yearCheck(collegeInfo, startYr);
     console.log('Result of yearCheck call', currentCollegeInfo);
 
     // 'vision', "plan", "soft", "ops", "metrics", "mobile", "hpc", "bed", "da", "mod", "sec", "comm", "arch", "log", "act", "mlmining", "compgraph", "ir", "chi", "nlp", "robotics", "crypt", "bio", "visual", "ecom", "ai"
-    let final_colleges = areaCheck(currentCollegeInfo, subAreas);
+    let final_colleges = areaCheck(currentCollegeInfo, subAreas, subject);
     console.log('The filtered data', final_colleges);
 
     let rankAuthors = AuthorList(final_colleges, institutionAuthors);
