@@ -1,5 +1,6 @@
 import readCSV from './dataReader';
 import { findAllByRole, findAllByTestId } from '@testing-library/react';
+import { areaDictionary } from './constants';
 
 // Object.keys(dictionary).length <-- find the length of the dictionary
 // delete dictionary[key] <-- remove elements from a dictionary
@@ -7,35 +8,7 @@ import { findAllByRole, findAllByTestId } from '@testing-library/react';
 
 // Dictionary in which the keys are areas and the values are conferences
 
-let areaDict = {
-    "vision": ['cvpr', 'iccv', 'eccv'],
-    "plan": ['popl', 'pldi', 'oopsla', 'icfp'],
-    "soft": ['icse', 'fse', 'ase', 'issta'],
-    "ops": ['sosp', 'osdi', 'eurosys', 'fast', 'usenixatc'],
-    'metrics': ['imc', 'sigmetrics'],
-    'mobile': ['mobisys', 'mobicom', 'sensys'],
-    'hpc': ['sc', 'hpdc', 'ics'],
-    'bed': ['emsoft', 'rtss', 'rtas'],
-    'da': ['iccad', 'dac'],
-    'mod': ['vldb', 'sigmod', 'icde', 'pods'],
-    'sec': ['ccs', 'oakland', 'usenixsec', 'ndss', 'ieee s&p', 'pets'],
-    'comm': ['sigcomm', 'nsdi'],
-    'arch': ['asplos', 'isca', 'micro', 'hpca', 'neurlps'],
-    'log': ['cav', 'lics'],
-    'act': ['focs', 'stoc', 'soda'],
-    'mlmining': ['nips', 'icml', 'kdd'],
-    'compgraph': ['siggraph', 'siggraph-asia'],
-    'ir': ['sigir', 'www'],
-    'chi': ['chiconf', 'ubicomp', 'uist', 'imwut, pervasive'],
-    'nlp': ['emnlp', 'acl', 'naacl'],
-    'robotics': ['icra', 'iros', 'rss'],
-    'crypt': ['crypto', 'eurocrypt'],
-    'bio': ['ismb', 'recomb'],
-    'visual': ['vis', 'vr'],
-    'ecom': ['ec', 'wine', 'cse'],
-    'ai': ['aaai', 'ijcai']
-
-}
+let areaDict = {};
 
 // Returns the final rankings from dictionary that contains the average count and institutions
 function ranks(counts, colleges) {
@@ -49,16 +22,11 @@ function ranks(counts, colleges) {
 
     let n = averageCount.length;
 
-    // One by one move boundary of unsorted subarray 
     for (let i = 0; i < n - 1; i++) {
-        // Find the minimum element in unsorted array 
         let max_idx = i;
         for (let j = i + 1; j < n; j++)
             if (averageCount[j] > averageCount[max_idx])
                 max_idx = j;
-
-        // Swap the found minimum element with the first 
-        // element 
         let temp = averageCount[max_idx];
         averageCount[max_idx] = averageCount[i];
         averageCount[i] = temp;
@@ -77,12 +45,20 @@ function ranks(counts, colleges) {
 }
 
 // Returns a dictionary with average count and institutions from a dictionary that has the institution, areas, and adjusted count
-function avgCount(rank_dic) {
-
+function avgCount(rank_dic, subAreas) {
+    let numAreas = 0;
+    if (subAreas.length === 0) {
+        numAreas = 67;
+    }
+    else {
+        for (let i = 0; i < subAreas.length; i++) {
+            numAreas += (areaDict[subAreas[i]].length);
+        }
+    }
+    console.log('Number of Areas:', numAreas);
     let counts = {};
     for (let inst of Object.keys(rank_dic)) {
         let prod = 1;
-        let numAreas = 33;
         for (let area of Object.keys(rank_dic[inst])) {
             prod *= (rank_dic[inst][area] + 1);
         }
@@ -92,7 +68,7 @@ function avgCount(rank_dic) {
 }
 
 // Returns the areas based on what the conference is
-function confAreas(conferences) {
+function confAreas(conferences, areaDict) {
     for (let x = 0; x < Object.keys(areaDict).length; x++) {
         if ((areaDict[Object.keys(areaDict)[x]].includes(conferences))) {
             return (Object.keys(areaDict))[x];
@@ -146,11 +122,11 @@ function rankingsInfo(currentCollegeInfo, colleges) {
             rank_dic[(currentCollegeInfo[i][0])] = {}
             getInstitutions((currentCollegeInfo[i])[0], colleges);
         }
-        if (!(Object.keys(rank_dic[(currentCollegeInfo[i][0])]).includes(confAreas(currentCollegeInfo[i][2])))) {
-            rank_dic[(currentCollegeInfo[i][0])][confAreas(currentCollegeInfo[i][2])] = currentCollegeInfo[i][3];
+        if (!(Object.keys(rank_dic[(currentCollegeInfo[i][0])]).includes(currentCollegeInfo[i][2]))) {
+            rank_dic[(currentCollegeInfo[i][0])][currentCollegeInfo[i][2]] = currentCollegeInfo[i][3];
         }
         else {
-            rank_dic[(currentCollegeInfo[i][0])][confAreas(currentCollegeInfo[i][2])] += currentCollegeInfo[i][3];
+            rank_dic[(currentCollegeInfo[i][0])][currentCollegeInfo[i][2]] += currentCollegeInfo[i][3];
         }
     }
     return rank_dic;
@@ -187,7 +163,7 @@ function areaCheck(currentCollegeInfo, area) {
     let final_colleges = [];
     for (let j = 0; j < area.length; j++) {
         for (let i = 0; i < currentCollegeInfo.length; i++) {
-            if (confAreas(currentCollegeInfo[i][2]) === area[j]) {
+            if (confAreas(currentCollegeInfo[i][2], areaDict) === area[j]) {
                 final_colleges.push(currentCollegeInfo[i]);
             }
         }
@@ -208,6 +184,9 @@ function yearCheck(collegeInfo, startYear, endYear) {
 
 // Logs everythin on console in the local browser
 async function rankings(subject, subAreas, startYr, endYr) {
+    areaDict = areaDictionary[subject];
+    console.log(areaDict);
+
     let institutionAuthors = [];
     let colleges = [];
     let collegeInfo = await readCSV(subject);
@@ -228,7 +207,7 @@ async function rankings(subject, subAreas, startYr, endYr) {
     let rank_dic = rankingsInfo(final_colleges, colleges);
     console.log('Result of rankingsInfo call', rank_dic);
 
-    let counts = avgCount(rank_dic);
+    let counts = avgCount(rank_dic, subAreas);
     console.log('Result of avgCount call', counts);
 
     let final = ranks(counts, colleges);

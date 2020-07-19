@@ -10,7 +10,7 @@ function RankingInputForm() {
   const [loadingDataStatus, setLoadingDataStatus] = useState(false);
   const [ranks, setRanks] = useState({});
   const [authorRanks, setAuthorRanks] = useState({});
-  const [subAreas, setSubAreas] = useState([]);
+  let [subAreas, setSubAreas] = useState([]);
   const [startyear, setStartYear] = useState([]);
   // Wait for CSV parsing and rankings function to finish (runs on every render)
   useEffect(() => {
@@ -26,6 +26,7 @@ function RankingInputForm() {
   }, [selectedSubject, subAreas, startyear]); // eslint-disable-line
 
   const onSubjectChange = (event) => {
+    setSubAreas([]);
     setSelectedSubject(event.currentTarget.value);
     console.log('Subject selected', event.currentTarget.value);
     setLoadingDataStatus(true);

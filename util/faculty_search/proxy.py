@@ -37,7 +37,6 @@ class ProxyThread(threading.Thread):
                 print(f'[Success] {ip}')
                 good_proxies.append(proxy)
         except Exception as e:
-            print(f'[Fail] {ip} {type(e)}')
             return
 
 
