@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import './App.css';
-import RankingInputForm from './components/RankingInputForm';
+import MainBody from './components/MainBody';
 import { Image, Container, Row, Col, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
 
 const subjectList = [
@@ -60,7 +60,7 @@ function App() {
           </Row>
         </Col>
         <Col>
-          Main Body Component goes here {/* put main body component here */}
+          <MainBody subject={selectedSubject} />
         </Col>
       </Row>
     </Container>

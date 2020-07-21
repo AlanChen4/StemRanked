@@ -1,0 +1,21 @@
+.Outside {
+    padding-top: 1vh;
+    padding-bottom: 2vh;
+    padding-left: 2.25vw;
+    padding-right: 2.25vw;
+}
+
+.SubjectName {
+    height: 12.5vh;
+    display: flex;
+    align-items: center;
+    font-size: 1.75vw;
+}
+
+.ConfigButtons {
+    text-align: center;
+}
+
+.AuthorRanks {
+    border-left: 1px solid rgba(112, 112, 112, 0.25);
+}
