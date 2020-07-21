@@ -1,104 +1,34 @@
-/* Change icon height/widths to be percentage relative rather than auto */
+/* Collapse or no? If no, change all font-sizes back to 2.5vh/relative amount */
 
-.Main {
-  height: 100vh;
-}
-
-.Sidebar {
+.NavBar {
   background-color: var(--sidebar-color);
-  color: var(--sidebar-active-text-color); /* will have to remove/change this to account for hovering */
-  width: 20.5vw;
-  max-width: 20.5vw; /* change this to non-relative width */
-  min-width: 250px;
 }
 
-.Title {
-  border-bottom: 1px solid rgba(112, 112, 112, 0.25);
-  text-align: center;
-  padding-top: 2.75vh;
-  padding-bottom: 2.75vh;
+.Logo {
+  width: 10vw;
 }
 
-.Title-Logo {
-  width: 15vw;
-  height: auto;
-  min-width: 200px;
+.SubjectLink {
+  font-size: 23px;
+  margin-left: 1vw;
 }
 
-.Sidebar-Links {
-  font-size: 2.5vh;
-  color: var(--sidebar-inactive-text-color);
+.RightSideNavLinks {
+  align-items: center;
 }
 
-.Main-Link-Icon {
+.AboutLink {
+  font-size: 23px;
+  margin-right: 1vw;
+}
+
+.GitHubLogoIcon {
   opacity: 0.5;
-  height: 2.5vh;
-  width: auto;
-  margin-left: 1.25vw;
+  width: 1.5vw;
+  height: 1.5vw;
+  margin-right: 1vw;
 }
 
-.Main-Link {
-  margin-top: 5vh;
-}
-
-.Subject-Link-Container {
-  width: 13.5vw;
-}
-
-.Subject-Link-Inactive {
-  margin-top: 2vh;
-  font-size: 2.5vh;
-  color: var(--sidebar-inactive-text-color);
-  background-color: var(--sidebar-color);
-  text-align: left;
-}
-
-.Subject-Link-Inactive:hover {
-  color: var(--sidebar-active-text-color);
-  text-decoration: none;
-  background-color: var(--sidebar-color);
-}
-
-.Subject-Link-Active {
-  margin-top: 2vh;
-  font-size: 2.5vh;
-  color: var(--sidebar-active-text-color);
-  background-color: var(--sidebar-color);
-  text-align: left;
-  text-decoration: none;
-}
-
-.Subject-Link-Active:hover {
-  color: var(--sidebar-active-text-color);
-  background-color: var(--sidebar-color);
-  text-decoration: none;
-}
-
-.Subject-Link-Active:active {
-  color: var(--sidebar-active-text-color);
-  text-decoration: none;
-  background-color: var(--sidebar-color);
-}
-
-/*
-  font-size: calc(10px + 2vmin);
-*/
-
-.GitHub-Logo {
-  text-align: center;
-  position: absolute; /* change the positioning css on this to make it not absolute. justify-content, align-content, align-self, align-items? */
-  bottom: 0vh; /* change the positioning css on this to make it not absolute. justify-content, align-content, align-self, align-items? */
-  margin-bottom: 3vh;
-}
-
-.GitHub-Logo-Icon {
-  opacity: 0.5;
-  width: 2vw;
-  height: auto;
-}
-
-.GitHub-Logo-Icon:hover {
+.GitHubLogoIcon:hover {
   opacity: 1;
-  width: 2vw;
-  height: auto;
 }
