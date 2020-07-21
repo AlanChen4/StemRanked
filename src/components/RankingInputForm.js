@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import rankings from '../util/dataRanker';
 import { subjectAreaInfo } from '../constants';
 import './RankingInputForm.css';
-import { Accordion, Button, Card, Spinner, ToggleButton, ToggleButtonGroup, Form, Dropdown } from 'react-bootstrap';
+import { Accordion, Button, Card, Spinner, ToggleButton, ToggleButtonGroup, Form, Dropdown, DropdownButton } from 'react-bootstrap';
 import { areaDictionary } from '../util/constants';
 
 function RankingInputForm() {
@@ -113,13 +113,15 @@ function RankingInputForm() {
             Life Sciences
           </ToggleButton>
         </ToggleButtonGroup>
+        <DropdownButton id="dropdown-basic-button" title="Dropdown button">
+          <Form>
+            <Form.Group>
+              {subjectAreaInfo[selectedSubject].map((subArea) => <Form.Check key={subArea[0]} defaultChecked type="checkbox" label={subArea[0]} onChange={() => addBlank(subArea[1])} />)}
+            </Form.Group>
+          </Form>
+        </DropdownButton>
         <p>The total number of subareas are {(Object.keys(areaDictionary[selectedSubject])).length}</p>
         <p>The number of subareas clicked is {subAreas.length}</p>
-        <Form>
-          <Form.Group>
-            {subjectAreaInfo[selectedSubject].map((subArea) => <Form.Check key={subArea[0]} defaultChecked type="checkbox" label={subArea[0]} onChange={() => addBlank(subArea[1])} />)}
-          </Form.Group>
-        </Form>
         <Dropdown>
           <Dropdown.Toggle variant="success" id="dropdown-basic">Start Year: {startyear}</Dropdown.Toggle>
           <Dropdown.Menu>
