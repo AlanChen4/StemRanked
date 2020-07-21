@@ -7,7 +7,7 @@ def scrapeAuthor(auth, authID, university):
     publications = microsoftAcademicScraper.genPublications(auth,f"Composite(AA.AuId={authID})", university)
     microsoftAcademicScraper.write(publications)
     end = time.time()
-    print(f"Time Taken for Composite(AA.AuId={authID}),\t {auth}:\t\t{(end-start)}")
+    print(f"Time Taken for Composite(AA.AuId={authID}),\t{university},\t {auth}:\t\t{(end-start)}")
 
 
 def scrapeUniversity(filename, university, subject):
@@ -26,14 +26,32 @@ def scrapeUniversity(filename, university, subject):
         for auth in list(maAuthors.keys()):            
             scrapeAuthor(auth,maAuthors[auth],university)
 
-            
+def multiUniversity(items):
+    processes = []
+    for item in items:
+        processes.append(multiprocessing.Process(target=scrapeUniversity, args=(item[0],item[1],item[2])))
+    for p in processes:
+        p.start()
+    for p in processes:
+        p.join()
+
 
 def main():
+    items = []
     for filename in os.listdir(output_dir):
         if filename.endswith('.csv'):
             university = filename[:filename.find('_')].strip()
             subject = filename[filename.find('_')+1:filename.find('.csv')].strip()
-            scrapeUniversity(filename,university,subject)
+            items.append((filename,university,subject))
+            #scrapeUniversity(filename,university,subject)
+    for i in range(0,len(items),2):
+        a = time.time()
+        if (i != len(items)-1):
+            multiUniversity([items[i],items[i+1]])
+        else:
+            multiUniversity([items[i]])
+        b = time.time()
+        print(f'TIME TAKEN FOR EXECUTION: {(b-a)}')
 
 
 if __name__ == "__main__":
