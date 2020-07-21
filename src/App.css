@@ -6,6 +6,7 @@
 
 .Logo {
   width: 10vw;
+  min-width: 120px;
 }
 
 .SubjectLink {

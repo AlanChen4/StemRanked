@@ -2,7 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import './App.css';
 import MainBody from './components/MainBody';
-import { Image, Container, Row, Col, Navbar, Nav } from 'react-bootstrap';
+import { Image, Navbar, Nav, NavDropdown } from 'react-bootstrap';
 
 const subjectList = [
   'Computer Science',
@@ -16,26 +16,27 @@ const subjectList = [
 function App() {
   const [selectedSubject, setSelectedSubject] = useState('Computer Science');
 
-  const onSubjectChange = (event) => {
-    setSelectedSubject(event.currentTarget.value);
-    console.log('Subject selected', event);
+  const onSubjectChange = (subject) => {
+    setSelectedSubject(subject);
   }
 
   return (
-
-    <Navbar className="NavBar" expand="lg" variant="dark">
+    <div>
+    <Navbar className="NavBar" expand="xl" variant="dark">
       <Navbar.Brand>
         <Image className="Logo" src="./images/logo.png" />
       </Navbar.Brand>
       <Navbar.Toggle />
       <Navbar.Collapse>
         <Nav className="mr-auto">
-          <Nav.Link className="SubjectLink">Computer Science</Nav.Link>
-          <Nav.Link className="SubjectLink" onClick={onSubjectChange}>Life Sciences</Nav.Link>
-          <Nav.Link className="SubjectLink">Chemistry</Nav.Link>
-          <Nav.Link className="SubjectLink">Engineering</Nav.Link>
-          <Nav.Link className="SubjectLink">Mathematics</Nav.Link>
-          <Nav.Link className="SubjectLink">Physics</Nav.Link>
+          {subjectList.map(subject => selectedSubject === subject ?
+            <NavDropdown className="SubjectLink" key={subject} title={subject}>
+              <NavDropdown.Header>Sub-Areas</NavDropdown.Header>
+              <NavDropdown.Item>Action</NavDropdown.Item>
+              <NavDropdown.Item>Another action</NavDropdown.Item>
+              <NavDropdown.Item>Something</NavDropdown.Item>
+            </NavDropdown> : 
+            <Nav.Link className="SubjectLink" key={subject} onClick={() => onSubjectChange(subject)}>{subject}</Nav.Link>)}
         </Nav>
         <Nav className="RightSideNavLinks">
           <Nav.Link className="AboutLink">About</Nav.Link>
@@ -45,6 +46,8 @@ function App() {
         </Nav>
       </Navbar.Collapse>
     </Navbar>
+    <MainBody subject={selectedSubject} />
+    </div>
 
 
 
