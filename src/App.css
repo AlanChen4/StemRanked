@@ -1,5 +1,14 @@
 /* Collapse or no? If no, change all font-sizes back to 2.5vh/relative amount */
 
+.Test {
+  
+}
+
+.form-check {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
 .NavBar {
   background-color: var(--sidebar-color);
 }
