@@ -1,14 +1,4 @@
 /* Collapse or no? If no, change all font-sizes back to 2.5vh/relative amount */
-
-.Test {
-  
-}
-
-.form-check {
-  margin-left: 5px;
-  margin-right: 5px;
-}
-
 .NavBar {
   background-color: var(--sidebar-color);
 }
@@ -18,9 +8,21 @@
   min-width: 120px;
 }
 
+.Dropdown {
+  padding-left: 1vw;
+  padding-right: 1vw;
+  width: 20vw;
+}
+
 .SubjectLink {
   font-size: 23px;
   margin-left: 1vw;
+}
+
+.SubjectLinkActive {
+  font-size: 23px;
+  margin-left: 1vw;
+  color: rgba(255, 255, 255, 0.75);
 }
 
 .RightSideNavLinks {

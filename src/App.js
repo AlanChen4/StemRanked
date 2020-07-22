@@ -58,11 +58,11 @@ function App() {
         <Navbar.Toggle />
         <Navbar.Collapse>
           <Nav className="mr-auto">
-            {subjectList.map(subject => selectedSubject === subject ?
-              <NavDropdown className="SubjectLink" key={subject} title={subject}>
+            {subjectList.map((subject) => selectedSubject === subject ?
+              <NavDropdown key={subject} title={<span className="SubjectLinkActive">{subject}</span>}>
                 <NavDropdown.Header>Sub-Areas</NavDropdown.Header>
                 <Form>
-                  <Form.Group>
+                  <Form.Group className="Dropdown">
                     {subjectAreaInfo[selectedSubject].map((subArea) => <Form.Check key={subArea[0]} defaultChecked type="checkbox" label={subArea[0]} onChange={() => addBlank(subArea[1])} />)}
                   </Form.Group>
                 </Form>

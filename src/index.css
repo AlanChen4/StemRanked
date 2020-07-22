@@ -6,10 +6,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   --main-bg-color: #f8f8f8;
-  --main-text-color: #000000;
   --sidebar-color: #26324b;
-  --sidebar-active-text-color: #ffffff;
-  --sidebar-inactive-text-color: #9399a6;
 }
 
 code {
