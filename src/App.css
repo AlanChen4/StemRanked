@@ -8,12 +8,6 @@
   min-width: 120px;
 }
 
-.Dropdown {
-  padding-left: 1vw;
-  padding-right: 1vw;
-  width: 20vw;
-}
-
 .checkboxes {
   margin-left: 5px;
   display: block;
@@ -63,6 +57,11 @@
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
+}
+
+.SubArea {
+  white-space: nowrap;
+  margin-right: 5px;
 }
 
 .SubjectLink {
