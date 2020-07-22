@@ -1,19 +1,23 @@
 .Outside {
-    padding-top: 1vh;
+    padding-top: 5vh;
     padding-bottom: 2vh;
     padding-left: 2.25vw;
     padding-right: 2.25vw;
 }
 
 .SubjectName {
-    height: 12.5vh;
     display: flex;
     align-items: center;
     font-size: 1.75vw;
+    margin-bottom: 5vh;
 }
 
-.ConfigButtons {
+.YearSelect {
     text-align: center;
+}
+
+.InstitutionRankings {
+    margin-top: 5vh;
 }
 
 .AuthorRanks {

@@ -4,16 +4,8 @@ import './App.css';
 import MainBody from './components/MainBody';
 import { subjectAreaInfo } from './constants';
 import rankings from './util/dataRanker';
-import { Image, Navbar, Nav, NavDropdown, Form } from 'react-bootstrap';
-
-const subjectList = [
-  'Computer Science',
-  'Life Sciences',
-  'Chemistry',
-  'Engineering',
-  'Mathematics',
-  'Physics'
-]
+import { Image, Navbar, Nav, NavDropdown } from 'react-bootstrap';
+import { subjectList } from './constants';
 
 function App() {
   const [selectedSubject, setSelectedSubject] = useState('Computer Science');
@@ -75,12 +67,7 @@ function App() {
       </Navbar>
       <MainBody subject={selectedSubject} />
     </div>
-
-
-
   );
-
-
 }
 
 export default App;

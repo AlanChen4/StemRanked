@@ -110,3 +110,12 @@ export const subjectAreaInfo = {
         ['Microbiology', 'None']
     ]
 };
+
+export const subjectList = [
+    'Computer Science',
+    'Life Sciences',
+    'Chemistry',
+    'Engineering',
+    'Mathematics',
+    'Physics'
+  ]

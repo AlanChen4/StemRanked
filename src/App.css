@@ -1,4 +1,19 @@
 /* Collapse or no? If no, change all font-sizes back to 2.5vh/relative amount */
+.NavBar {
+  background-color: var(--sidebar-color);
+}
+
+.Logo {
+  width: 10vw;
+  min-width: 120px;
+}
+
+.Dropdown {
+  padding-left: 1vw;
+  padding-right: 1vw;
+  width: 20vw;
+}
+
 .container {
   margin-left: 5px;
   display: block;
@@ -45,21 +60,6 @@
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
-}
-
-.NavBar {
-  background-color: var(--sidebar-color);
-}
-
-.Logo {
-  width: 10vw;
-  min-width: 120px;
-}
-
-.Dropdown {
-  padding-left: 1vw;
-  padding-right: 1vw;
-  width: 20vw;
 }
 
 .SubjectLink {
