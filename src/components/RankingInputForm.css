@@ -26,6 +26,9 @@
     background-color: white;
     border: black solid 1px;
   }
+  .container:hover input ~ .checkmark {
+    background-color: lightgray;
+  }
   .container input:checked ~ .checkmark {
     background-color: #26324b;
   }

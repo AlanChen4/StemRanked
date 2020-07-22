@@ -108,5 +108,6 @@ export const subjectAreaInfo = {
         ['Molecular Medicine', 'None'],
         ['Physiology', 'None'],
         ['Microbiology', 'None']
-    ]
+    ],
+    'Statistics': []
 };

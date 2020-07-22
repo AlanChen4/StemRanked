@@ -112,6 +112,10 @@ function RankingInputForm() {
           <ToggleButton value="Life Sciences" onChange={onSubjectChange}>
             Life Sciences
           </ToggleButton>
+          &nbsp;
+          <ToggleButton value="Statistics" onChange={onSubjectChange}>
+            Statistics
+          </ToggleButton>
         </ToggleButtonGroup>
         <DropdownButton id="dropdown-basic-button" title={selectedSubject}>
           {subjectAreaInfo[selectedSubject].map((subArea) => <label class="container"><input defaultChecked type="checkbox" onChange={() => addBlank(subArea[1])} /><span class="checkmark"></span> {subArea[0]}</label>)}
