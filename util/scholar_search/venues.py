@@ -41,7 +41,7 @@ venue_dictionary = {
         'Biophysics':None,
         'Biotechnology':None,
         'Cancer Research':None,
-        'Cell Biology':None,
+        'Cell Biology':None, #blood here not in biochemistry (bioinformatics there instead)
         'Developmental Biology': None,
         'Genetics':None,
         'Molecular Biology':None,
@@ -72,14 +72,14 @@ venue_dictionary = {
     },
 
     'Mathematics': {
-        'Algebra and Number Theory': None,
-        'Analysis': None,
-        'Applied Mathematics':None,
-        'Computational Mathematics':None,
-        'Geometry and Topology': None,
-        'Numerical Analysis': None,
-        'Statistics and Probability': None,
-        'Discrete Mathematics and Combinatorics': None
+        'Algebra and Number Theory': {'Journal of Differential Geometry':'Journal of Differential Geometry','Compositio Mathematica':'Compositio Mathematica','Forum of Mathematics, Pi':'Forum of Mathematics, Pi'},
+        'Analysis': {"Annales de l'Institut Henri Poincaré C, Analyse non linéaire":"Annales de l'Institut Henri Poincaré C, Analyse non linéaire", "Geometric and Functional Analysis":"Geometric and Functional Analysis","Archive for Rational Mechanics and Analysis":"Archive for Rational Mechanics and Analysis"},
+        'Applied Mathematics':{'Journal of the American Mathematical Society':'Journal of the American Mathematical Society',"IEEE Transactions on Pattern Analysis and Machine Intelligence":"IEEE Transactions on Pattern Analysis and Machine Intelligence", "Communications on Pure and Applied Mathematics":"Communications on Pure and Applied Mathematics"},
+        'Computational Mathematics':{"Journal of Computational Physics":"Journal of Computational Physics","Journal of Computational Chemistry":"Journal of Computational Chemistry"},
+        'Geometry and Topology': {"Geometry & Topology":"Geometry & Topology","Geometric and Functional Analysis":"Geometric and Functional Analysis", "Journal of Topology":"arXiv: Geometric Topology"},
+        'Numerical Analysis': {"Acta Numerica":"Acta Numerica","R Journal":"R Journal","Analysis & PDE":"Analysis & PDE"},
+        'Statistics and Probability': {"Journal of Statistical Software":"Journal of Statistical Software", "Journal of Machine Learning Research":"Journal of Machine Learning Research","Journal of the American Statistical Association":"Journal of the American Statistical Association", "Annals of Mathematics":"Annals of Mathematics", "Annals of Statistics":"Annals of Statistics", "Annals of Probability":"Annals of Probability"}, #statistics has more because we intitially categorized it an individual subject
+        'Discrete Mathematics and Combinatorics': {"Combinatorica":"Combinatorica","Journal of Combinatorial Theory, Series B":"Journal of Combinatorial Theory, Series B","Journal of Combinatorial Theory, Series A":"Journal of Combinatorial Theory, Series A","IEEE Transactions on Information Theory":"IEEE Transactions on Information Theory"}
 
     },
 
@@ -116,7 +116,7 @@ def check(venue, completion = 1):
                         if (word in nonKeywords):
                             keywords.remove(word)
                     for word in keywords:
-                        word = word.lower(); word = word.strip()
+                        word = word.lower(); word = word.strip(); word = f" {word} "
                         if (ven.find(word) != -1):
                             count+=1
                     if (count>=round(len(keywords)*completion)):
@@ -130,8 +130,11 @@ def check(venue, completion = 1):
 def findSubject(venue):
     for subject in venue_dictionary:
         for area in venue_dictionary[subject]:
-            if (venue in list(venue_dictionary[subject][area].keys())):
-                return subject
+            try:
+                if (venue in list(venue_dictionary[subject][area].keys())):
+                    return subject
+            except:
+                pass
     return False
 
 
