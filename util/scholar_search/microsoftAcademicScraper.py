@@ -1,5 +1,5 @@
 import requests,json, sys, csv, re, os, time
-path_to_faculty_search = '../faculty_search'
+path_to_faculty_search = 'util/faculty_search'
 sys.path.append(path_to_faculty_search)
 import academic, venues, threading, multiprocessing
 
@@ -119,7 +119,7 @@ def getInstitutionPubs(institution, subject):
     return publications
 
 def makeFile(loc):
-    loc = './data/'+loc+'.csv'
+    loc = 'util/scholar_search/data/'+loc+'.csv'
     if (not os.path.isfile(loc)):
         with open(loc, 'w') as f:
             writer = csv.writer(f)
@@ -139,7 +139,7 @@ def write(qualified_Pubs):
             subject_info[subject] = list()
     for subject in subject_info.keys():
         makeFile(subject)
-        with open('./data/'+subject+'.csv', 'a') as f:
+        with open('util/scholar_search/data/'+subject+'.csv', 'a') as f:
             writer = csv.writer(f)
             for item in subject_info[subject]:
                 writer.writerow([item[0], item[1], item[3], item[2], item[4]])
@@ -154,12 +154,6 @@ def main(institutions, subject):
     
     #publications = genPublications("Eric P. Xing","Composite(AA.AuId=351197510)", 'Carnegie Mellon University')
     #getInstitutionPubs(institution1,'computer science')
-    '''inst1 = multiprocessing.Process(target= getInstitutionPubs, args=(institution1, subject))
-    inst2 = multiprocessing.Process(target= getInstitutionPubs, args=(institution2, subject))
-    inst1.start()
-    inst2.start()
-    inst1.join()
-    inst2.join()'''
     #write(publications)
     inst = []
     for institution in institutions:

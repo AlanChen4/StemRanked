@@ -3,15 +3,16 @@ import { useState, useEffect } from 'react';
 import rankings from '../util/dataRanker';
 import { subjectAreaInfo } from '../constants';
 import './RankingInputForm.css';
-import { Accordion, Button, Card, Spinner, ToggleButton, ToggleButtonGroup, Form, Dropdown } from 'react-bootstrap';
+import { Accordion, Button, Card, Spinner, ToggleButton, ToggleButtonGroup, Form, DropdownButton } from 'react-bootstrap';
+import { areaDictionary } from '../util/constants';
 
 function RankingInputForm() {
-  const [selectedSubject, setSelectedSubject] = useState('test');
+  const [selectedSubject, setSelectedSubject] = useState('Emery Computer Science');
   const [loadingDataStatus, setLoadingDataStatus] = useState(false);
   const [ranks, setRanks] = useState({});
   const [authorRanks, setAuthorRanks] = useState({});
-  let [subAreas, setSubAreas] = useState([]);
-  const [startyear, setStartYear] = useState([]);
+  let [subAreas, setSubAreas] = useState(Object.keys(areaDictionary['Emery Computer Science']));
+  const [startyear, setStartYear] = useState(1970);
   // Wait for CSV parsing and rankings function to finish (runs on every render)
   useEffect(() => {
     const fetchData = async (subject) => {
@@ -21,12 +22,14 @@ function RankingInputForm() {
       setRanks(result);
       setAuthorRanks(authorRankings);
       setLoadingDataStatus(false);
+
+
     };
     fetchData(selectedSubject);
   }, [selectedSubject, subAreas, startyear]); // eslint-disable-line
 
   const onSubjectChange = (event) => {
-    setSubAreas([]);
+    setSubAreas(Object.keys(areaDictionary[event.currentTarget.value]));
     setSelectedSubject(event.currentTarget.value);
     console.log('Subject selected', event.currentTarget.value);
     setLoadingDataStatus(true);
@@ -64,7 +67,6 @@ function RankingInputForm() {
       setLoadingDataStatus(false);
     }
     updateRankings();
-    //rankings('Emery Computer Science', subAreas, 2005, 2010);
   }
 
   let startYears = [];
@@ -111,17 +113,15 @@ function RankingInputForm() {
             Life Sciences
           </ToggleButton>
         </ToggleButtonGroup>
-        <Form>
-          <Form.Group>
-            {subjectAreaInfo[selectedSubject].map((subArea) => <Form.Check key={subArea[0]} type="checkbox" label={subArea[0]} onClick={() => addBlank(subArea[1])} />)}
-          </Form.Group>
-        </Form>
-        <Dropdown>
-          <Dropdown.Toggle variant="success" id="dropdown-basic">Start Year: {startyear}</Dropdown.Toggle>
-          <Dropdown.Menu>
-            {startYears.map((startyear) => <Dropdown.Item key={startyear} onClick={() => yearBlank(startyear)}>{startyear}</Dropdown.Item>)}
-          </Dropdown.Menu>
-        </Dropdown>
+        <DropdownButton id="dropdown-basic-button" title={selectedSubject}>
+          <Form>
+            <Form.Group>
+              {subjectAreaInfo[selectedSubject].map((subArea) => <Form.Check key={subArea[0]} defaultChecked type="checkbox" label={subArea[0]} onChange={() => addBlank(subArea[1])} />)}
+            </Form.Group>
+          </Form>
+        </DropdownButton>
+        <p>The total number of subareas are {(Object.keys(areaDictionary[selectedSubject])).length}</p>
+        <p>The number of subareas clicked is {subAreas.length}</p>
         <br />
         Ranked List for {selectedSubject}:
         <table>
