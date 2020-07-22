@@ -53,7 +53,7 @@ function App() {
             {subjectList.map((subject) => selectedSubject === subject ?
               <NavDropdown key={subject} title={<span className="SubjectLinkActive">{subject}</span>}>
                 <NavDropdown.Header>Sub-Areas</NavDropdown.Header>
-                {subjectAreaInfo[selectedSubject].map((subArea) => <label class="container"><input defaultChecked type="checkbox" onChange={() => addBlank(subArea[1])} /><span class="checkmark"></span> {subArea[0]}</label>)}
+                {subjectAreaInfo[selectedSubject].map((subArea) => <label class="checkboxes"><input defaultChecked type="checkbox" onChange={() => addBlank(subArea[1])} /><span class="box"></span> {subArea[0]}</label>)}
               </NavDropdown> :
               <Nav.Link className="SubjectLink" key={subject} onClick={() => onSubjectChange(subject)}>{subject}</Nav.Link>)}
           </Nav>
