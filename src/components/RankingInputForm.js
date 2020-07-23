@@ -112,13 +112,13 @@ function RankingInputForm() {
           <ToggleButton value="Life Sciences" onChange={onSubjectChange}>
             Life Sciences
           </ToggleButton>
+          &nbsp;
+          <ToggleButton value="Statistics" onChange={onSubjectChange}>
+            Statistics
+          </ToggleButton>
         </ToggleButtonGroup>
         <DropdownButton id="dropdown-basic-button" title={selectedSubject}>
-          <Form>
-            <Form.Group>
-              {subjectAreaInfo[selectedSubject].map((subArea) => <Form.Check key={subArea[0]} defaultChecked type="checkbox" label={subArea[0]} onChange={() => addBlank(subArea[1])} />)}
-            </Form.Group>
-          </Form>
+          {subjectAreaInfo[selectedSubject].map((subArea) => <label class="container"><input defaultChecked type="checkbox" onChange={() => addBlank(subArea[1])} /><span class="checkmark"></span> {subArea[0]}</label>)}
         </DropdownButton>
         <p>The total number of subareas are {(Object.keys(areaDictionary[selectedSubject])).length}</p>
         <p>The number of subareas clicked is {subAreas.length}</p>

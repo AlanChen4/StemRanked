@@ -2,7 +2,8 @@ import csv, venues, math, operator
 from collections import defaultdict 
 
 dic = dict()
-with open('../../public/data/Computer_Science.csv') as f:
+#with open('../../public/data/Computer_Science.csv') as f:
+with open('util/scholar_search/data/Computer_Science.csv') as f:
     reader = csv.reader(f)
     for row in reader:
         if (row[0] == 'Author'):

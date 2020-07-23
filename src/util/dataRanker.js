@@ -198,6 +198,8 @@ function yearCheck(collegeInfo, startYear) {
 
 // Logs everythin on console in the local browser
 async function rankings(subject, subAreas, startYr) {
+    console.log('Environment:', process.env.NODE_ENV);
+
     areaDict = areaDictionary[subject];
     console.log(areaDict);
 
