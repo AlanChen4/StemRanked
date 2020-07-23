@@ -1,5 +1,6 @@
 import csv
 import json
+import os
 import requests
 import time
 
@@ -48,11 +49,17 @@ def clean_middle_name(first, second):
 
 
 def write_to_csv(profiles, field, name='output'):
-    with open(f'output/field/{name}.csv', 'a+', newline='', encoding='utf-8') as f:
-        w = csv.writer(f)
-        for author, info in profiles.items():
-            w.writerow([author, info])
-        print('[Finished] Output to .CSV complete')
+    # write the information from dictionary onto .csv 
+    try:
+        with open(f'output/{field}/{name}.csv', 'a+', newline='', encoding='utf-8') as f:
+            w = csv.writer(f)
+            for author, info in profiles.items():
+                w.writerow([author, info])
+            print('[Finished] Output to .CSV complete')
+    except FileNotFoundError:
+        # create the folder off field name if it doesn't exist
+        output_path = r'./output/' + str(field)
+        os.makedirs(output_path)
 
 
 def get_faculty(email_domain='example.edu', proxy_path='proxies/proxies.txt',
