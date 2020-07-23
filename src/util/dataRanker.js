@@ -157,11 +157,12 @@ function AuthorList(final_colleges, institutionAuthors) {
 }
 // Checks to see if the area that the user inputsis matches the publication area
 function areaCheck(currentCollegeInfo, area, subject) {
+    let final_colleges = [];
     if (area.length === (Object.keys(areaDictionary[subject])).length) {
         return currentCollegeInfo;
     }
-    let final_colleges = [];
-    if (area.length < ((Object.keys(areaDictionary[subject])).length) / 2) {
+
+    else if (area.length < ((Object.keys(areaDictionary[subject])).length) / 2) {
         for (let j = 0; j < area.length; j++) {
             for (let i = 0; i < currentCollegeInfo.length; i++) {
                 if (confAreas(currentCollegeInfo[i][2], areaDict) === area[j]) {
@@ -174,13 +175,15 @@ function areaCheck(currentCollegeInfo, area, subject) {
     else {
         let difference = (Object.keys(areaDictionary[subject])).filter(x => !area.includes(x));
         console.log(difference);
-        for (let j = 0; j < difference.length; j++) {
-            for (let i = 0; i < currentCollegeInfo.length; i++) {
-                if (!(confAreas(currentCollegeInfo[i][2], areaDict) === difference[j])) {
-                    final_colleges.push(currentCollegeInfo[i])
-                }
+        console.log(final_colleges.length);
+
+        for (let i = 0; i < currentCollegeInfo.length; i++) {
+            if (!(difference.includes(confAreas(currentCollegeInfo[i][2], areaDict)))) {
+                final_colleges.push(currentCollegeInfo[i])
             }
         }
+
+        console.log(final_colleges.length);
         return final_colleges;
     }
 }

@@ -1,8 +1,27 @@
 import React from 'react';
 import { Row, Col } from 'react-bootstrap';
 import './MainBody.css';
+import { useState, useEffect } from 'react';
+import rankings from '../util/dataRanker';
 
 function MainBody(props) {
+  const [ranks, setRanks] = useState({});
+  const [authorRanks, setAuthorRanks] = useState({});
+  useEffect(() => {
+    const fetchData = async () => {
+      console.log(props.subject);
+      console.log(props.subjectAreas);
+      const [result, authorRankings] = await rankings(props.subject, props.subjectAreas, 1970, 2020);
+      console.log('Current contents of subAreas:', props.subjectAreas);
+      console.log('Current Start Year', 1970);
+      setRanks(result);
+      setAuthorRanks(authorRankings);
+      //setLoadingDataStatus(false);
+
+
+    };
+    fetchData(props.subject);
+  }, [props.subject, props.temporary]);
   return (
     <Row className="Outside">
       <Col>
@@ -36,7 +55,7 @@ function MainBody(props) {
         </Row>
       </Col>
     </Row>
-	);
+  );
 }
 
 export default MainBody;

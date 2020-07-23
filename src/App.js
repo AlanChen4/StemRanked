@@ -1,21 +1,20 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 import MainBody from './components/MainBody';
 import { subjectAreaInfo } from './constants';
 import rankings from './util/dataRanker';
 import { Image, Navbar, Nav, NavDropdown } from 'react-bootstrap';
 import { subjectList } from './constants';
+import { areaDictionary } from './util/constants';
 
 function App() {
   const [selectedSubject, setSelectedSubject] = useState('Computer Science');
-  let [subAreas, setSubAreas] = useState([]);
-  //const [ranks, setRanks] = useState({});
-  //const [authorRanks, setAuthorRanks] = useState({});
-  const [startyear, setStartYear] = useState([]);
-  //const [loadingDataStatus, setLoadingDataStatus] = useState(false);
-  const onSubjectChange = (subject) => {
-    setSelectedSubject(subject);
+  let [subAreas, setSubAreas] = useState(Object.keys(areaDictionary['Computer Science']));
+  const [temp, setTemp] = useState(0);
+  //const [startyear, setStartYear] = useState([]);
+  const onSubjectChange = (event) => {
+    setSelectedSubject(event);
   }
 
   function addBlank(subjectArea) {
@@ -29,16 +28,7 @@ function App() {
       temp.push(subjectArea);
       setSubAreas(temp);
     }
-    const updateRankings = async () => {
-      //setLoadingDataStatus(true);
-      const [result, authorRankings] = await rankings(selectedSubject, subAreas, startyear, 2020);
-      console.log('Current contents of subAreas:', subAreas);
-      //setRanks(result);
-      //setAuthorRanks(authorRankings);
-      //setLoadingDataStatus(false);
-    }
-    updateRankings();
-    //rankings('Emery Computer Science', subAreas, 2005, 2010);
+    setTemp(subAreas.length);
   }
 
   return (
@@ -65,7 +55,7 @@ function App() {
           </Nav>
         </Navbar.Collapse>
       </Navbar>
-      <MainBody subject={selectedSubject} />
+      <MainBody subject={selectedSubject} subjectAreas={subAreas} temporary={temp} />
     </div>
   );
 }
