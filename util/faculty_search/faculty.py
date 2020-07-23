@@ -61,6 +61,8 @@ def write_to_csv(profiles, field, name='output'):
         output_path = r'./output/' + str(field)
         os.makedirs(output_path)
 
+        write_to_csv(profiles=profiles, field=field, name=name)
+
 
 def get_faculty(email_domain='example.edu', proxy_path='proxies/proxies.txt',
                 starting_author=None,limit=1000000, proxy_thread=10, strict=False,
