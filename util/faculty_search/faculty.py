@@ -47,8 +47,8 @@ def clean_middle_name(first, second):
     return first, second
 
 
-def write_to_csv(profiles, name='output'):
-    with open(f'output/{name}.csv', 'a+', newline='', encoding='utf-8') as f:
+def write_to_csv(profiles, field, name='output'):
+    with open(f'output/field/{name}.csv', 'a+', newline='', encoding='utf-8') as f:
         w = csv.writer(f)
         for author, info in profiles.items():
             w.writerow([author, info])
@@ -90,19 +90,23 @@ def get_faculty(email_domain='example.edu', proxy_path='proxies/proxies.txt',
 
     # output to file
     print('[Start] Output to .CSV')
-    write_to_csv(combined, output_name)
+    write_to_csv(combined, field, output_name)
 
 
-def get_faculty_from_list(institutions_path, field_fullname):
+def get_faculty_from_list(institutions_path, field_fullname, starting_uni=None):
     '''runs get_faculty on .csv list of universities with their domains
 
     :param str institutions_path: path to institutions .csv file
     :param str field_fullname: full name for field, i.e. 'Computer Science'
+    :param str starting_uni: university to start searching from instead of beginning
 
     institutions_path .csv file should have format -(uni_name), (uni_domain)
     '''
     with open(institutions_path, 'r') as f:
         uni_list = list(csv.reader(f))
+        if starting_uni is not None:
+            # remove universities before the specified starting_uni
+            uni_list = uni_list[uni_list.index(starting_uni) + 1:]
 
     for uni in uni_list:
         # append appropriate field to end of email domain
