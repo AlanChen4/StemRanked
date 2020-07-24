@@ -31,7 +31,7 @@ function App() {
   }
 
   return (
-    <div>
+    <div className="Main">
       <Navbar className="NavBar" expand="xl" variant="dark">
         <Navbar.Brand>
           <Image className="Logo" src="./images/logo.png" />

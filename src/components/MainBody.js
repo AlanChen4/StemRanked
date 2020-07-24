@@ -18,8 +18,7 @@ function MainBody(props) {
       setRanks(result);
       setAuthorRanks(authorRankings);
       //setLoadingDataStatus(false);
-
-
+      
     };
     fetchData(props.subject);
   }, [props.subject, props.temporary]);

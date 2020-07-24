@@ -1,4 +1,8 @@
 /* Collapse or no? If no, change all font-sizes back to 2.5vh/relative amount */
+.Main {
+  background-color: var(--main-bg-color);
+}
+
 .NavBar {
   background-color: var(--sidebar-color);
 }
