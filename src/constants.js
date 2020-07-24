@@ -111,3 +111,5 @@ export const subjectAreaInfo = {
     ],
     'Statistics': []
 };
+
+export const env = process.env.NODE_ENV === 'development';
