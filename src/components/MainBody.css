@@ -21,6 +21,29 @@
     margin-top: 5vh;
 }
 
+.TableHeaders {
+    font-size: 1.75vw;
+    font-weight: 400;
+}
+
+.Institution {
+    cursor: pointer;
+}
+
+.Institution:hover {
+    background-color: white;
+}
+
+.InstitutionSelected {
+    font-weight: 500;
+    background-color: white;
+    cursor: pointer;
+}
+
+.Arrow {
+    text-align: right;
+}
+
 .AuthorRanks {
     border-left: 1px solid rgba(112, 112, 112, 0.25);
 }
