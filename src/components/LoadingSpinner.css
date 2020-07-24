@@ -1,0 +1,8 @@
+.Container {
+    text-align: center;
+    align-items: center; /* TODO: center spinner vertically? */
+}
+
+.Spinner {
+    color: var(--sidebar-color) !important;
+}
