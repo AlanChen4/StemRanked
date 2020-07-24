@@ -91,7 +91,3 @@ def gen_headers(referer):
 
     return headers
 
-
-if __name__ == '__main__':
-    get_proxy_local('proxies.txt')
-
