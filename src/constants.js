@@ -118,4 +118,6 @@ export const subjectList = [
     'Engineering',
     'Mathematics',
     'Physics'
-  ]
+]
+
+export const env = process.env.NODE_ENV === 'development';
