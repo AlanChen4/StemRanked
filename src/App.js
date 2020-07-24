@@ -1,9 +1,8 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import './App.css';
 import MainBody from './components/MainBody';
 import { subjectAreaInfo } from './constants';
-import rankings from './util/dataRanker';
 import { Image, Navbar, Nav, NavDropdown } from 'react-bootstrap';
 import { subjectList } from './constants';
 import { areaDictionary } from './util/constants';
@@ -12,7 +11,7 @@ function App() {
   const [selectedSubject, setSelectedSubject] = useState('Computer Science');
   let [subAreas, setSubAreas] = useState(Object.keys(areaDictionary['Computer Science']));
   const [temp, setTemp] = useState(0);
-  //const [startyear, setStartYear] = useState([]);
+  
   const onSubjectChange = (event) => {
     setSelectedSubject(event);
   }

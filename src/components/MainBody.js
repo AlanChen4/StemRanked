@@ -7,6 +7,7 @@ import rankings from '../util/dataRanker';
 function MainBody(props) {
   const [ranks, setRanks] = useState({});
   const [authorRanks, setAuthorRanks] = useState({});
+
   useEffect(() => {
     const fetchData = async () => {
       console.log(props.subject);
@@ -22,6 +23,7 @@ function MainBody(props) {
     };
     fetchData(props.subject);
   }, [props.subject, props.temporary]);
+
   return (
     <Row className="Outside">
       <Col>
