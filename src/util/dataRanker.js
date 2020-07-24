@@ -163,11 +163,9 @@ function areaCheck(currentCollegeInfo, area, subject) {
     }
 
     else if (area.length < ((Object.keys(areaDictionary[subject])).length) / 2) {
-        for (let j = 0; j < area.length; j++) {
-            for (let i = 0; i < currentCollegeInfo.length; i++) {
-                if (confAreas(currentCollegeInfo[i][2], areaDict) === area[j]) {
-                    final_colleges.push(currentCollegeInfo[i]);
-                }
+        for (let i = 0; i < currentCollegeInfo.length; i++) {
+            if (area.includes(confAreas(currentCollegeInfo[i][2], areaDict))) {
+                final_colleges.push(currentCollegeInfo[i]);
             }
         }
         return final_colleges;
