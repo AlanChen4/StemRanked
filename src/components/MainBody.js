@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col, Dropdown } from 'react-bootstrap';
+import { Row, Col, Dropdown, ButtonGroup } from 'react-bootstrap';
 import './MainBody.css';
 import { useState, useEffect } from 'react';
 import rankings from '../util/dataRanker';
@@ -26,7 +26,7 @@ function MainBody(props) {
         school_ranks.push(key);
       }
       console.log('Current contents of subAreas:', props.subjectAreas);
-      console.log('Current Start Year', 1970);
+      console.log('Current Start Year', startYear);
       setRanks(school_ranks);
       setAuthorRanks(authorRankings);
       setSelectedSchool(null);
@@ -57,15 +57,22 @@ function MainBody(props) {
         </Row>
         <Row>
           <Col>
-            <Row className="YearSelect">
-              <Col>
-                Publication Year Dropdown
-                <Dropdown>
-                  <Dropdown.Toggle variant="success" id="dropdown-basic">Start Year</Dropdown.Toggle>
-                  <Dropdown.Menu>
-                    {startYears.map((startyear) => <Dropdown.Item onClick={() => yearBlank(startyear)}>{startyear}</Dropdown.Item>)}
-                  </Dropdown.Menu>
-                </Dropdown>
+            <Row>
+              <Col className="YearSelect">
+                <Row>
+                  <Col>
+                    Publications from
+                  </Col>
+                </Row>
+                <Row className="BottomLine">
+                  <Dropdown as={ButtonGroup}>
+                    <Dropdown.Toggle className="YearDropdown">{startYear}</Dropdown.Toggle>
+                    <Dropdown.Menu>
+                      {startYears.map((startyear) => <Dropdown.Item className={startYear === startyear ? "Active" : "Inactive"} onClick={() => yearBlank(startyear)} active={startYear === startyear}>{startyear}</Dropdown.Item>)}
+                    </Dropdown.Menu>
+                  </Dropdown>
+                  to 2020
+                </Row>
               </Col>
               <Col>
                 {/* empty column for spacing */}
@@ -90,7 +97,7 @@ function MainBody(props) {
                 <Row>
                   <Col>
                     {loadingDataStatus ? <LoadingSpinner /> :
-                      ranks.map((school, i) => <a onClick={() => setSelectedSchool(school)} key={school}><Row className={selectedSchool === school ? "InstitutionSelected" : "Institution"}><Col>{i + 1}</Col><Col>{school}</Col><Col className="Arrow">{selectedSchool === school ? '>' : ''}</Col></Row></a>)
+                      ranks.map((school, i) => <a onClick={() => setSelectedSchool(school)} key={school}><Row className={selectedSchool === school ? "InstitutionSelected" : "Institution"}><Col>{i + 1}</Col><Col>{school}</Col><Col className="Arrow">{selectedSchool === school ? '>' : ''}</Col></Row></a>) // eslint-disable-line
                     }
                   </Col>
                 </Row>
