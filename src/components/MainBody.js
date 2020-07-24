@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Dropdown } from 'react-bootstrap';
 import './MainBody.css';
 import { useState, useEffect } from 'react';
 import rankings from '../util/dataRanker';
@@ -11,6 +11,8 @@ function MainBody(props) {
   const [authorRanks, setAuthorRanks] = useState({});
   const [loadingDataStatus, setLoadingDataStatus] = useState(true);
   const [selectedSchool, setSelectedSchool] = useState(null);
+  const [startYear, setStartYear] = useState(1970);
+  const [temp2, setTemp2] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -18,7 +20,7 @@ function MainBody(props) {
       setSelectedSchool('loading');
       console.log(props.subject);
       console.log(props.subjectAreas);
-      const [result, authorRankings] = await rankings(props.subject, props.subjectAreas, 1970, 2020);
+      const [result, authorRankings] = await rankings(props.subject, props.subjectAreas, startYear, 2020);
       let school_ranks = [];
       for (const [key, value] of Object.entries(result)) { // eslint-disable-line
         school_ranks.push(key);
@@ -32,7 +34,18 @@ function MainBody(props) {
 
     };
     fetchData(props.subject);
-  }, [props.subject, props.temporary]);
+  }, [props.subject, props.temporary, temp2]);
+
+  function yearBlank(startYr) {
+    setStartYear(startYr);
+    setTemp2(startYr);
+  }
+
+  let startYears = [];
+  for (let i = 1970; i < 2020; i++) {
+    startYears.push(i);
+  }
+
 
   return (
     <Row className="Outside">
@@ -47,6 +60,12 @@ function MainBody(props) {
             <Row className="YearSelect">
               <Col>
                 Publication Year Dropdown
+                <Dropdown>
+                  <Dropdown.Toggle variant="success" id="dropdown-basic">Start Year</Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    {startYears.map((startyear) => <Dropdown.Item onClick={() => yearBlank(startyear)}>{startyear}</Dropdown.Item>)}
+                  </Dropdown.Menu>
+                </Dropdown>
               </Col>
               <Col>
                 {/* empty column for spacing */}
@@ -70,7 +89,7 @@ function MainBody(props) {
                 </Row>
                 <Row>
                   <Col>
-                    {loadingDataStatus ?  <LoadingSpinner /> :
+                    {loadingDataStatus ? <LoadingSpinner /> :
                       ranks.map((school, i) => <a onClick={() => setSelectedSchool(school)} key={school}><Row className={selectedSchool === school ? "InstitutionSelected" : "Institution"}><Col>{i + 1}</Col><Col>{school}</Col><Col className="Arrow">{selectedSchool === school ? '>' : ''}</Col></Row></a>)
                     }
                   </Col>
