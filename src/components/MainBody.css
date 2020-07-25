@@ -44,6 +44,11 @@
 
 .Active {
     background-color: var(--sidebar-color) !important;
+
+}
+.dropdownScrollBar{
+    height: 60vh;
+    overflow-y: scroll;
 }
 
 .Inactive:focus {

@@ -69,7 +69,7 @@ function MainBody(props) {
                 <Row className="BottomLine">
                   <Dropdown as={ButtonGroup}>
                     <Dropdown.Toggle className="YearDropdown">{startYear}</Dropdown.Toggle>
-                    <Dropdown.Menu>
+                    <Dropdown.Menu className="dropdownScrollBar">
                       {startYears.map((startyear) => <Dropdown.Item className={startYear === startyear ? "Active" : "Inactive"} onClick={() => yearBlank(startyear)} active={startYear === startyear}>{startyear}</Dropdown.Item>)}
                     </Dropdown.Menu>
                   </Dropdown>
