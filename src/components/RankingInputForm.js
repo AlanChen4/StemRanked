@@ -126,15 +126,17 @@ function RankingInputForm() {
         <p>The number of subareas clicked is {subAreas.length}</p>
         <br />
         Ranked List for {selectedSubject}:
-        <table>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Institution</th>
-            </tr>
-          </thead>
-          {loadingDataStatus ? <tbody><tr><td>Loading Data...<br /><Spinner animation="border" variant="primary" /></td></tr></tbody> : <RankedSchoolList data={ranks} authors={authorRanks} />}
-        </table>
+        <div className="scrollBar">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Institution</th>
+              </tr>
+            </thead>
+            {loadingDataStatus ? <tbody><tr><td>Loading Data...<br /><Spinner animation="border" variant="primary" /></td></tr></tbody> : <RankedSchoolList data={ranks} authors={authorRanks} />}
+          </table>
+        </div>
       </div>
     </div>
   );
