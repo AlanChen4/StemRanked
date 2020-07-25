@@ -5,10 +5,18 @@ import { useState, useEffect } from 'react';
 import LoadingSpinner from './LoadingSpinner';
 
 function AuthorRankings(props) {
+  console.log(props.author);
+  console.log('Type of props.author', typeof props.author);
 
   return (
     <div>
-      {props.school === 'loading' ? <LoadingSpinner /> : props.school === null ? <div>Select an institution to view its details.</div> : props.school}
+      <Row className="TableHeaders">
+        <Col>Rank</Col>
+        <Col>Author</Col>
+      </Row>
+      {props.school === 'loading' ? <LoadingSpinner /> : props.school === null ? <div>Select an institution to view its details.</div> : <div>
+        {props.author[props.school].map((author, i) => <Row><Col>{i + 1}</Col><Col>{author}</Col></Row>)}</div>
+      }
     </div>
   );
 }

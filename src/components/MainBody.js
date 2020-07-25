@@ -21,6 +21,7 @@ function MainBody(props) {
       console.log(props.subject);
       console.log(props.subjectAreas);
       const [result, authorRankings] = await rankings(props.subject, props.subjectAreas, startYear, 2020);
+      console.log('fjewoifjewoifjewoifwjeofweij', authorRankings);
       let school_ranks = [];
       for (const [key, value] of Object.entries(result)) { // eslint-disable-line
         school_ranks.push(key);
@@ -33,6 +34,7 @@ function MainBody(props) {
       setLoadingDataStatus(false);
 
     };
+    console.log('ewofjewoifjewoifjewofijewofiewjfoewij', authorRanks);
     fetchData(props.subject);
   }, [props.subject, props.temporary, temp2]);
 
@@ -105,7 +107,7 @@ function MainBody(props) {
             </Row>
           </Col>
           <Col className="AuthorRanks">
-            <AuthorRankings school={selectedSchool} />
+            <AuthorRankings school={selectedSchool} author={authorRanks} />
           </Col>
         </Row>
       </Col>
