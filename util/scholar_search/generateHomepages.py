@@ -14,7 +14,10 @@ def checkTilda(links, researcher):
             if (url.find("~")>-1 and retType!="tilda"): #doesnt have to check for last name
                 ret = url
                 retType = "tilda"
-            if (url.find("people")>-1 and url.lower().find(list(researcher.split(' '))[len(list(researcher.split(' ')))-1].strip().lower())>-1 and retType!="tilda"):
+            if (url.find("profile")>-1 and url.lower().find(list(researcher.split(' '))[len(list(researcher.split(' ')))-1].strip().lower())>-1 and retType==None):
+                ret = url
+                retType = "profile"
+            if (url.find("people")>-1 and url.lower().find(list(researcher.split(' '))[len(list(researcher.split(' ')))-1].strip().lower())>-1 and retType!="tilda" and retType!="profile"):
                 ret = url
                 retType = "people"
             if (url.find("faculty")>-1 and url.lower().find(list(researcher.split(' '))[len(list(researcher.split(' ')))-1].strip().lower())>-1 and retType==None):
@@ -54,4 +57,4 @@ def main(researcher, institution):
 
 
 if __name__ == "__main__":
-    main("Ketan Mayer-Patel", "University of North Carolina")
+    main("Martin Brooke", "Duke University")
