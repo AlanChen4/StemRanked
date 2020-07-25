@@ -1,5 +1,9 @@
 from bs4 import BeautifulSoup
-import requests, os, csv, time
+import requests, os, csv, time, random
+from fake_useragent import UserAgent
+ua = UserAgent()
+print("hello")
+
 
 session = requests.Session()
 
@@ -51,19 +55,21 @@ def main(researcher, institution):
     for word in list(institution.split(' ')):
         baseURL+= f"+{word}"
     #proxies = {'https': 'https://64.235.204.107:8080',}
-    response = session.get(baseURL)
+    header = {'User-Agent':str(ua.random)}
+    response = session.get(baseURL,headers=header)
     if (response.status_code>=200 and response.status_code<300):
         val = BeautifulSoup(response.text, 'html.parser') 
         links  = val.find_all('a')
         url = checkTilda(links, researcher)
         return url
     else:
-        time.sleep(.2)
+        time.sleep(random.randint(0,9))
+        print(response.status_code)
         return main(researcher, institution)
 
 
 def getFacs(path, faclist):
-	with open(path) as f:
+	with open(path, 'r', encoding='utf-8') as f:
 		reader = csv.reader(f)
 		for row in reader:
 				if (not (row[0],row[1]) in faclist):
