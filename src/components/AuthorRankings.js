@@ -11,6 +11,9 @@ function AuthorRankings(props) {
   return (
     <div>
       <Row className="TableHeaders">
+        <Col>{props.school}</Col>
+      </Row>
+      <Row className="TableHeaders">
         <Col>Rank</Col>
         <Col>Author</Col>
       </Row>
