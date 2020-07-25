@@ -126,7 +126,6 @@ function RankingInputForm() {
         <p>The number of subareas clicked is {subAreas.length}</p>
         <br />
         Ranked List for {selectedSubject}:
-        <div className = "scrollBar">
         <table>
           <thead>
             <tr>
@@ -136,7 +135,6 @@ function RankingInputForm() {
           </thead>
           {loadingDataStatus ? <tbody><tr><td>Loading Data...<br /><Spinner animation="border" variant="primary" /></td></tr></tbody> : <RankedSchoolList data={ranks} authors={authorRanks} />}
         </table>
-        </div>
       </div>
     </div>
   );
