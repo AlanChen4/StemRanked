@@ -69,3 +69,8 @@
 .Accordion:hover {
     color: white;
 }
+
+.scrollBar {
+  height:50vh;
+  overflow-y: scroll;
+}
