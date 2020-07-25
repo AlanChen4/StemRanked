@@ -98,16 +98,20 @@ function MainBody(props) {
                 </Row>
                 <Row>
                   <Col>
-                    {loadingDataStatus ? <LoadingSpinner /> :
-                      ranks.map((school, i) => <a onClick={() => setSelectedSchool(school)} key={school}><Row className={selectedSchool === school ? "InstitutionSelected" : "Institution"}><Col>{i + 1}</Col><Col>{school}</Col><Col className="Arrow">{selectedSchool === school ? '>' : ''}</Col></Row></a>) // eslint-disable-line
-                    }
+                    <div className="dataColumnInstitutions">
+                      {loadingDataStatus ? <LoadingSpinner /> :
+                        ranks.map((school, i) => <a onClick={() => setSelectedSchool(school)} key={school}><Row className={selectedSchool === school ? "InstitutionSelected" : "Institution"}><Col>{i + 1}</Col><Col>{school}</Col><Col className="Arrow">{selectedSchool === school ? '>' : ''}</Col></Row></a>) // eslint-disable-line
+                      }
+                    </div>
                   </Col>
                 </Row>
               </Col>
             </Row>
           </Col>
           <Col className="AuthorRanks">
-            <AuthorRankings school={selectedSchool} author={authorRanks} authorCount={authCount} />
+            <div className="dataColumnAuthors">
+              <AuthorRankings school={selectedSchool} author={authorRanks} authorCount={authCount} />
+            </div>
           </Col>
         </Row>
       </Col>

@@ -80,3 +80,11 @@
 .AuthorRanks {
     border-left: 1px solid rgba(112, 112, 112, 0.25);
 }
+.dataColumnInstitutions{
+    height: 52vh;
+    overflow-y: scroll;
+}
+.dataColumnAuthors{
+    height: 70vh;
+    overflow-y: scroll;
+}
