@@ -12,6 +12,7 @@ function MainBody(props) {
   const [loadingDataStatus, setLoadingDataStatus] = useState(true);
   const [selectedSchool, setSelectedSchool] = useState(null);
   const [startYear, setStartYear] = useState(1970);
+  const [authCount, setAuthCount] = useState({});
   const [temp2, setTemp2] = useState(0);
 
   useEffect(() => {
@@ -20,7 +21,7 @@ function MainBody(props) {
       setSelectedSchool('loading');
       console.log(props.subject);
       console.log(props.subjectAreas);
-      const [result, authorRankings] = await rankings(props.subject, props.subjectAreas, startYear, 2020);
+      const [result, authorRankings, authorCount] = await rankings(props.subject, props.subjectAreas, startYear, 2020);
       console.log('fjewoifjewoifjewoifwjeofweij', authorRankings);
       let school_ranks = [];
       for (const [key, value] of Object.entries(result)) { // eslint-disable-line
@@ -32,12 +33,11 @@ function MainBody(props) {
       setAuthorRanks(authorRankings);
       setSelectedSchool(null);
       setLoadingDataStatus(false);
+      setAuthCount(authorCount);
 
     };
-    console.log('ewofjewoifjewoifjewofijewofiewjfoewij', authorRanks);
     fetchData(props.subject);
   }, [props.subject, props.temporary, temp2]);
-
   function yearBlank(startYr) {
     setStartYear(startYr);
     setTemp2(startYr);
@@ -107,7 +107,7 @@ function MainBody(props) {
             </Row>
           </Col>
           <Col className="AuthorRanks">
-            <AuthorRankings school={selectedSchool} author={authorRanks} />
+            <AuthorRankings school={selectedSchool} author={authorRanks} authorCount={authCount} />
           </Col>
         </Row>
       </Col>

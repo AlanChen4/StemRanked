@@ -9,6 +9,7 @@ import { areaDictionary } from './constants';
 // Dictionary in which the keys are areas and the values are conferences
 
 let areaDict = {};
+let finalAuthorCounts = {};
 
 // Returns the final rankings from dictionary that contains the average count and institutions
 function ranks(counts, colleges) {
@@ -80,6 +81,7 @@ function confAreas(conferences, areaDict) {
 // Ranks the authors of each institution from the adjusted count
 function AuthorRank(author_rank_dic, institutionAuthors) {
     let finalAuthorRank = {};
+    let finalAuthorCount = {}
     for (let x = 0; x < institutionAuthors.length; x++) {
         finalAuthorRank[institutionAuthors[x]] = {};
     }
@@ -104,8 +106,11 @@ function AuthorRank(author_rank_dic, institutionAuthors) {
             authorNames[maxIdx] = authorNames[i];
             authorNames[i] = temp2;
         }
+        finalAuthorCount[inst] = authorCount;
         finalAuthorRank[inst] = authorNames;
+
     }
+    finalAuthorCounts = finalAuthorCount;
     return finalAuthorRank;
 }
 
@@ -231,7 +236,9 @@ async function rankings(subject, subAreas, startYr) {
     let final = ranks(counts, colleges);
     console.log('Result of ranks call', final);
 
-    return [final, finalAuthors];
+    console.log('Author Counts:', finalAuthorCounts);
+
+    return [final, finalAuthors, finalAuthorCounts];
 }
 
 export default rankings;
