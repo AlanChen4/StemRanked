@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-import requests
+import requests, os, csv
 
 session = requests.Session()
 
@@ -60,5 +60,25 @@ def main(researcher, institution):
     else:
         print(response.status_code)
 
+
+def getFacs(path, faclist):
+	with open(path) as f:
+		reader = csv.reader(f)
+		for row in reader:
+				if (not (row[0],row[1]) in faclist):
+					faclist.append((row[0],row[1]))
+					print((row[0],row[1]))
+
+
+def buildFacultyList():
+	directory = "public/data"
+	faclist = []
+	for filename in os.listdir(directory):
+		if (filename.endswith(".csv")):
+			getFacs(f"{directory}/{filename}",faclist)
+	print(faclist)
+
+
 if __name__ == "__main__":
-    main("Emma Brunskill", "Stanford University")
+    #main("Emma Brunskill", "Stanford University")
+    buildFacultyList()
