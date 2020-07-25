@@ -106,6 +106,10 @@ function AuthorRank(author_rank_dic, institutionAuthors) {
             authorNames[maxIdx] = authorNames[i];
             authorNames[i] = temp2;
         }
+        if (authorCount.length > 50) {
+            authorCount = authorCount.splice(0, 50);
+            authorNames = authorNames.splice(0, 50);
+        }
         finalAuthorCount[inst] = authorCount;
         finalAuthorRank[inst] = authorNames;
 
