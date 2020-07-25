@@ -13,15 +13,17 @@ function RankingInputForm() {
   const [authorRanks, setAuthorRanks] = useState({});
   let [subAreas, setSubAreas] = useState(Object.keys(areaDictionary['Emery Computer Science']));
   const [startyear, setStartYear] = useState(1970);
+  const [authCounts, setAuthCounts] = useState({});
   // Wait for CSV parsing and rankings function to finish (runs on every render)
   useEffect(() => {
     const fetchData = async (subject) => {
-      const [result, authorRankings] = await rankings(subject, subAreas, startyear, 2020);
+      const [result, authorRankings, authorCounts] = await rankings(subject, subAreas, startyear, 2020);
       console.log('Current contents of subAreas:', subAreas);
       console.log('Current Start Year', startyear);
       setRanks(result);
       setAuthorRanks(authorRankings);
       setLoadingDataStatus(false);
+      setAuthCounts(authorCounts);
 
 
     };
