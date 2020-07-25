@@ -43,18 +43,22 @@ def checkTilda(links, researcher):
     return newRet
 
 def main(researcher, institution):
+    researcher = researcher.strip()
+    institution = institution.strip()
     baseURL = "https://www.google.com/search?q="
     for word in list(researcher.split(' ')):
         baseURL+= f"+{word}"
     for word in list(institution.split(' ')):
         baseURL+= f"+{word}"
+    #proxies = {'https': 'https://64.235.204.107:8080',}
     response = session.get(baseURL)
     if (response.status_code>=200 and response.status_code<300):
-        val = BeautifulSoup(response.text, 'html.parser')
+        val = BeautifulSoup(response.text, 'html.parser') 
         links  = val.find_all('a')
         url = checkTilda(links, researcher)
         print(url)
-
+    else:
+        print(response.status_code)
 
 if __name__ == "__main__":
-    main("Martin Brooke", "Duke University")
+    main("Emma Brunskill", "Stanford University")
