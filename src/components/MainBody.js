@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import rankings from '../util/dataRanker';
 import LoadingSpinner from './LoadingSpinner';
 import AuthorRankings from './AuthorRankings';
+import { areaDictionary } from '../util/constants';
 
 function MainBody(props) {
   const [ranks, setRanks] = useState([]);
@@ -78,6 +79,17 @@ function MainBody(props) {
               </Col>
               <Col>
                 {/* empty column for spacing */}
+              </Col>
+              <Col>
+                <Row>
+                  Areas chosen: {(props.subjectAreas).length}
+                </Row>
+                <Row>
+                  Total Areas: {(Object.keys(areaDictionary[props.subject])).length}
+                </Row>
+              </Col>
+              <Col>
+
               </Col>
               <Col>
                 {/* empty column for spacing */}
