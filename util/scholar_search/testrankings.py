@@ -3,7 +3,7 @@ from collections import defaultdict
 
 dic = dict()
 #with open('../../public/data/Computer_Science.csv') as f:
-with open('util/scholar_search/data/Computer_Science.csv') as f:
+with open('public/data/Mathematics.csv') as f:
     reader = csv.reader(f)
     for row in reader:
         if (row[0] == 'Author'):
@@ -12,8 +12,8 @@ with open('util/scholar_search/data/Computer_Science.csv') as f:
         dic[row[1]][row[2]] = dic[row[1]].get(row[2],0) + float(row[4])
 inst = {}
 num_areas = 0
-for field in venues.venue_dictionary['Computer Science']:
-    num_areas+=len(venues.venue_dictionary['Computer Science'][field].keys())
+for field in venues.venue_dictionary['Mathematics']:
+    num_areas+=len(venues.venue_dictionary['Mathematics'][field].keys())
 for institution in dic.keys():
     product = 1
     for area in dic[institution].keys():
