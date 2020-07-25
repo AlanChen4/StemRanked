@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-import requests, os, csv
+import requests, os, csv, time
 
 session = requests.Session()
 
@@ -56,9 +56,10 @@ def main(researcher, institution):
         val = BeautifulSoup(response.text, 'html.parser') 
         links  = val.find_all('a')
         url = checkTilda(links, researcher)
-        print(url)
+        return url
     else:
-        print(response.status_code)
+        time.sleep(.2)
+        return main(researcher, institution)
 
 
 def getFacs(path, faclist):
@@ -71,12 +72,17 @@ def getFacs(path, faclist):
 
 
 def buildFacultyList():
-	directory = "public/data"
-	faclist = []
-	for filename in os.listdir(directory):
-		if (filename.endswith(".csv")):
-			getFacs(f"{directory}/{filename}",faclist)
-	print(faclist)
+    directory = "public/data"
+    for filename in os.listdir(directory):
+        faclist = []
+        if (filename.endswith("info.csv")):
+            getFacs(f"{directory}/{filename}",faclist)
+            print(faclist)
+            homepages = {}
+            for author in faclist:
+                homepages[(author[0],author[1])] = main(author[0],author[1])
+                print(f"({author[0]},{author[1]}):\t\t{homepages[(author[0],author[1])]}")
+            print(homepages)
 
 
 if __name__ == "__main__":
