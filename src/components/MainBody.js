@@ -58,7 +58,7 @@ function MainBody(props) {
             {props.subject}
           </Col>
         </Row>
-        <Row>
+        <Row className="Rankings">
           <Col>
             <Row>
               <Col className="YearSelect">
@@ -70,26 +70,24 @@ function MainBody(props) {
                 <Row className="BottomLine">
                   <Dropdown as={ButtonGroup}>
                     <Dropdown.Toggle className="YearDropdown">{startYear}</Dropdown.Toggle>
-                    <Dropdown.Menu className="dropdownScrollBar">
+                    <Dropdown.Menu className="DropdownScrollBar">
                       {startYears.map((startyear) => <Dropdown.Item className={startYear === startyear ? "Active" : "Inactive"} onClick={() => yearBlank(startyear)} active={startYear === startyear}>{startyear}</Dropdown.Item>)}
                     </Dropdown.Menu>
                   </Dropdown>
                   to 2020
                 </Row>
               </Col>
-              <Col>
-                {/* empty column for spacing */}
-              </Col>
-              <Col>
+              <Col className="SubAreas">
                 <Row>
-                  Areas chosen: {(props.subjectAreas).length}
+                  <Col>
+                    Selected {(props.subjectAreas).length} of
+                  </Col>
                 </Row>
                 <Row>
-                  Total Areas: {(Object.keys(areaDictionary[props.subject])).length}
+                  <Col>
+                  {(Object.keys(areaDictionary[props.subject])).length} sub-areas
+                  </Col>
                 </Row>
-              </Col>
-              <Col>
-
               </Col>
               <Col>
                 {/* empty column for spacing */}
@@ -98,10 +96,10 @@ function MainBody(props) {
             <Row className="InstitutionRankings">
               <Col>
                 <Row className="TableHeaders">
-                  <Col>
+                  <Col xs={3}>
                     Rank
                   </Col>
-                  <Col>
+                  <Col xs={9}>
                     Institution
                   </Col>
                   <Col>
@@ -110,9 +108,9 @@ function MainBody(props) {
                 </Row>
                 <Row>
                   <Col>
-                    <div className="dataColumnInstitutions">
+                    <div className="DataColumnInstitutions">
                       {loadingDataStatus ? <LoadingSpinner /> :
-                        ranks.map((school, i) => <a onClick={() => setSelectedSchool(school)} key={school}><Row className={selectedSchool === school ? "InstitutionSelected" : "Institution"}><Col>{i + 1}</Col><Col>{school}</Col><Col className="Arrow">{selectedSchool === school ? '>' : ''}</Col></Row></a>) // eslint-disable-line
+                        ranks.map((school, i) => <a onClick={() => setSelectedSchool(school)} key={school} title={'Select ' + school + ' to view its details.'}><Row className={selectedSchool === school ? "InstitutionSelected" : "Institution"}><Col xs={3}>{i + 1}</Col><Col xs={8}>{school}</Col><Col className="Arrow">{selectedSchool === school ? '>' : ''}</Col></Row></a>) // eslint-disable-line
                       }
                     </div>
                   </Col>

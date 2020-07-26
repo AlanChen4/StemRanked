@@ -3,7 +3,6 @@
     padding-bottom: 2vh;
     padding-left: 2.25vw;
     padding-right: 2.25vw;
-    height: 100vh;
 }
 
 .SubjectName {
@@ -11,6 +10,10 @@
     align-items: center;
     font-size: 1.75vw;
     margin-bottom: 5vh;
+}
+
+.Rankings {
+    margin-top: -1vh;
 }
 
 .YearSelect {
@@ -46,9 +49,14 @@
     background-color: var(--sidebar-color) !important;
 
 }
-.dropdownScrollBar{
+
+.DropdownScrollBar{
     height: 60vh;
     overflow-y: scroll;
+}
+
+.SubAreas {
+    text-align: center;
 }
 
 .Inactive:focus {
@@ -62,10 +70,13 @@
 .TableHeaders {
     font-size: 1.75vw;
     font-weight: 400;
+    margin-bottom: 1vh;
 }
 
 .Institution {
     cursor: pointer;
+    padding-top: 1vh;
+    padding-bottom: 1vh;
 }
 
 .Institution:hover {
@@ -76,6 +87,8 @@
     font-weight: 500;
     background-color: white;
     cursor: pointer;
+    padding-top: 1vh;
+    padding-bottom: 1vh;
 }
 
 .Arrow {
@@ -85,7 +98,7 @@
 .AuthorRanks {
     border-left: 1px solid rgba(112, 112, 112, 0.25);
 }
-.dataColumnInstitutions{
+.DataColumnInstitutions{
     height: 52vh;
     overflow-y: scroll;
 }
