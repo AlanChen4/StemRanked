@@ -144,25 +144,26 @@ def write(qualified_Pubs):
             for item in subject_info[subject]:
                 writer.writerow([item[0], item[1], item[3], item[2], item[4]])
 
+
 def writeTestCSV(domain = 'cmu'):
     with open('microsoftAcademicAuthors.csv','w') as f:
         writer = csv.writer(f)
         for item in academic.get_top_authors('cmu','Computer Science',1000):
             writer.writerow([item,'cmu'])
-    
+
+
 def main(institutions, subject):
-    
     #publications = genPublications("Eric P. Xing","Composite(AA.AuId=351197510)", 'Carnegie Mellon University')
     #getInstitutionPubs(institution1,'computer science')
     #write(publications)
     inst = []
     for institution in institutions:
-        inst.append(multiprocessing.Process(target= getInstitutionPubs, args=(institution, subject)))
+        inst.append(multiprocessing.Process(target=getInstitutionPubs, args=(institution, subject)))
     for institution in inst:
         institution.start()
     for institution in inst:
         institution.join()
-    
+
 if __name__ == "__main__":
     a = time.time()
     main(['Carnegie Mellon University', 'Massachussets Institute of Technology'], 'Computer Science')

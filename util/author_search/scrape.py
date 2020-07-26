@@ -19,11 +19,11 @@ def scrapeUniversity(filename, university, subject):
             if (row[1].find('https')==-1):
                 maAuthors[row[0]] = int(row[1])
             elif(row[1].find('_')!=-1 and row[1].find('_')<row[1].find('https')):
-                maAuthors[row[0]] = int(row[1][:row[1].find('_')]) 
+                maAuthors[row[0]] = int(row[1][:row[1].find('_')])
             else:
                 gsAuthors[row[0]] = row[1]
 
-        for auth in list(maAuthors.keys()):            
+        for auth in list(maAuthors.keys()):
             scrapeAuthor(auth,maAuthors[auth],university)
 
 def multiUniversity(items):

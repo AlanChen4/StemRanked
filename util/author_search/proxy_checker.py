@@ -38,7 +38,6 @@ class ProxyThread(threading.Thread):
                 print(f'[Success] {ip}')
                 good_proxies.append(proxy)
         except Exception as e:
-            print(f'[Fail] {ip} {type(e)}')
             return
 
 
@@ -91,8 +90,4 @@ def gen_headers(referer):
             }
 
     return headers
-
-
-if __name__ == '__main__':
-    get_proxy_local('proxies.txt')
 

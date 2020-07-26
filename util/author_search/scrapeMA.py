@@ -18,7 +18,7 @@ def main(subject):
             inst.append(institutions[i])
     institutions = inst'''
 
-    
+
     for i in range(0,len(institutions),2):
         a = time.time()
         if (i != len(institutions)-1):

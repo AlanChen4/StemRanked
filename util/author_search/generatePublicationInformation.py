@@ -37,7 +37,7 @@ def furtherRequest(pub, proxylist, proxyCycle, referrer, requestType, beginningS
         table = list(soup.find_all('div',{'id':'gsc_vcd_table'}))[0]
         if (requestFlag):
             beginningString = beginningString[:round(len(beginningString)/4)]
-            for item in table:                
+            for item in table:
                 divs = item.find_all('div')
                 if (divs[0].text != 'Scholar articles' and divs[0].text != 'Description'):
                     if (divs[1].text.find(beginningString) != -1):
@@ -45,7 +45,7 @@ def furtherRequest(pub, proxylist, proxyCycle, referrer, requestType, beginningS
         area = venues.check(venue)
         if (area is None):
             return False
-                
+
         for item in table:
             if (list(item.find_all('div',{'class':'gsc_vcd_field'}))[0].text == 'Authors'):
                 numAuthors = len(list(list(item.find_all('div',{'class':'gsc_vcd_value'}))[0].text.split(',')))
@@ -61,7 +61,7 @@ def furtherRequest(pub, proxylist, proxyCycle, referrer, requestType, beginningS
             table = list(soup.find_all('div',{'id':'gsc_vcd_table'}))[0]
             if (requestFlag):
                 beginningString = beginningString[:round(len(beginningString)/4)]
-                for item in table:                
+                for item in table:
                     divs = item.find_all('div')
                     if (divs[0].text != 'Scholar articles' and divs[0].text != 'Description'):
                         if (divs[1].text.find(beginningString) != -1):
@@ -69,7 +69,7 @@ def furtherRequest(pub, proxylist, proxyCycle, referrer, requestType, beginningS
             area = venues.check(venue)
             if (area is None):
                 return False
-                    
+
             for item in table:
                 if (list(item.find_all('div',{'class':'gsc_vcd_field'}))[0].text == 'Authors'):
                     numAuthors = len(list(list(item.find_all('div',{'class':'gsc_vcd_value'}))[0].text.split(',')))
@@ -82,20 +82,19 @@ def furtherRequest(pub, proxylist, proxyCycle, referrer, requestType, beginningS
         if (len(proxylist) <= 0):
             print('Proxy List is Empty')
             quit()
-        else: 
+        else:
             print(f"The Proxy List's Length is {len(proxylist)}")
             return furtherRequest(pub, proxylist, proxyCycle, referrer, requestType, beginningString)'''
-        
 
 
 def scrapeInfo(pub, proxylist, proxyCycle, newQuery, auth_name,institution):
     numAuthors = -1
     pub_info = dict()
-    pub_info['Year'] = list(pub.find_all('td',{'class':'gsc_a_y'}))[0].span.text  
+    pub_info['Year'] = list(pub.find_all('td',{'class':'gsc_a_y'}))[0].span.text
     if (pub_info['Year'] == ''):
         #print('Failure: No Year')
-        return False 
-    pub_info['Author'] = auth_name 
+        return False
+    pub_info['Author'] = auth_name
     pub_info['Institution'] = institution
     ven = None
     venue = list(pub.td.find_all('div', {'class':'gs_gray'}))[1].text #contains page numbers, but we cannot remove because the conference may have commas
@@ -115,7 +114,7 @@ def scrapeInfo(pub, proxylist, proxyCycle, newQuery, auth_name,institution):
         ven = venues.check(venue)
     if (ven == False):
         return False
-    auths = pub.td.div.text    
+    auths = pub.td.div.text
     if (numAuthors != -1):
         pass
     elif (auths.find('...') == -1):
