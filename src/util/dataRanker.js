@@ -48,8 +48,9 @@ function ranks(counts, colleges) {
 // Returns a dictionary with average count and institutions from a dictionary that has the institution, areas, and adjusted count
 function avgCount(rank_dic, subAreas) {
     let numAreas = 0;
+    let subAreaslength = subAreas.length;
     if (subAreas.length === 0) {
-        numAreas = 67;
+        subAreaslength = Object.keys(areaDict).length;
     }
     else {
         for (let i = 0; i < subAreas.length; i++) {
@@ -120,11 +121,12 @@ function AuthorRank(author_rank_dic, institutionAuthors) {
 
 function authorAvgCount(author_rank_dic, subAreas) {
     let numAreas = 0;
+    let subAreaslength = subAreas.length;
     if (subAreas.length === 0) {
-        numAreas = 67;
+        subAreaslength = Object.keys(areaDict).length;
     }
     else {
-        for (let i = 0; i < subAreas.length; i++) {
+        for (let i = 0; i < subAreaslength; i++) {
             numAreas += (areaDict[subAreas[i]].length);
         }
     }
