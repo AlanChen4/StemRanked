@@ -8,6 +8,7 @@ The rankings system is based off of an adjusted count found from the number of p
 
 (Areas in the equation is the conference)
 Institutions with the highest average count are highest in the rankings.
+(The methodology for the author rankings is the same as the institution rankings system)
 
 ## Dev Env Setup
 Intended for Unix/Linux/Ubuntu OSs and Python 3
