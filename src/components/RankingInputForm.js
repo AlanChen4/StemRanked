@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import rankings from '../util/dataRanker';
 import { subjectAreaInfo } from '../constants';
 import './RankingInputForm.css';
-import { Accordion, Button, Card, Spinner, ToggleButton, ToggleButtonGroup, Form, DropdownButton } from 'react-bootstrap';
+import { Accordion, Button, Card, Spinner, ToggleButton, ToggleButtonGroup, Form, DropdownButton, Dropdown } from 'react-bootstrap';
 import { areaDictionary } from '../util/constants';
 
 function RankingInputForm() {
@@ -125,6 +125,15 @@ function RankingInputForm() {
         <p>The total number of subareas are {(Object.keys(areaDictionary[selectedSubject])).length}</p>
         <p>The number of subareas clicked is {subAreas.length}</p>
         <br />
+        <Dropdown>
+          <Dropdown.Toggle variant="success" id="dropdown-basic">
+            Start Year
+          </Dropdown.Toggle>
+
+          <Dropdown.Menu>
+            {startYears.map((startYear) => <Dropdown.Item onClick={() => yearBlank(startYear)} >{startYear}</Dropdown.Item>)}
+          </Dropdown.Menu>
+        </Dropdown>
         Ranked List for {selectedSubject}:
         <div className="scrollBar">
           <table>
