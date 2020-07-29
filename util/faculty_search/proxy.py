@@ -1,4 +1,3 @@
-import itertools
 import requests
 import threading
 import time
