@@ -1,12 +1,12 @@
-from zipfile import ZipFile
 import os
 
-zipObj = ZipFile('util/author_search/data/author_info.zip', 'w')
+def zip_data():
+    os.chdir("util/author_search/data/raw_data")
+    for filename in os.listdir():
+        os.system(f"gzip {filename}")
 
-os.chdir("util/author_search/data/")
 
-zipObj.write("generated-publication-info.csv")
-zipObj.close()
+if __name__ == "__main__":
+    zip_data()
 
-os.remove("generated-publication-info.csv")
 
