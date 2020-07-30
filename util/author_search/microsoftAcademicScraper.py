@@ -120,7 +120,7 @@ def getInstitutionPubs(institution, subject):
     return publications
 
 def makeFile(loc):
-    loc = 'util/author_search/data/'+loc+'.csv'
+    loc = 'public/data/raw_'+loc+'.csv'
     if (not os.path.isfile(loc)):
         with open(loc, 'w') as f:
             writer = csv.writer(f)
@@ -141,7 +141,7 @@ def write(qualified_Pubs, subject):
             subject_info[subject] = list()
     for subject in subject_info.keys():
         makeFile(subject)
-        with open('util/author_search/data/'+subject+'.csv', 'a') as f:
+        with open('public/data/raw_'+subject+'.csv', 'a') as f:
             writer = csv.writer(f)
             for item in subject_info[subject]:
                 writer.writerow([item[0], item[1], item[3], item[2], item[4]])
