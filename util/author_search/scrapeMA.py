@@ -2,7 +2,7 @@ import microsoftAcademicScraper, csv, time
 
 def main(subject):
     institutions = []
-    with open('util/scholar_search/data/institution_domains.csv') as f:
+    with open('util/author_search/data/institution_domains.csv') as f:
         reader = csv.reader(f)
         for row in reader:
             institutions.append(row[0])
@@ -30,4 +30,4 @@ def main(subject):
     print(institutions)
 
 if __name__ == "__main__":
-    main('Mathematics')
+    main('Computer Science')

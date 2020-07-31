@@ -4,7 +4,7 @@ sys.path.append(path_to_faculty_search)
 import academic, venues, threading, multiprocessing
 
 session = requests.Session()
-pageThreshold = 6
+pageThreshold = 0
 
 def genPublicationsPerPage(auth, authID, institution, skip, pubs, pr_error_trigger):
     publications = []
@@ -32,9 +32,10 @@ def genPublicationsPerPage(auth, authID, institution, skip, pubs, pr_error_trigg
                 length = int(paper['paper']['v']['lastPage']) - int(paper['paper']['v']['firstPage'])
                 if (length < pageThreshold):
                     continue
-                ven = venues.check(venue)
+                ven = venue #added
+                '''ven = venues.check(venue)
                 if (ven == False):
-                    continue
+                    continue'''
                 pub = {
                     'Author':auth,
                     'Institution':institution,
@@ -113,33 +114,34 @@ def getInstitutionPubs(institution, subject):
         authID = f'Composite(AA.AuId={authors[auth]})'
         pub = genPublications(auth,authID,institution)
         b = time.time()
-        write(pub)
+        write(pub, subject)
         publications += pub
         print(f'{auth}\t\t{authID}\t\t{(b-a)}\t\t{institution}')
     return publications
 
 def makeFile(loc):
-    loc = 'util/scholar_search/data/'+loc+'.csv'
+    loc = 'public/data/raw_'+loc+'.csv'
     if (not os.path.isfile(loc)):
         with open(loc, 'w') as f:
             writer = csv.writer(f)
             writer.writerow(['Author', 'Institution', 'Venue', 'Year', 'AjustedCount'])
 
-def write(qualified_Pubs):
+def write(qualified_Pubs, subject):
     information = dict()
     for item in qualified_Pubs:
         information[(item['Author'], item['Institution'], item['Year'], item['Venue'])] = information.get((item['Author'], item['Institution'], item['Year'], item['Venue']),0)+item['Adjusted Count']
     subject_info = dict()
     for key in information.keys():
-        subject = venues.findSubject(key[3])
+        #subject = venues.findSubject(key[3])
         subject = re.sub(r' ','_', subject)
+        subject = 'generated-publication-info' #creating general location for all scraped information
         try:
             subject_info[subject].append([key[0],key[1],key[2],key[3],information[(key[0],key[1],key[2],key[3])]])
         except:
             subject_info[subject] = list()
     for subject in subject_info.keys():
         makeFile(subject)
-        with open('util/scholar_search/data/'+subject+'.csv', 'a') as f:
+        with open('public/data/raw_'+subject+'.csv', 'a') as f:
             writer = csv.writer(f)
             for item in subject_info[subject]:
                 writer.writerow([item[0], item[1], item[3], item[2], item[4]])
@@ -154,6 +156,7 @@ def writeTestCSV(domain = 'cmu'):
 
 def main(institutions, subject):
     #publications = genPublications("Eric P. Xing","Composite(AA.AuId=351197510)", 'Carnegie Mellon University')
+    #print(publications)
     #getInstitutionPubs(institution1,'computer science')
     #write(publications)
     inst = []
