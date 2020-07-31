@@ -78,13 +78,13 @@ def get_faculty(email_domain='example.edu', proxy_path='proxies/proxies.txt',
     :param proxy_thread: scholar
     :param strict: scholar
     :param uni_name: academic
-    :param field: academic
+    :param field: scholar and academic
     :param academic_limit: academic
     :param output_name: output to csv'''
 
     # scholar
     print('[Start] Scholar Scraper')
-    scholar = get_scholar(email_domain=email_domain, proxy_path=proxy_path,
+    scholar = get_scholar(email_domain=email_domain, field=field, proxy_path=proxy_path,
             starting_author=starting_author, limit=limit, proxy_thread=proxy_thread,
             strict=strict)
 
