@@ -119,9 +119,7 @@ function MainBody(props) {
             </Row>
           </Col>
           <Col className="AuthorRanks">
-            <div className="DataColumnAuthors">
-              <AuthorRankings school={selectedSchool} author={authorRanks} authorCount={authCount} />
-            </div>
+            <AuthorRankings school={selectedSchool} author={authorRanks} authorCount={authCount} />
           </Col>
         </Row>
       </Col>
