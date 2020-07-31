@@ -1,3 +1,5 @@
+# ![StemRanked](https://github.com/AlanChen4/StemRanked/blob/master/public/media/logo.png)
+
 # StemRanked
 GOTO metrics-based rankings generalized for a multitude of STEM field majors.
 
