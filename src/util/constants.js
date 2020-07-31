@@ -55,11 +55,12 @@ export const areaDictionary = {
         'Visualization': ['vis']
     },
     'Physics': {
-        'Astronomy and Astrophysics': ['WebSci: Web Science', 'CIDU: Conference on Intelligent Data Understanding', 'IMS: International Microwave Symposium', 'IRMMW-THz: International Conference on Infrared, Millimeter, and Terahertz Waves', 'IRMMW-THz: International Conference on Infrared, Millimeter, and Terahertz Waves', ''],
-        'Atomic and Molecular Physics, and Optics': [],
-        'Condensed Matter Physics': [],
-        'Nuclear and High Energy Physics': [],
-        'Surfaces and Interfaces': []
+        'Astronomy and Astrophysics': ['websci', 'cidu', 'ims', 'irmmw-thz', 'eqec', 'ursi gass', 'nss', 'icpr', 'cpa', 'phystat', 'qels', 'icops', 'cleo', 'aeroconf', 'sfc', 'nss/mic', 'jicimwicte', 'siggraph', 'e-science', 'rta'],
+        'Atomic and Molecular Physics': ['cleo', 'icsd', 'sispad', 'ectc', 'vlsit', 'eqec', 'qels', 'jcis', 'acoft', 'fts', 'pcm', 'icops', 'icmens', 'mines', 'cp', 'cpem', 'ivnc', 'mems', 'iemt'],
+        'Condensed Matter Physics': ['intermag', 'cefc', 'cleo', 'apmrc', 'sispad', 'elt', 'iedm', 'ict', 'iwce', 'eqec', 'irmmw-thz', 'qels', 'iqec', 'drc', 'ifm', 'iprm', 'ieee-nano', 'sigetdm', 'ieeeaps', 'isaf'],
+        'Nuclear and High Energy Physics': ['dis', 'icpa', 'icops', 'iwce', 'nss/mic'],
+        'Surfaces and Interfaces': ['websci', 'nime', 'ius', 'iedm', 'ise', 'icoac', 'ssict', 'mse', 'pvsc', 'intermag', 'asdam', 'inec', 'hsi', 'jcis', 'iqec', 'leos', 'ipmm'],
+        'Optics': ['cleo', 'ofc', 'ecoc', 'ius', 'eucap', 'isap', 'ieeeaps', 'nss/mic', 'eumc', 'ims', 'nss', 'irmmw-thz', 'qels', 'apmc', 'ivec', 'ipc', 'eqec', 'leos', 'icton', 'fcs']
     }
 }
 //Have to change everything to lowercase
