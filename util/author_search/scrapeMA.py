@@ -30,4 +30,4 @@ def main(subject):
     print(institutions)
 
 if __name__ == "__main__":
-    main('Computer Science')
+    main('Mathematics')
