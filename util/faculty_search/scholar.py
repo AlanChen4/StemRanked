@@ -153,12 +153,13 @@ def get_scholar(email_domain, field, proxy_path, starting_author=None,
                 print(f'[IP Ban] Removed {proxy["https"]}, {len(proxy_list)} remaining')
                 next_resp = old_resp
         except IndexError:
+            if len(proxy_list) == 0:
+                print('[Stopped] No proxies remaining')
+                print(f'[Info] Ending author_id: {author_id}')
+                break
             proxy_list.remove(proxy)
             print(f'[IP Ban] Removed proxy, {len(proxy_list)} remaining')
             next_resp = old_resp
-        except StopIteration:
-            print('[Stopped] No proxies remaining')
-            print(f'[Info] Ending author_id: {author_id}')
             break
     return profiles
 
