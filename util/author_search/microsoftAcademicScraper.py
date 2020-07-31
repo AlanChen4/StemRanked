@@ -120,7 +120,8 @@ def getInstitutionPubs(institution, subject):
     return publications
 
 def makeFile(loc):
-    loc = 'public/data/raw_'+loc+'.csv'
+    loc = 'util/author_search/data/raw_data/raw_'+loc+'.csv'
+    print(loc)
     if (not os.path.isfile(loc)):
         with open(loc, 'w') as f:
             writer = csv.writer(f)
@@ -134,14 +135,13 @@ def write(qualified_Pubs, subject):
     for key in information.keys():
         #subject = venues.findSubject(key[3])
         subject = re.sub(r' ','_', subject)
-        subject = 'generated-publication-info' #creating general location for all scraped information
         try:
             subject_info[subject].append([key[0],key[1],key[2],key[3],information[(key[0],key[1],key[2],key[3])]])
         except:
             subject_info[subject] = list()
     for subject in subject_info.keys():
         makeFile(subject)
-        with open('public/data/raw_'+subject+'.csv', 'a') as f:
+        with open('util/author_search/data/raw_data/raw_'+subject+'.csv', 'a') as f:
             writer = csv.writer(f)
             for item in subject_info[subject]:
                 writer.writerow([item[0], item[1], item[3], item[2], item[4]])
