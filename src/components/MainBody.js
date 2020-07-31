@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col, Dropdown, ButtonGroup } from 'react-bootstrap';
+import { Row, Col, Dropdown, ButtonGroup, Image } from 'react-bootstrap';
 import './MainBody.css';
 import { useState, useEffect } from 'react';
 import rankings from '../util/dataRanker';
@@ -55,7 +55,7 @@ function MainBody(props) {
       <Col>
         <Row>
           <Col className="SubjectName">
-            {props.subject}
+            <span className="RankingColumnAlignment">{props.subject}</span>
           </Col>
         </Row>
         <Row className="Rankings">
@@ -97,10 +97,10 @@ function MainBody(props) {
               <Col>
                 <Row className="TableHeaders">
                   <Col xs={3}>
-                    Rank
+                    <span className="RankingColumnAlignment">Rank</span>
                   </Col>
                   <Col xs={9}>
-                    Institution
+                  <span className="RankingColumnAlignment">Institution</span>
                   </Col>
                   <Col>
                     {/* empty column for spacing ---- NOT SURE IF WE NEED THIS */}
@@ -110,7 +110,7 @@ function MainBody(props) {
                   <Col>
                     <div className="DataColumnInstitutions">
                       {loadingDataStatus ? <LoadingSpinner /> :
-                        ranks.map((school, i) => <a onClick={() => setSelectedSchool(school)} key={school} title={'Select ' + school + ' to view its details.'}><Row className={selectedSchool === school ? "InstitutionSelected" : "Institution"}><Col xs={3}>{i + 1}</Col><Col xs={8}>{school}</Col><Col className="Arrow">{selectedSchool === school ? '>' : ''}</Col></Row></a>) // eslint-disable-line
+                        ranks.map((school, i) => <a onClick={() => setSelectedSchool(school)} key={school} title={'Select ' + school + ' to view its details.'}><Row className={selectedSchool === school ? "InstitutionSelected" : "Institution"}><Col xs={3}><span className="RankingColumnAlignment">{i + 1}</span></Col><Col xs={8}><span className="RankingColumnAlignment">{school}</span></Col><Col className="ArrowContainer"><Image className={selectedSchool === school ? "Arrow" : "ArrowInactive"} src="./images/arrow.png"/></Col></Row></a>) // eslint-disable-line
                       }
                     </div>
                   </Col>
@@ -119,7 +119,7 @@ function MainBody(props) {
             </Row>
           </Col>
           <Col className="AuthorRanks">
-            <div className="dataColumnAuthors">
+            <div className="DataColumnAuthors">
               <AuthorRankings school={selectedSchool} author={authorRanks} authorCount={authCount} />
             </div>
           </Col>
