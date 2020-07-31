@@ -1,5 +1,3 @@
-[![Build Status](https://github.com/AlanChen4/StemRanked/tree/production)](hhttps://stemranked.com/)
-
 # StemRanked
 GOTO metrics-based rankings generalized for a multitude of STEM field majors.
 
