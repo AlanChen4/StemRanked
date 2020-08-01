@@ -61,6 +61,17 @@ export const areaDictionary = {
         'Nuclear and High Energy Physics': ['dis', 'icpa', 'icops', 'iwce', 'nss/mic'],
         'Surfaces and Interfaces': ['websci', 'nime', 'ius', 'iedm', 'ise', 'icoac', 'ssict', 'mse', 'pvsc', 'intermag', 'asdam', 'inec', 'hsi', 'jcis', 'iqec', 'leos', 'ipmm'],
         'Optics': ['cleo', 'ofc', 'ecoc', 'ius', 'eucap', 'isap', 'ieeeaps', 'nss/mic', 'eumc', 'ims', 'nss', 'irmmw-thz', 'qels', 'apmc', 'ivec', 'ipc', 'eqec', 'leos', 'icton', 'fcs']
+    },
+
+    'Mathematics': {
+        'Algebra and Number Theory': ['Journal of Differential Geometry','Compositio Mathematica','Forum of Mathematics, Pi'],
+        'Analysis': ["Annales de l'Institut Henri Poincaré C, Analyse non linéaire", "Geometric and Functional Analysis", "Archive for Rational Mechanics and Analysis"],
+        'Applied Mathematics':['Journal of the American Mathematical Society',"IEEE Transactions on Pattern Analysis and Machine Intelligence", "Communications on Pure and Applied Mathematics"],
+        'Computational Mathematics':["Journal of Computational Physics","Journal of Computational Chemistry"],
+        'Geometry and Topology': ["Geometry & Topology","Geometric and Functional Analysis", "Journal of Topology"],
+        'Numerical Analysis': ["Acta Numerica","R Journal","Analysis & PDE"],
+        'Statistics and Probability': ["Journal of Statistical Software", "Journal of Machine Learning Research","Journal of the American Statistical Association", "Annals of Mathematics", "Annals of Statistics", "Annals of Probability"],
+        'Discrete Mathematics and Combinatorics': ["Combinatorica","Journal of Combinatorial Theory, Series B","Journal of Combinatorial Theory, Series A","IEEE Transactions on Information Theory"]
     }
 }
 //Have to change everything to lowercase

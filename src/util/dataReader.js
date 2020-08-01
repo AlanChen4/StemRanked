@@ -8,7 +8,7 @@ async function readCSV(subject) {
         'Life Sciences': '',
         'Chemistry': '',
         'Engineering': '',
-        'Mathematics': '',
+        'Mathematics': './data/Mathematics.csv',
         'Physics': ''
         // TODO: add corresponding subject area csv path
     };

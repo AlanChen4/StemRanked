@@ -93,7 +93,7 @@ venue_dictionary = {
 }
 
 
-def check(venue, completion = 1): 
+def check(venue,  subject, completion = 1): 
     nonKeywords = ['of','on','and','the','for','in']
     #print(venue)
     try:
@@ -101,30 +101,30 @@ def check(venue, completion = 1):
     except:
         return False
     ven = venue.lower(); ven = ven.strip(); ven = f" {ven} " #ensure that every string starts and ends with one whitespace
-    for subject in venue_dictionary:
-        for area in venue_dictionary[subject]:
-            try:
-                for acronym in list(venue_dictionary[subject][area].keys()):
-                    count = 0
-                    acr = acronym.lower(); acr = acr.strip()
-                    if (ven.find(f" {acr} ") != -1 or ven.find(f" ({acr}) ") != -1):
-                        if (completion == 1):
-                            return acronym
-                        return True
-                    keywords = list(venue_dictionary[subject][area][acronym].split(' '))
-                    for word in keywords:
-                        if (word in nonKeywords):
-                            keywords.remove(word)
-                    for word in keywords:
-                        word = word.lower(); word = word.strip(); word = f" {word} "
-                        if (ven.find(word) != -1):
-                            count+=1
-                    if (count>=round(len(keywords)*completion)):
-                        if (completion == 1):
-                            return acronym
-                        return True
-            except:
-                pass
+    #for subject in venue_dictionary:
+    for area in venue_dictionary[subject]:
+        try:
+            for acronym in list(venue_dictionary[subject][area].keys()):
+                count = 0
+                acr = acronym.lower(); acr = acr.strip()
+                if (ven.find(f" {acr} ") != -1 or ven.find(f" ({acr}) ") != -1):
+                    if (completion == 1):
+                        return acronym
+                    return True
+                keywords = list(venue_dictionary[subject][area][acronym].split(' '))
+                for word in keywords:
+                    if (word in nonKeywords):
+                        keywords.remove(word)
+                for word in keywords:
+                    word = word.lower(); word = word.strip(); word = f" {word} "
+                    if (ven.find(word) != -1):
+                        count+=1
+                if (count>=round(len(keywords)*completion)):
+                    if (completion == 1):
+                        return acronym
+                    return True
+        except:
+            pass
     return False
     
 def findSubject(venue):
