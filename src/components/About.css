@@ -1,0 +1,31 @@
+.Main {
+    background-color: var(--main-bg-color);
+    overflow-x: hidden;
+  }
+
+.Logo {
+    width: 10vw;
+    min-width: 120px;
+}
+
+.Navbar {
+    background-color: var(--sidebar-color);
+}
+
+.GitHubLogoIcon {
+    opacity: 0.5;
+    width: 1.5vw;
+    height: 1.5vw;
+    margin-right: 1vw;
+}
+
+.GitHubLogoIcon:hover {
+    opacity: 1;
+}
+
+.AboutClick {
+    font-size: 23px;
+  margin-right: 1vw;
+  margin-left: 100px;
+  color: rgba(255, 255, 255, 0.75);
+}
