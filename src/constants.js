@@ -77,15 +77,14 @@ export const subjectAreaInfo = {
     ],
 
     'Mathematics': [
-        ['Algebra and Number Theory', 'None'],
-        ['Analysis', 'None'],
-        ['Applied Mathematics', 'None'],
-        ['Computational Mathematics', 'None'],
-        ['Geometry and Topology', 'None'],
-        ['Numerical Analysis', 'None'],
-        ['Statistics and Probability', 'None'],
-        ['Discrete Mathematics and Combinatorics', 'None']
-
+        ['Algebra and Number Theory','Algebra and Number Theory'],
+        ['Analysis','Analysis'],
+        ['Applied Mathematics','Applied Mathematics'],
+        ['Computational Mathematics','Computational Mathematics'],
+        ['Geometry and Topology','Geometry and Topology'],
+        ['Numerical Analysis','Numerical Analysis'],
+        ['Statistics and Probability','Statistics and Probability'],
+        ['Discrete Mathematics and Combinatorics','Discrete Mathematics and Combinatorics'],
     ],
 
     'Physics': [
