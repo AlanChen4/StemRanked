@@ -8,7 +8,6 @@ import { subjectList } from './constants';
 import { areaDictionary } from './util/constants';
 import About from './components/About';
 
-
 function App(props) {
   const [selectedSubject, setSelectedSubject] = useState(props.subject);
   let [subAreas, setSubAreas] = useState(Object.keys(areaDictionary[props.subject]));
