@@ -6,7 +6,6 @@ import { subjectAreaInfo } from './constants';
 import { Image, Navbar, Nav, NavDropdown } from 'react-bootstrap';
 import { subjectList } from './constants';
 import { areaDictionary } from './util/constants';
-import About from './components/About';
 
 function App(props) {
   const [selectedSubject, setSelectedSubject] = useState(props.subject);
@@ -48,17 +47,14 @@ function App(props) {
               <Nav.Link href={"/" + subject.replace(' ', '_')} className="SubjectLink" key={subject} onClick={() => onSubjectChange(subject)}>{subject}</Nav.Link>)}
           </Nav>
           <Nav className="RightSideNavLinks">
-            <Nav.Link href="/About">About</Nav.Link>
+            <Nav.Link className="AboutLink" href="/About">About</Nav.Link>
             <a href="https://github.com/AlanChen4/StemRanked" target="_blank" rel="noopener noreferrer" >
               <Image className="GitHubLogoIcon" src="./images/github-logo.png" />
             </a>
           </Nav>
         </Navbar.Collapse>
       </Navbar>
-      {props.subject !== 'About' ?
-        <MainBody subject={selectedSubject} subjectAreas={subAreas} temporary={temp} /> :
-        <About />
-      }
+      <MainBody subject={selectedSubject} subjectAreas={subAreas} temporary={temp} /> :
     </div>
   );
 }
