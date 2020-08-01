@@ -3,10 +3,20 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-
+import { BrowserRouter as Router } from 'react-router-dom';
+import Route from 'react-router-dom/Route';
+import About from './components/About';
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Router>
+      <Route path="/Computer_Science" render={() => { return <App subject="Computer Science" /> }} />
+      <Route path="/Life_Sciences" render={() => { return <App subject="Life Sciences" /> }} />
+      <Route path="/Chemistry" render={() => { return <App subject="Chemistry" /> }} />
+      <Route path="/Engineering" render={() => { return <App subject="Engineering" /> }} />
+      <Route path="/Mathematics" render={() => { return <App subject="Mathematics" /> }} />
+      <Route path="/Physics" render={() => { return <App subject="Physics" /> }} />
+      <Route path="/About" render={() => { return <About /> }} />
+    </Router>
   </React.StrictMode>,
   document.getElementById('root')
 );

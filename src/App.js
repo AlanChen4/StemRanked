@@ -6,10 +6,12 @@ import { subjectAreaInfo } from './constants';
 import { Image, Navbar, Nav, NavDropdown } from 'react-bootstrap';
 import { subjectList } from './constants';
 import { areaDictionary } from './util/constants';
+import About from './components/About';
 
-function App() {
-  const [selectedSubject, setSelectedSubject] = useState('Computer Science');
-  let [subAreas, setSubAreas] = useState(Object.keys(areaDictionary['Computer Science']));
+
+function App(props) {
+  const [selectedSubject, setSelectedSubject] = useState(props.subject);
+  let [subAreas, setSubAreas] = useState(Object.keys(areaDictionary[props.subject]));
   const [temp, setTemp] = useState(0);
 
   const onSubjectChange = (event) => {
@@ -40,21 +42,24 @@ function App() {
         <Navbar.Collapse>
           <Nav className="mr-auto">
             {subjectList.map((subject) => selectedSubject === subject ?
-              <NavDropdown key={subject} title={<span className="SubjectLinkActive">{subject}</span>}>
+              <NavDropdown href={"/" + subject.replace(' ', '_')} key={subject} title={<span className="SubjectLinkActive">{subject}</span>}>
                 <NavDropdown.Header>Sub-Areas</NavDropdown.Header>
                 {subjectAreaInfo[selectedSubject].map((subArea) => <div className="SubArea" key={subArea[0]}><label className="checkboxes"><input defaultChecked type="checkbox" onChange={() => addBlank(subArea[1])} /><span className="box"></span>{subArea[0]}</label></div>)}
               </NavDropdown> :
-              <Nav.Link className="SubjectLink" key={subject} onClick={() => onSubjectChange(subject)}>{subject}</Nav.Link>)}
+              <Nav.Link href={"/" + subject.replace(' ', '_')} className="SubjectLink" key={subject} onClick={() => onSubjectChange(subject)}>{subject}</Nav.Link>)}
           </Nav>
           <Nav className="RightSideNavLinks">
-            <Nav.Link className="AboutLink">About</Nav.Link>
+            <Nav.Link href="/About">About</Nav.Link>
             <a href="https://github.com/AlanChen4/StemRanked" target="_blank" rel="noopener noreferrer" >
               <Image className="GitHubLogoIcon" src="./images/github-logo.png" />
             </a>
           </Nav>
         </Navbar.Collapse>
       </Navbar>
-      <MainBody subject={selectedSubject} subjectAreas={subAreas} temporary={temp} />
+      {props.subject !== 'About' ?
+        <MainBody subject={selectedSubject} subjectAreas={subAreas} temporary={temp} /> :
+        <About />
+      }
     </div>
   );
 }

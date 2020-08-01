@@ -85,7 +85,7 @@ function MainBody(props) {
                 </Row>
                 <Row>
                   <Col>
-                  {(Object.keys(areaDictionary[props.subject])).length} sub-areas
+                    {(Object.keys(areaDictionary[props.subject])).length} sub-areas
                   </Col>
                 </Row>
               </Col>
