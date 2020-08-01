@@ -74,14 +74,20 @@
     margin-bottom: 1vh;
 }
 
+.RankingColumnAlignment {
+    margin-left: 1.75vw;
+}
+
 .Institution {
     cursor: pointer;
     padding-top: 1vh;
     padding-bottom: 1vh;
+    --arrow-opacity: 0;
 }
 
 .Institution:hover {
     background-color: white;
+    --arrow-opacity: 0.5;
 }
 
 .InstitutionSelected {
@@ -92,8 +98,19 @@
     padding-bottom: 1vh;
 }
 
+.ArrowContainer {
+    text-align: left;
+}
+
 .Arrow {
-    text-align: right;
+    width: 1.5vh;
+    height: auto
+}
+
+.ArrowInactive {
+    opacity: var(--arrow-opacity);
+    width: 1.5vh;
+    height: auto
 }
 
 .AuthorRanks {
@@ -101,11 +118,6 @@
 }
 .DataColumnInstitutions{
     height: 52vh;
-    overflow-y: scroll;
-    overflow-x: hidden;
-}
-.dataColumnAuthors{
-    height: 70vh;
     overflow-y: scroll;
     overflow-x: hidden;
 }

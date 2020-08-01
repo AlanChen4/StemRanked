@@ -1,0 +1,23 @@
+.DataColumnAuthors{
+    height: 70vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.InstitutionHeader {
+    font-size: 1.75vw;
+    font-weight: 400;
+}
+
+.AdjustMargin {
+    margin-left: 1.75vw;
+}
+
+.AuthorsTable {
+    margin-top: 5vh;
+}
+
+.Author {
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+}
