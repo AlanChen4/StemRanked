@@ -5,7 +5,7 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter as Router, Redirect } from 'react-router-dom';
 import Route from 'react-router-dom/Route';
-import About from './components/About';
+import About from './About';
 
 ReactDOM.render(
   <React.StrictMode>

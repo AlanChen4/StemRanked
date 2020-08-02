@@ -12,6 +12,19 @@
     background-color: var(--sidebar-color);
 }
 
+.RightSideNavLinks {
+    align-items: center;
+}
+
+.SubjectLinkActive {
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.AboutLink {
+    font-size: 23px;
+    margin-right: 1vw;
+}
+
 .GitHubLogoIcon {
     opacity: 0.5;
     width: 1.5vw;
@@ -20,12 +33,5 @@
 }
 
 .GitHubLogoIcon:hover {
-    opacity: 1;
-}
-
-.AboutClick {
-    font-size: 23px;
-  margin-right: 1vw;
-  margin-left: 100px;
-  color: rgba(255, 255, 255, 0.75);
+    opacity: .75;
 }

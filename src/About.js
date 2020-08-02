@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image, Navbar, Nav, NavDropdown } from 'react-bootstrap';
-import { subjectList } from '../constants';
+import { subjectList } from './constants';
 import './About.css';
 
 function About() {
@@ -12,11 +12,11 @@ function About() {
                 </Navbar.Brand>
                 <Navbar.Toggle />
                 <Navbar.Collapse>
-                    <Nav className="Navbar">
+                    <Nav className="mr-auto">
                         {subjectList.map((subject) => <Nav.Link href={"/" + subject.replace(' ', '_')} className="SubjectLink" key={subject}>{subject}</Nav.Link>)}
                     </Nav>
                     <Nav className="RightSideNavLinks">
-                        <Nav.Link className="AboutClick">About</Nav.Link>
+                        <Nav.Link className="AboutLink"><span className="SubjectLinkActive">About</span></Nav.Link>
                         <a href="https://github.com/AlanChen4/StemRanked" target="_blank" rel="noopener noreferrer" >
                             <Image className="GitHubLogoIcon" src="./images/github-logo.png" />
                         </a>
