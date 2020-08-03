@@ -6,6 +6,7 @@ import rankings from '../util/dataRanker';
 import LoadingSpinner from './LoadingSpinner';
 import AuthorRankings from './AuthorRankings';
 import { areaDictionary } from '../util/constants';
+import { env } from '../constants';
 
 function MainBody(props) {
   const [ranks, setRanks] = useState([]);
@@ -13,36 +14,31 @@ function MainBody(props) {
   const [loadingDataStatus, setLoadingDataStatus] = useState(true);
   const [selectedSchool, setSelectedSchool] = useState(null);
   const [startYear, setStartYear] = useState(1970);
-  const [authCount, setAuthCount] = useState({});
-  const [temp2, setTemp2] = useState(0);
+  const [authorCount, setAuthorCount] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
       setLoadingDataStatus(true);
       setSelectedSchool('loading');
-      console.log(props.subject);
-      console.log(props.subjectAreas);
+      if (env) console.log(props.subject);
+      if (env) console.log(props.subjectAreas);
       const [result, authorRankings, authorCount] = await rankings(props.subject, props.subjectAreas, startYear, 2020);
-      console.log('fjewoifjewoifjewoifwjeofweij', authorRankings);
+      if (env) console.log('Current contents of authorRankings:', authorRankings);
       let school_ranks = [];
       for (const [key, value] of Object.entries(result)) { // eslint-disable-line
         school_ranks.push(key);
       }
-      console.log('Current contents of subAreas:', props.subjectAreas);
-      console.log('Current Start Year', startYear);
+      if (env) console.log('Current contents of subAreas:', props.subjectAreas);
+      if (env) console.log('Current Start Year', startYear);
       setRanks(school_ranks);
       setAuthorRanks(authorRankings);
       setSelectedSchool(null);
       setLoadingDataStatus(false);
-      setAuthCount(authorCount);
+      setAuthorCount(authorCount);
 
     };
     fetchData(props.subject);
-  }, [props.subject, props.temporary, temp2]);
-  function yearBlank(startYr) {
-    setStartYear(startYr);
-    setTemp2(startYr);
-  }
+  }, [props.subject, props.temporary, props.subjectAreas, startYear]);
 
   let startYears = [];
   for (let i = 1970; i < 2020; i++) {
@@ -71,7 +67,7 @@ function MainBody(props) {
                   <Dropdown as={ButtonGroup}>
                     <Dropdown.Toggle className="YearDropdown">{startYear}</Dropdown.Toggle>
                     <Dropdown.Menu className="DropdownScrollBar">
-                      {startYears.map((startyear) => <Dropdown.Item className={startYear === startyear ? "Active" : "Inactive"} onClick={() => yearBlank(startyear)} active={startYear === startyear}>{startyear}</Dropdown.Item>)}
+                      {startYears.map((startyear) => <Dropdown.Item className={startYear === startyear ? "Active" : "Inactive"} onClick={() => setStartYear(startyear)} active={startYear === startyear} key={startyear}>{startyear}</Dropdown.Item>)}
                     </Dropdown.Menu>
                   </Dropdown>
                   to 2020
@@ -119,7 +115,7 @@ function MainBody(props) {
             </Row>
           </Col>
           <Col className="AuthorRanks">
-            <AuthorRankings school={selectedSchool} author={authorRanks} authorCount={authCount} />
+            <AuthorRankings school={selectedSchool} author={authorRanks} authorCount={authorCount} />
           </Col>
         </Row>
       </Col>

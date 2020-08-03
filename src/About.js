@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Navbar, Nav, NavDropdown } from 'react-bootstrap';
+import { Image, Navbar, Nav } from 'react-bootstrap';
 import { subjectList } from './constants';
 import './About.css';
 

@@ -2,10 +2,11 @@ import React from 'react';
 import { Row, Col } from 'react-bootstrap';
 import './AuthorRankings.css';
 import LoadingSpinner from './LoadingSpinner';
+import { env } from '../constants';
 
 function AuthorRankings(props) {
-  console.log(props.author);
-  console.log('Type of props.author', typeof props.author);
+  if (env) console.log(props.author);
+  if (env) console.log('Type of props.author', typeof props.author);
 
   return (
     <div>
