@@ -65,7 +65,7 @@ function MainBody(props) {
                 </Row>
                 <Row className="BottomLine">
                   <Dropdown as={ButtonGroup}>
-                    <Dropdown.Toggle className="YearDropdown">{startYear}</Dropdown.Toggle>
+                    <Dropdown.Toggle className="YearDropdown" title="Edit the starting publication year">{startYear}</Dropdown.Toggle>
                     <Dropdown.Menu className="DropdownScrollBar">
                       {startYears.map((startyear) => <Dropdown.Item className={startYear === startyear ? "Active" : "Inactive"} onClick={() => setStartYear(startyear)} active={startYear === startyear} key={startyear}>{startyear}</Dropdown.Item>)}
                     </Dropdown.Menu>
@@ -106,7 +106,7 @@ function MainBody(props) {
                   <Col>
                     <div className="DataColumnInstitutions">
                       {loadingDataStatus ? <LoadingSpinner /> :
-                        ranks.map((school, i) => <a onClick={() => setSelectedSchool(school)} key={school} title={'Select ' + school + ' to view its details.'}><Row className={selectedSchool === school ? "InstitutionSelected" : "Institution"}><Col xs={3}><span className="RankingColumnAlignment">{i + 1}</span></Col><Col xs={8}><span className="RankingColumnAlignment">{school}</span></Col><Col className="ArrowContainer"><Image className={selectedSchool === school ? "Arrow" : "ArrowInactive"} src="./images/arrow.png"/></Col></Row></a>) // eslint-disable-line
+                        ranks.map((school, i) => <a onClick={() => setSelectedSchool(school)} key={school} title={'Select ' + school + ' to view more details'}><Row className={selectedSchool === school ? "InstitutionSelected" : "Institution"}><Col xs={3}><span className="RankingColumnAlignment">{i + 1}</span></Col><Col xs={8}><span className="RankingColumnAlignment">{school}</span></Col><Col className="ArrowContainer"><Image className={selectedSchool === school ? "Arrow" : "ArrowInactive"} src="./images/arrow.png"/></Col></Row></a>) // eslint-disable-line
                       }
                     </div>
                   </Col>

@@ -99,12 +99,14 @@
 }
 
 .ArrowContainer {
+    display: flex;
     text-align: left;
+    align-items: center;
 }
 
 .Arrow {
     width: 1.5vh;
-    height: auto
+    height: auto;
 }
 
 .ArrowInactive {

@@ -40,15 +40,15 @@ function App(props) {
         <Navbar.Collapse>
           <Nav className="mr-auto">
             {subjectList.map((subject) => selectedSubject === subject ?
-              <NavDropdown href={"/" + subject.replace(' ', '_')} key={subject} title={<span className="SubjectLinkActive">{subject}</span>}>
+              <NavDropdown href={"/" + subject.replace(' ', '_')} key={subject} title={<span title="Edit the selected sub-areas" className="SubjectLinkActive">{subject}</span>}>
                 <NavDropdown.Header>Sub-Areas</NavDropdown.Header>
                 {subjectAreaInfo[selectedSubject].map((subArea) => <div className="SubArea" key={subArea[0]}><label className="checkboxes"><input defaultChecked type="checkbox" onChange={() => addBlank(subArea[1])} /><span className="box"></span>{subArea[0]}</label></div>)}
               </NavDropdown> :
-              <Nav.Link href={"/" + subject.replace(' ', '_')} className="SubjectLink" key={subject} onClick={() => onSubjectChange(subject)}>{subject}</Nav.Link>)}
+              <Nav.Link href={"/" + subject.replace(' ', '_')} title={'View rankings for ' + subject} className="SubjectLink" key={subject} onClick={() => onSubjectChange(subject)}>{subject}</Nav.Link>)}
           </Nav>
           <Nav className="RightSideNavLinks">
-            <Nav.Link className="AboutLink" href="/About">About</Nav.Link>
-            <a href="https://github.com/AlanChen4/StemRanked" target="_blank" rel="noopener noreferrer" >
+            <Nav.Link title="About STEM Ranked" className="AboutLink" href="/About">About</Nav.Link>
+            <a title="View our GitHub page" href="https://github.com/AlanChen4/StemRanked" target="_blank" rel="noopener noreferrer" >
               <Image className="GitHubLogoIcon" src="./images/github-logo.png" />
             </a>
           </Nav>

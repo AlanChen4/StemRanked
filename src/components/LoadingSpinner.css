@@ -1,6 +1,7 @@
 .Container {
     text-align: center;
-    align-items: center; /* TODO: center spinner vertically? */
+    align-items: center;
+    padding-top: 1vh;
 }
 
 .Spinner {

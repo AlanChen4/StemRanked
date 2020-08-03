@@ -13,11 +13,11 @@ function About() {
           <Navbar.Toggle />
           <Navbar.Collapse>
             <Nav className="mr-auto">
-              {subjectList.map((subject) => <Nav.Link href={"/" + subject.replace(' ', '_')} className="SubjectLink" key={subject}>{subject}</Nav.Link>)}
+              {subjectList.map((subject) => <Nav.Link title={'View rankings for ' + subject} href={"/" + subject.replace(' ', '_')} className="SubjectLink" key={subject}>{subject}</Nav.Link>)}
             </Nav>
             <Nav className="RightSideNavLinks">
-              <Nav.Link className="AboutLink"><span className="SubjectLinkActive">About</span></Nav.Link>
-              <a href="https://github.com/AlanChen4/StemRanked" target="_blank" rel="noopener noreferrer" >
+              <Nav.Link className="AboutLink"><span title="About STEM Ranked" className="SubjectLinkActive">About</span></Nav.Link>
+              <a title="View our GitHub page" href="https://github.com/AlanChen4/StemRanked" target="_blank" rel="noopener noreferrer" >
                 <Image className="GitHubLogoIcon" src="./images/github-logo.png" />
               </a>
             </Nav>
