@@ -4,5 +4,6 @@
 }
 
 .Spinner {
+    margin-top: 1vh;
     color: var(--sidebar-color) !important;
 }
