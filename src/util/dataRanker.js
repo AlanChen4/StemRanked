@@ -71,15 +71,37 @@ function avgCount(rank_dic, subAreas) {
 
 // Returns the areas based on what the conference is
 function confAreas(conferences, areaDict) {
-    for (let x = 0; x < Object.keys(areaDict).length; x++) {
-        if ((areaDict[Object.keys(areaDict)[x]].includes(conferences))) {
-            return (Object.keys(areaDict))[x];
+    for (let keys of Object.keys(areaDict)) {
+        if ((areaDict[keys].includes(conferences))) {
+            return (keys);
         }
 
     }
     return ("Cannot find area")
 }
 // Ranks the authors of each institution from the average count given by the adjusted counts and subject areas
+function speciality(author_rank_dic) {
+    let strongestAreas = {};
+    for (let inst of Object.keys(author_rank_dic)) {
+        strongestAreas[inst] = {};
+        for (let author of Object.keys(author_rank_dic[inst])) {
+            strongestAreas[inst][author] = {};
+            let greatestArea = '';
+            let areaAdj = 0;
+            for (let areas of (Object.keys(author_rank_dic[inst][author]))) {
+                if (author_rank_dic[inst][author][areas] > areaAdj) {
+                    areaAdj = author_rank_dic[inst][author][areas];
+                    greatestArea = areas;
+                }
+            }
+            strongestAreas[inst][author] = greatestArea;
+            greatestArea = '';
+            areaAdj = 0;
+        }
+    }
+    return strongestAreas;
+}
+
 function AuthorRank(author_rank_dic, institutionAuthors) {
     let finalAuthorRank = {};
     let finalAuthorCount = {}
@@ -262,6 +284,9 @@ async function rankings(subject, subAreas, startYr) {
 
     let finalAuthors = AuthorRank(averageCountAuthors, institutionAuthors);
     if (env) console.log('Authors', finalAuthors);
+
+    let authorArea = speciality(rankAuthors);
+    console.log("Strongest areas for authors", authorArea);
 
     let rank_dic = rankingsInfo(final_colleges, colleges);
     if (env) console.log('Result of rankingsInfo call', rank_dic);
