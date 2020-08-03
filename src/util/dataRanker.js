@@ -119,16 +119,10 @@ function AuthorRank(author_rank_dic, institutionAuthors) {
     return finalAuthorRank;
 }
 
-function authorAvgCount(author_rank_dic, subAreas) {
-    let numAreas = 0;
-    let subAreaslength = subAreas.length;
+function authorAvgCount(author_rank_dic, subAreas, areaDict) {
+    let numAreas = subAreas.length;
     if (subAreas.length === 0) {
-        subAreaslength = Object.keys(areaDict).length;
-    }
-    else {
-        for (let i = 0; i < subAreaslength; i++) {
-            numAreas += (areaDict[subAreas[i]].length);
-        }
+        numAreas = Object.keys(areaDict).length;
     }
     if (env) console.log('Number of areas for author rankings:', numAreas);
     let authorCounts = {};
@@ -260,8 +254,8 @@ async function rankings(subject, subAreas, startYr) {
     let rankAuthors = AuthorList(final_colleges, institutionAuthors);
     if (env) console.log('The adjusted count per author', rankAuthors);
 
-    if (env) console.log('The average count for each author', authorAvgCount(rankAuthors, subAreas))
-    let averageCountAuthors = authorAvgCount(rankAuthors, subAreas);
+    if (env) console.log('The average count for each author', authorAvgCount(rankAuthors, subAreas, areaDict))
+    let averageCountAuthors = authorAvgCount(rankAuthors, subAreas, areaDict);
 
     let finalAuthors = AuthorRank(averageCountAuthors, institutionAuthors);
     if (env) console.log('Authors', finalAuthors);
