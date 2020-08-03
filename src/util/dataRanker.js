@@ -79,7 +79,7 @@ function confAreas(conferences, areaDict) {
     }
     return ("Cannot find area")
 }
-// Ranks the authors of each institution from the adjusted count
+// Ranks the authors of each institution from the average count given by the adjusted counts and subject areas
 function AuthorRank(author_rank_dic, institutionAuthors) {
     let finalAuthorRank = {};
     let finalAuthorCount = {}
@@ -119,6 +119,7 @@ function AuthorRank(author_rank_dic, institutionAuthors) {
     return finalAuthorRank;
 }
 
+//Computers the author average count from the dictionary author_rank_dic
 function authorAvgCount(author_rank_dic, subAreas, areaDict) {
     let numAreas = subAreas.length;
     if (subAreas.length === 0) {
@@ -231,7 +232,7 @@ function yearCheck(collegeInfo, startYear) {
     return currentInfo;
 }
 
-// Logs everythin on console in the local browser
+// Logs everything on console in the local browser
 async function rankings(subject, subAreas, startYr) {
     if (env) console.log('Environment:', process.env.NODE_ENV);
 
