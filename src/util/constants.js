@@ -1,33 +1,4 @@
 export const areaDictionary = {
-    'Emery Computer Science': {
-        "vision": ['cvpr', 'iccv', 'eccv'],
-        "plan": ['popl', 'pldi', 'oopsla', 'icfp'],
-        "soft": ['icse', 'fse', 'ase', 'issta'],
-        "ops": ['sosp', 'osdi', 'eurosys', 'fast', 'usenixatc'],
-        'metrics': ['imc', 'sigmetrics'],
-        'mobile': ['mobisys', 'mobicom', 'sensys'],
-        'hpc': ['sc', 'hpdc', 'ics'],
-        'bed': ['emsoft', 'rtss', 'rtas'],
-        'da': ['iccad', 'dac'],
-        'mod': ['vldb', 'sigmod', 'icde', 'pods'],
-        'sec': ['ccs', 'oakland', 'usenixsec', 'ndss', 'ieee s&p', 'pets'],
-        'comm': ['sigcomm', 'nsdi'],
-        'arch': ['asplos', 'isca', 'micro', 'hpca', 'neurlps'],
-        'log': ['cav', 'lics'],
-        'act': ['focs', 'stoc', 'soda'],
-        'mlmining': ['nips', 'icml', 'kdd'],
-        'compgraph': ['siggraph', 'siggraph-asia'],
-        'ir': ['sigir', 'www'],
-        'chi': ['chiconf', 'ubicomp', 'uist', 'imwut, pervasive'],
-        'nlp': ['emnlp', 'acl', 'naacl'],
-        'robotics': ['icra', 'iros', 'rss'],
-        'crypt': ['crypto', 'eurocrypt'],
-        'bio': ['ismb', 'recomb'],
-        'visual': ['vis', 'vr'],
-        'ecom': ['ec', 'wine', 'cse'],
-        'ai': ['aaai', 'ijcai']
-
-    },
     'Computer Science': {
         'Artificial Intelligence': ['aaai', 'aaai conference on artificial intelligence', 'ijcai', 'international joint conference on artificial intelligence'],
         'Computer Vision': ['cvpr', 'computer vision and pattern recognition', 'eccv', 'european conference on computer vision', 'iccv', 'international conference on computer vision'],
@@ -56,14 +27,14 @@ export const areaDictionary = {
     },
 
     'Mathematics': {
-        'Algebra and Number Theory': ['Journal of Differential Geometry','Compositio Mathematica','Forum of Mathematics, Pi'],
-        'Analysis': ["Annales de l'Institut Henri Poincaré C, Analyse non linéaire", "Geometric and Functional Analysis", "Archive for Rational Mechanics and Analysis"],
-        'Applied Mathematics':['Journal of the American Mathematical Society',"IEEE Transactions on Pattern Analysis and Machine Intelligence", "Communications on Pure and Applied Mathematics"],
-        'Computational Mathematics':["Journal of Computational Physics","Journal of Computational Chemistry"],
-        'Geometry and Topology': ["Geometry & Topology","Geometric and Functional Analysis", "Journal of Topology"],
-        'Numerical Analysis': ["Acta Numerica","R Journal","Analysis & PDE"],
-        'Statistics and Probability': ["Journal of Statistical Software", "Journal of Machine Learning Research","Journal of the American Statistical Association", "Annals of Mathematics", "Annals of Statistics", "Annals of Probability"],
-        'Discrete Mathematics and Combinatorics': ["Combinatorica","Journal of Combinatorial Theory, Series B","Journal of Combinatorial Theory, Series A","IEEE Transactions on Information Theory"]
+        'Algebra and Number Theory': ['journal of differential geometry','compositio mathematica','forum of mathematics, pi'],
+        'Analysis': ["annales de l'institut henri poincaré c, analyse non linéaire", "geometric and functional analysis", "archive for rational mechanics and analysis"],
+        'Applied Mathematics':['journal of the american mathematical society',"ieee transactions on pattern analysis and machine intelligence", "communications on pure and applied mathematics"],
+        'Computational Mathematics':["journal of computational physics","journal of computational chemistry"],
+        'Geometry and Topology': ["geometry & topology","geometric and functional analysis", "journal of topology"],
+        'Numerical Analysis': ["acta numerica","r journal","analysis & pde"],
+        'Statistics and Probability': ["journal of statistical software", "journal of machine learning research","journal of the american statistical association", "annals of mathematics", "annals of statistics", "annals of probability"],
+        'Discrete Mathematics and Combinatorics': ["combinatorica","journal of combinatorial theory, series b","journal of combinatorial theory, series a","ieee transactions on information theory"]
     },
     
     'Physics': {
@@ -73,6 +44,10 @@ export const areaDictionary = {
         'Nuclear and High Energy Physics': ['dis', 'icpa', 'icops', 'iwce', 'nss/mic'],
         'Surfaces and Interfaces': ['websci', 'nime', 'ius', 'iedm', 'ise', 'icoac', 'ssict', 'mse', 'pvsc', 'intermag', 'asdam', 'inec', 'hsi', 'jcis', 'iqec', 'leos', 'ipmm'],
         'Optics': ['cleo', 'ofc', 'ecoc', 'ius', 'eucap', 'isap', 'ieeeaps', 'nss/mic', 'eumc', 'ims', 'nss', 'irmmw-thz', 'qels', 'apmc', 'ivec', 'ipc', 'eqec', 'leos', 'icton', 'fcs']
+    },
+
+    'Statistics': {
+        
     }
 }
 //Have to change everything to lowercase
