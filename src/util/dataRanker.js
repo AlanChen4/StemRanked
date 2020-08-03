@@ -1,6 +1,6 @@
 import readCSV from './dataReader';
-import { findAllByRole, findAllByTestId } from '@testing-library/react';
 import { areaDictionary } from './constants';
+import { env } from '../constants';
 
 // Object.keys(dictionary).length <-- find the length of the dictionary
 // delete dictionary[key] <-- remove elements from a dictionary
@@ -49,7 +49,7 @@ function ranks(counts, colleges) {
 function avgCount(rank_dic, subAreas) {
     let numAreas = 0;
     let subAreaslength = subAreas.length;
-    if (subAreas.length === 0) {
+    if (subAreaslength === 0) {
         subAreaslength = Object.keys(areaDict).length;
     }
     else {
@@ -57,7 +57,7 @@ function avgCount(rank_dic, subAreas) {
             numAreas += (areaDict[subAreas[i]].length);
         }
     }
-    console.log('Number of Areas:', numAreas);
+    if (env) console.log('Number of Areas:', numAreas);
     let counts = {};
     for (let inst of Object.keys(rank_dic)) {
         let prod = 1;
@@ -119,18 +119,12 @@ function AuthorRank(author_rank_dic, institutionAuthors) {
     return finalAuthorRank;
 }
 
-function authorAvgCount(author_rank_dic, subAreas) {
-    let numAreas = 0;
-    let subAreaslength = subAreas.length;
+function authorAvgCount(author_rank_dic, subAreas, areaDict) {
+    let numAreas = subAreas.length;
     if (subAreas.length === 0) {
-        subAreaslength = Object.keys(areaDict).length;
+        numAreas = Object.keys(areaDict).length;
     }
-    else {
-        for (let i = 0; i < subAreaslength; i++) {
-            numAreas += (areaDict[subAreas[i]].length);
-        }
-    }
-    console.log('Number of areas for author rankings:', numAreas);
+    if (env) console.log('Number of areas for author rankings:', numAreas);
     let authorCounts = {};
     for (let inst of Object.keys(author_rank_dic)) {
         authorCounts[inst] = {};
@@ -212,8 +206,8 @@ function areaCheck(currentCollegeInfo, area, subject) {
     }
     else {
         let difference = (Object.keys(areaDictionary[subject])).filter(x => !area.includes(x));
-        console.log(difference);
-        console.log(final_colleges.length);
+        if (env) console.log(difference);
+        if (env) console.log(final_colleges.length);
 
         for (let i = 0; i < currentCollegeInfo.length; i++) {
             if (!(difference.includes(confAreas(currentCollegeInfo[i][2], areaDict)))) {
@@ -221,7 +215,7 @@ function areaCheck(currentCollegeInfo, area, subject) {
             }
         }
 
-        console.log(final_colleges.length);
+        if (env) console.log(final_colleges.length);
         return final_colleges;
     }
 }
@@ -239,43 +233,43 @@ function yearCheck(collegeInfo, startYear) {
 
 // Logs everythin on console in the local browser
 async function rankings(subject, subAreas, startYr) {
-    console.log('Environment:', process.env.NODE_ENV);
+    if (env) console.log('Environment:', process.env.NODE_ENV);
 
     areaDict = areaDictionary[subject];
-    console.log(areaDict);
+    if (env) console.log(areaDict);
 
     let institutionAuthors = [];
     let colleges = [];
     let collegeInfo = await readCSV(subject);
-    console.log(subject);
-    console.log('Result of readCSV call', collegeInfo);
+    if (env) console.log(subject);
+    if (env) console.log('Result of readCSV call', collegeInfo);
 
     let currentCollegeInfo = yearCheck(collegeInfo, startYr);
-    console.log('Result of yearCheck call', currentCollegeInfo);
+    if (env) console.log('Result of yearCheck call', currentCollegeInfo);
 
     // 'vision', "plan", "soft", "ops", "metrics", "mobile", "hpc", "bed", "da", "mod", "sec", "comm", "arch", "log", "act", "mlmining", "compgraph", "ir", "chi", "nlp", "robotics", "crypt", "bio", "visual", "ecom", "ai"
     let final_colleges = areaCheck(currentCollegeInfo, subAreas, subject);
-    console.log('The filtered data', final_colleges);
+    if (env) console.log('The filtered data', final_colleges);
 
     let rankAuthors = AuthorList(final_colleges, institutionAuthors);
-    console.log('The adjusted count per author', rankAuthors);
+    if (env) console.log('The adjusted count per author', rankAuthors);
 
-    console.log('The average count for each author', authorAvgCount(rankAuthors, subAreas))
-    let averageCountAuthors = authorAvgCount(rankAuthors, subAreas);
+    if (env) console.log('The average count for each author', authorAvgCount(rankAuthors, subAreas, areaDict))
+    let averageCountAuthors = authorAvgCount(rankAuthors, subAreas, areaDict);
 
     let finalAuthors = AuthorRank(averageCountAuthors, institutionAuthors);
-    console.log('Authors', finalAuthors);
+    if (env) console.log('Authors', finalAuthors);
 
     let rank_dic = rankingsInfo(final_colleges, colleges);
-    console.log('Result of rankingsInfo call', rank_dic);
+    if (env) console.log('Result of rankingsInfo call', rank_dic);
 
     let counts = avgCount(rank_dic, subAreas);
-    console.log('Result of avgCount call', counts);
+    if (env) console.log('Result of avgCount call', counts);
 
     let final = ranks(counts, colleges);
-    console.log('Result of ranks call', final);
+    if (env) console.log('Result of ranks call', final);
 
-    console.log('Author Counts:', finalAuthorCounts);
+    if (env) console.log('Author Counts:', finalAuthorCounts);
 
     return [final, finalAuthors, finalAuthorCounts];
     //return { UNC: 1.532423 }
