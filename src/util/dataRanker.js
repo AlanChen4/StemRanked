@@ -121,6 +121,7 @@ function AuthorRank(author_rank_dic, institutionAuthors) {
 
 //Computers the author average count from the dictionary author_rank_dic
 function authorAvgCount(author_rank_dic, subAreas, areaDict) {
+    console.log("This is author_rank_dic", author_rank_dic);
     let numAreas = subAreas.length;
     if (subAreas.length === 0) {
         numAreas = Object.keys(areaDict).length;
@@ -130,13 +131,14 @@ function authorAvgCount(author_rank_dic, subAreas, areaDict) {
     for (let inst of Object.keys(author_rank_dic)) {
         authorCounts[inst] = {};
         for (let author of Object.keys(author_rank_dic[inst])) {
-            let prod = 1;
+            let add = 0;
             for (let area of Object.keys(author_rank_dic[inst][author])) {
-                prod *= (author_rank_dic[inst][author][area] + 1);
+                add += author_rank_dic[inst][author][area];
             }
-            authorCounts[inst][author] = Math.pow(prod, (1 / numAreas));
+            authorCounts[inst][author] = add;
         }
     }
+    console.log(authorCounts);
     return authorCounts;
 
 }
@@ -170,7 +172,7 @@ function getCollegeAuthors(college, institutionAuthors) {
 }
 
 // Creates a dictionary with the institution names, authors, and adjusted counts for each author
-function AuthorList(final_colleges, institutionAuthors) {
+function AuthorList(final_colleges, institutionAuthors, areaDict) {
     let author_rank_dic = {};
     for (let i = 0; i < final_colleges.length; i++) {
         if (!(author_rank_dic.hasOwnProperty(final_colleges[i][0]))) {
@@ -180,11 +182,11 @@ function AuthorList(final_colleges, institutionAuthors) {
         if (!(author_rank_dic[(final_colleges[i][0])].hasOwnProperty(final_colleges[i][1]))) {
             author_rank_dic[final_colleges[i][0]][final_colleges[i][1]] = {};
         }
-        if (!(Object.keys(author_rank_dic[(final_colleges[i][0])][final_colleges[i][1]]).includes(final_colleges[i][2]))) {
-            author_rank_dic[(final_colleges[i][0])][final_colleges[i][1]][final_colleges[i][2]] = final_colleges[i][3];
+        if (!(Object.keys(author_rank_dic[(final_colleges[i][0])][final_colleges[i][1]]).includes(confAreas(final_colleges[i][2], areaDict)))) {
+            author_rank_dic[(final_colleges[i][0])][final_colleges[i][1]][confAreas(final_colleges[i][2], areaDict)] = final_colleges[i][3];
         }
         else {
-            author_rank_dic[(final_colleges[i][0])][final_colleges[i][1]][final_colleges[i][2]] += final_colleges[i][3];
+            author_rank_dic[(final_colleges[i][0])][final_colleges[i][1]][confAreas(final_colleges[i][2], areaDict)] += final_colleges[i][3];
         }
     }
     return author_rank_dic;
@@ -252,7 +254,7 @@ async function rankings(subject, subAreas, startYr) {
     let final_colleges = areaCheck(currentCollegeInfo, subAreas, subject);
     if (env) console.log('The filtered data', final_colleges);
 
-    let rankAuthors = AuthorList(final_colleges, institutionAuthors);
+    let rankAuthors = AuthorList(final_colleges, institutionAuthors, areaDict);
     if (env) console.log('The adjusted count per author', rankAuthors);
 
     if (env) console.log('The average count for each author', authorAvgCount(rankAuthors, subAreas, areaDict))
