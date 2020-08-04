@@ -26,3 +26,17 @@
     font-size: 0.01em;
     text-transform: uppercase;
 }
+
+.AuthorAccordion {
+    border-color: var(--main-bg-color) !important;
+}
+
+.AccordionContainer {
+    padding: 0;
+    border-bottom: 1px solid rgba(112, 112, 112, 0.25);
+}
+
+.AccordionContainer:hover {
+    background-color: white !important;
+    cursor: pointer;
+}

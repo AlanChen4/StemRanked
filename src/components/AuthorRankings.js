@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Accordion, Card } from 'react-bootstrap';
 import './AuthorRankings.css';
 import LoadingSpinner from './LoadingSpinner';
 import { env } from '../constants';
@@ -23,18 +23,36 @@ function AuthorRankings(props) {
             </Row>
             <div className="DataColumnAuthors">
               {props.author[props.school].map((author, i) => 
-                <Row className="Author" key={author}>
-                  <Col><span className="AdjustMargin">{i + 1}</span></Col>
-                  <Col className="test">
-                    <Row>
-                      <Col>{author}</Col>
-                    </Row>
-                    <Row className="StrongestArea">
-                      <Col>{props.strongestSubject[props.school][author]}</Col>
-                    </Row>
-                  </Col>
-                  <Col>{props.authorCount[props.school][i]}</Col>
-                </Row>
+
+
+
+                <div>
+                  <Accordion>
+                    <Card className="AuthorAccordion">
+                      <Accordion.Toggle as={Card.Header} eventKey={author} className="AccordionContainer" title={"View statistics for " + author}>
+                        <Row className="Author" key={author}>
+                          <Col><span className="AdjustMargin">{i + 1}</span></Col>
+                          <Col>
+                            <Row>
+                              <Col>{author}</Col>
+                            </Row>
+                            <Row className="StrongestArea">
+                              <Col>{props.strongestSubject[props.school][author]}</Col>
+                            </Row>
+                          </Col>
+                          <Col>{props.authorCount[props.school][i]}</Col>
+                        </Row>
+                      </Accordion.Toggle>
+                      <Accordion.Collapse eventKey={author}>
+                        <Card.Body>Hello! I'm another body</Card.Body>
+                      </Accordion.Collapse>
+                    </Card>
+                  </Accordion>
+                </div>
+
+
+
+
               )}
             </div>
           </div>
