@@ -16,6 +16,7 @@ function MainBody(props) {
   const [startYear, setStartYear] = useState(1970);
   const [authorStrongestArea, setAuthorStrongestArea] = useState({});
   const [authorCount, setAuthorCount] = useState({});
+  const [everything, setEverything] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,7 +24,7 @@ function MainBody(props) {
       setSelectedSchool('loading');
       if (env) console.log(props.subject);
       if (env) console.log(props.subjectAreas);
-      const [result, authorRankings, authorCount, strongestareas] = await rankings(props.subject, props.subjectAreas, startYear, 2020);
+      const [result, authorRankings, authorCount, strongestareas, author_rank_dic] = await rankings(props.subject, props.subjectAreas, startYear, 2020);
       if (env) console.log('Current contents of authorRankings:', authorRankings);
       let school_ranks = [];
       for (const [key, value] of Object.entries(result)) { // eslint-disable-line
@@ -37,6 +38,7 @@ function MainBody(props) {
       setSelectedSchool(null);
       setLoadingDataStatus(false);
       setAuthorCount(authorCount);
+      setEverything(author_rank_dic);
 
     };
     fetchData(props.subject);
@@ -130,7 +132,7 @@ function MainBody(props) {
             </Row>
           </Col>
           <Col className="AuthorRanks">
-            <AuthorRankings school={selectedSchool} author={authorRanks} authorCount={authorCount} strongestSubject={authorStrongestArea} />
+            <AuthorRankings school={selectedSchool} author={authorRanks} authorCount={authorCount} strongestSubject={authorStrongestArea} everything={everything} />
           </Col>
         </Row>
       </Col>
