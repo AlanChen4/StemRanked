@@ -21,3 +21,8 @@
     padding-top: 1vh;
     padding-bottom: 1vh;
 }
+
+.strongestArea{
+    font-size: .01em;
+    text-transform: uppercase;
+}

@@ -10,7 +10,7 @@ function AuthorRankings(props) {
 
   return (
     <div>
-      {props.school === 'loading' ? <LoadingSpinner /> : props.school === null ? <div><span className="AdjustMargin">Select an institution to view its details.</span></div> : 
+      {props.school === 'loading' ? <LoadingSpinner /> : props.school === null ? <div><span className="AdjustMargin">Select an institution to view its details.</span></div> :
         <div>
           <Row className="InstitutionHeader">
             <Col><span className="AdjustMargin">{props.school}</span></Col>
@@ -22,7 +22,7 @@ function AuthorRankings(props) {
               <Col>Adjusted Count</Col>
             </Row>
             <div className="DataColumnAuthors">
-              {props.author[props.school].map((author, i) => <Row className="Author" key={author}><Col><span className="AdjustMargin">{i + 1}</span></Col><Col>{author}</Col><Col>{props.authorCount[props.school][i]}</Col></Row>)}
+              {props.author[props.school].map((author, i) => <Row className="Author" key={author}><Col><span className="AdjustMargin">{i + 1}</span></Col><Col>{author}<p className="strongestArea">{props.strongestSubject[props.school][author]}</p></Col><Col>{props.authorCount[props.school][i]}</Col></Row>)}
             </div>
           </div>
         </div>

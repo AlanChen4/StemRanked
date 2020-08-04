@@ -14,6 +14,7 @@ function MainBody(props) {
   const [loadingDataStatus, setLoadingDataStatus] = useState(true);
   const [selectedSchool, setSelectedSchool] = useState(null);
   const [startYear, setStartYear] = useState(1970);
+  const [authorStrongestArea, setAuthorStrongestArea] = useState({});
   const [authorCount, setAuthorCount] = useState({});
 
   useEffect(() => {
@@ -22,7 +23,7 @@ function MainBody(props) {
       setSelectedSchool('loading');
       if (env) console.log(props.subject);
       if (env) console.log(props.subjectAreas);
-      const [result, authorRankings, authorCount] = await rankings(props.subject, props.subjectAreas, startYear, 2020);
+      const [result, authorRankings, authorCount, strongestareas] = await rankings(props.subject, props.subjectAreas, startYear, 2020);
       if (env) console.log('Current contents of authorRankings:', authorRankings);
       let school_ranks = [];
       for (const [key, value] of Object.entries(result)) { // eslint-disable-line
@@ -32,6 +33,7 @@ function MainBody(props) {
       if (env) console.log('Current Start Year', startYear);
       setRanks(school_ranks);
       setAuthorRanks(authorRankings);
+      setAuthorStrongestArea(strongestareas);
       setSelectedSchool(null);
       setLoadingDataStatus(false);
       setAuthorCount(authorCount);
@@ -96,7 +98,7 @@ function MainBody(props) {
                     <span className="RankingColumnAlignment">Rank</span>
                   </Col>
                   <Col xs={9}>
-                  <span className="RankingColumnAlignment">Institution</span>
+                    <span className="RankingColumnAlignment">Institution</span>
                   </Col>
                   <Col>
                     {/* empty column for spacing ---- NOT SURE IF WE NEED THIS */}
@@ -106,7 +108,7 @@ function MainBody(props) {
                   <Col>
                     <div className="DataColumnInstitutions">
                       {loadingDataStatus ? <LoadingSpinner /> :
-                        ranks.map((school, i) => <a onClick={() => setSelectedSchool(school)} key={school} title={'Select ' + school + ' to view more details'}><Row className={selectedSchool === school ? "InstitutionSelected" : "Institution"}><Col xs={3}><span className="RankingColumnAlignment">{i + 1}</span></Col><Col xs={8}><span className="RankingColumnAlignment">{school}</span></Col><Col className="ArrowContainer"><Image className={selectedSchool === school ? "Arrow" : "ArrowInactive"} src="./images/arrow.png"/></Col></Row></a>) // eslint-disable-line
+                        ranks.map((school, i) => <a onClick={() => setSelectedSchool(school)} key={school} title={'Select ' + school + ' to view more details'}><Row className={selectedSchool === school ? "InstitutionSelected" : "Institution"}><Col xs={3}><span className="RankingColumnAlignment">{i + 1}</span></Col><Col xs={8}><span className="RankingColumnAlignment">{school}</span></Col><Col className="ArrowContainer"><Image className={selectedSchool === school ? "Arrow" : "ArrowInactive"} src="./images/arrow.png" /></Col></Row></a>) // eslint-disable-line
                       }
                     </div>
                   </Col>
@@ -115,7 +117,7 @@ function MainBody(props) {
             </Row>
           </Col>
           <Col className="AuthorRanks">
-            <AuthorRankings school={selectedSchool} author={authorRanks} authorCount={authorCount} />
+            <AuthorRankings school={selectedSchool} author={authorRanks} authorCount={authorCount} strongestSubject={authorStrongestArea} />
           </Col>
         </Row>
       </Col>
