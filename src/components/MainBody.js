@@ -69,7 +69,11 @@ function MainBody(props) {
                   <Dropdown as={ButtonGroup}>
                     <Dropdown.Toggle className="YearDropdown" title="Edit the starting publication year">{startYear}</Dropdown.Toggle>
                     <Dropdown.Menu className="DropdownScrollBar">
-                      {startYears.map((startyear) => <Dropdown.Item className={startYear === startyear ? "Active" : "Inactive"} onClick={() => setStartYear(startyear)} active={startYear === startyear} key={startyear}>{startyear}</Dropdown.Item>)}
+                      {startYears.map((startyear) => 
+                        <Dropdown.Item className={startYear === startyear ? "Active" : "Inactive"} onClick={() => setStartYear(startyear)} active={startYear === startyear} key={startyear}>
+                          {startyear}
+                        </Dropdown.Item>
+                      )}
                     </Dropdown.Menu>
                   </Dropdown>
                   to 2020
@@ -107,9 +111,18 @@ function MainBody(props) {
                 <Row>
                   <Col>
                     <div className="DataColumnInstitutions">
-                      {loadingDataStatus ? <LoadingSpinner /> :
-                        ranks.map((school, i) => <a onClick={() => setSelectedSchool(school)} key={school} title={'Select ' + school + ' to view more details'}><Row className={selectedSchool === school ? "InstitutionSelected" : "Institution"}><Col xs={3}><span className="RankingColumnAlignment">{i + 1}</span></Col><Col xs={8}><span className="RankingColumnAlignment">{school}</span></Col><Col className="ArrowContainer"><Image className={selectedSchool === school ? "Arrow" : "ArrowInactive"} src="./images/arrow.png" /></Col></Row></a>) // eslint-disable-line
-                      }
+                      {loadingDataStatus ? <LoadingSpinner /> : ranks.map((school, i) =>
+                        // eslint-disable-next-line
+                        <a onClick={() => setSelectedSchool(school)} key={school} title={'Select ' + school + ' to view more details'}>
+                          <Row className={selectedSchool === school ? "InstitutionSelected" : "Institution"}>
+                            <Col xs={3}><span className="RankingColumnAlignment">{i + 1}</span></Col>
+                            <Col xs={8}><span className="RankingColumnAlignment">{school}</span></Col>
+                            <Col className="ArrowContainer">
+                              <Image className={selectedSchool === school ? "Arrow" : "ArrowInactive"} src="./images/arrow.png" />
+                            </Col>
+                          </Row>
+                        </a>
+                      )}
                     </div>
                   </Col>
                 </Row>

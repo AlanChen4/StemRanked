@@ -19,10 +19,10 @@
 
 .Author {
     padding-top: 1vh;
-    padding-bottom: 1vh;
+    padding-bottom: 0.5vh;
 }
 
-.strongestArea{
-    font-size: .01em;
+.StrongestArea{
+    font-size: 0.01em;
     text-transform: uppercase;
 }
