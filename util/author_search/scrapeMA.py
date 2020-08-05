@@ -6,8 +6,8 @@ def main(subject):
         reader = csv.reader(f)
         for row in reader:
             institutions.append(row[0])
-
-    last = 'University of California - Irvine'
+    
+    last = "University of Maryland, College Park"
     check = True
     inst = []
     for i in range(0, len(institutions)):
@@ -32,7 +32,7 @@ def main(subject):
 if __name__ == "__main__":
     #main('Computer Science')
     #main('Mathematics')
-    main('Physics')
+    #main('Physics')
+    main('Chemistry')
     #main('Engineering')
-    #main('Chemistry')
 
