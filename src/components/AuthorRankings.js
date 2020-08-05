@@ -8,7 +8,7 @@ import { env } from '../constants';
 function PublicationPieChart(props) {
   let data = [];
   for (let area of Object.keys(props.everything[props.school][props.author])) {
-    data.push({ title: area, value: props.everything[props.school][props.author][area], color: '#' + Math.floor(Math.random() * 16770000).toString(16) });
+    data.push({ title: area, value: props.everything[props.school][props.author][area], color: '#' + Math.floor(Math.random() * 16700000).toString(16) });
   }
   //if (env) console.log('FULL DATA FOR ' + props.author, data);
 
@@ -17,6 +17,7 @@ function PublicationPieChart(props) {
       Sub-Area Breakdown for Publications by {props.author}
       <PieChart
         style={{ height: '30vh' }}
+        background="#ff5454"
         label={({ dataEntry }) => 
           Math.round(dataEntry.percentage) >= 5 ?
             dataEntry.title.split(' ').join('\n') + '\n' + Math.round(dataEntry.percentage) + '%' : // TODO: ESCAPE CHARACTERS DON'T WORK HERE
