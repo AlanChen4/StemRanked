@@ -166,4 +166,5 @@ input:checked + .slider:before {
   white-space: nowrap;
   margin-left: 5px;
   display: flex;
+  margin-bottom: 5px;
 }
