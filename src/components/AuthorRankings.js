@@ -8,19 +8,22 @@ import { env } from '../constants';
 function PublicationPieChart(props) {
   let data = [];
   for (let area of Object.keys(props.everything[props.school][props.author])) {
-    data.push({ title: area, value: props.everything[props.school][props.author][area], color: '#' + Math.floor(Math.random() * 16777215).toString(16) });
+    data.push({ title: area, value: props.everything[props.school][props.author][area], color: '#' + Math.floor(Math.random() * 16770000).toString(16) });
   }
   //if (env) console.log('FULL DATA FOR ' + props.author, data);
 
   return (
-    <PieChart
-      style={{ height: '30vh' }}
-      label={({ dataEntry }) => Math.round(dataEntry.percentage) >= 5 ? dataEntry.title + ' ' + Math.round(dataEntry.percentage) + '%' : ''}
-      labelStyle={(index) => ({ fill: data[index].color, fontSize: '0.9vh' })}
-      labelPosition={112}
-      radius={42}
-      data={data}
-    />
+    <div style={{ textAlign: 'center' }}>
+      Sub-Area Breakdown for Publications by {props.author}
+      <PieChart
+        style={{ height: '30vh' }}
+        label={({ dataEntry }) => Math.round(dataEntry.percentage) >= 5 ? dataEntry.title + ' ' + Math.round(dataEntry.percentage) + '%' : ''}
+        labelStyle={(index) => ({ fill: data[index].color, fontSize: '0.9vh' })}
+        labelPosition={112}
+        radius={42}
+        data={data}
+      />
+    </div>
   );
 }
 
