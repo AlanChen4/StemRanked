@@ -54,9 +54,9 @@ function App(props) {
                 <NavDropdown.Header>Sub-Areas</NavDropdown.Header>
                 <div className="Toggle">
                   Toggle all sub-areas
-                  <label class="switch">
+                  <label className="switch">
                     <input type="checkbox" id="myCheckbox" defaultChecked onChange={tempfunction} />
-                    <span class="slider"></span>
+                    <span className="slider"></span>
                   </label>
                 </div>
                 {subjectAreaInfo[selectedSubject].map((subArea) =>

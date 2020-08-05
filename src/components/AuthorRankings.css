@@ -27,15 +27,11 @@
     text-transform: uppercase;
 }
 
-.GraphContainer {
-    display: flex;
-    align-items: center;
-}
-
 .Graph {
     height: 1.5vh;
     width: auto;
     margin-left: 5px;
+    margin-bottom: 2px;
 }
 
 .AuthorAccordion {
