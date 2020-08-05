@@ -18,12 +18,12 @@ function PublicationPieChart(props) {
       <PieChart
         style={{ height: '30vh' }}
         background="#ff5454"
-        label={({ dataEntry }) => 
+        label={({ dataEntry }) =>
           Math.round(dataEntry.percentage) >= 5 ?
             dataEntry.title.split(' ').join('\n') + '\n' + Math.round(dataEntry.percentage) + '%' : // TODO: ESCAPE CHARACTERS DON'T WORK HERE
             ''
         }
-        labelStyle={(index) => ({ fill: data[index].color, fontSize: '0.35vw'})}
+        labelStyle={(index) => ({ fill: data[index].color, fontSize: '0.35vw' })}
         labelPosition={112}
         radius={42}
         data={data}
