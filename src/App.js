@@ -30,6 +30,16 @@ function App(props) {
     setTemp(subAreas.length);
   }
 
+  function tempfunction() {
+    if (document.getElementById("myCheckbox").checked === true) {
+      setSubAreas(Object.keys(areaDictionary[props.subject]));
+    }
+    else {
+      setSubAreas([]);
+    }
+    setTemp(subAreas.length);
+  }
+
   return (
     <div className="Main">
       <Navbar className="NavBar" expand="xl" variant="dark">
@@ -42,7 +52,11 @@ function App(props) {
             {subjectList.map((subject) => selectedSubject === subject ?
               <NavDropdown href={"/" + subject.replace(' ', '_')} key={subject} title={<span title="Edit the selected sub-areas" className="SubjectLinkActive">{subject}</span>}>
                 <NavDropdown.Header>Sub-Areas</NavDropdown.Header>
-                {subjectAreaInfo[selectedSubject].map((subArea) => 
+                <label class="switch">
+                  <input type="checkbox" id="myCheckbox" defaultChecked onChange={tempfunction} />
+                  <span class="slider"></span>
+                </label>
+                {subjectAreaInfo[selectedSubject].map((subArea) =>
                   <div className="SubArea" key={subArea[0]}>
                     <label className="checkboxes">
                       <input defaultChecked type="checkbox" onChange={() => addBlank(subArea[1])} />
