@@ -54,7 +54,10 @@ function AuthorRankings(props) {
                               <Col>{author}</Col>
                             </Row>
                             <Row className="StrongestArea">
-                              <Col>{props.strongestSubject[props.school][author]} <Image className="graph" src="./images/graph.jpg"></Image></Col>
+                              <Col className="GraphContainer">
+                                {props.strongestSubject[props.school][author]}
+                                <Image className="Graph" src="./images/graph.png" />
+                              </Col>
                             </Row>
                           </Col>
                           <Col>{props.authorCount[props.school][i]}</Col>
