@@ -27,6 +27,12 @@
     text-transform: uppercase;
 }
 
+.graph {
+    height: 1.5vh;
+    width: auto;
+    margin-bottom: 2px;
+}
+
 .AuthorAccordion {
     border-color: var(--main-bg-color) !important;
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col, Accordion, Card } from 'react-bootstrap';
+import { Row, Col, Accordion, Card, Image } from 'react-bootstrap';
 import { PieChart } from 'react-minimal-pie-chart';
 import './AuthorRankings.css';
 import LoadingSpinner from './LoadingSpinner';
@@ -8,7 +8,7 @@ import { env } from '../constants';
 function Statistics(props) {
   let data = [];
   for (let area of Object.keys(props.everything[props.school][props.author])) {
-    data.push({title: area, value: props.everything[props.school][props.author][area], color: '#' + Math.floor(Math.random()*16777215).toString(16)});
+    data.push({ title: area, value: props.everything[props.school][props.author][area], color: '#' + Math.floor(Math.random() * 16777215).toString(16) });
   }
   //if (env) console.log('FULL DATA FOR ' + props.author, data);
 
@@ -16,7 +16,7 @@ function Statistics(props) {
     <PieChart
       style={{ height: '30vh' }}
       label={({ dataEntry }) => Math.round(dataEntry.percentage) >= 1 ? dataEntry.title + ' ' + Math.round(dataEntry.percentage) + '%' : ''}
-      labelStyle={(index) => ({fill: data[index].color, fontSize: '0.9vh'})}
+      labelStyle={(index) => ({ fill: data[index].color, fontSize: '0.9vh' })}
       labelPosition={112}
       radius={42}
       data={data}
@@ -42,7 +42,7 @@ function AuthorRankings(props) {
               <Col>Adjusted Count</Col>
             </Row>
             <div className="DataColumnAuthors">
-              {props.author[props.school].map((author, i) => 
+              {props.author[props.school].map((author, i) =>
                 <div key={author}>
                   <Accordion>
                     <Card className="AuthorAccordion">
@@ -54,7 +54,7 @@ function AuthorRankings(props) {
                               <Col>{author}</Col>
                             </Row>
                             <Row className="StrongestArea">
-                              <Col>{props.strongestSubject[props.school][author]}</Col>
+                              <Col>{props.strongestSubject[props.school][author]} <Image className="graph" src="./images/graph.jpg"></Image></Col>
                             </Row>
                           </Col>
                           <Col>{props.authorCount[props.school][i]}</Col>
