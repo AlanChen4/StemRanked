@@ -161,3 +161,9 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
+.Toggle {
+  white-space: nowrap;
+  margin-left: 5px;
+  display: flex;
+}

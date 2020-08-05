@@ -5,7 +5,7 @@ import './AuthorRankings.css';
 import LoadingSpinner from './LoadingSpinner';
 import { env } from '../constants';
 
-function Statistics(props) {
+function PublicationPieChart(props) {
   let data = [];
   for (let area of Object.keys(props.everything[props.school][props.author])) {
     data.push({ title: area, value: props.everything[props.school][props.author][area], color: '#' + Math.floor(Math.random() * 16777215).toString(16) });
@@ -15,7 +15,7 @@ function Statistics(props) {
   return (
     <PieChart
       style={{ height: '30vh' }}
-      label={({ dataEntry }) => Math.round(dataEntry.percentage) >= 1 ? dataEntry.title + ' ' + Math.round(dataEntry.percentage) + '%' : ''}
+      label={({ dataEntry }) => Math.round(dataEntry.percentage) >= 5 ? dataEntry.title + ' ' + Math.round(dataEntry.percentage) + '%' : ''}
       labelStyle={(index) => ({ fill: data[index].color, fontSize: '0.9vh' })}
       labelPosition={112}
       radius={42}
@@ -62,7 +62,7 @@ function AuthorRankings(props) {
                       </Accordion.Toggle>
                       <Accordion.Collapse eventKey={author}>
                         <Card.Body>
-                          <Statistics school={props.school} everything={props.everything} author={author} />
+                          <PublicationPieChart school={props.school} everything={props.everything} author={author} />
                         </Card.Body>
                       </Accordion.Collapse>
                     </Card>

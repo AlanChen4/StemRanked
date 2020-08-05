@@ -52,10 +52,13 @@ function App(props) {
             {subjectList.map((subject) => selectedSubject === subject ?
               <NavDropdown href={"/" + subject.replace(' ', '_')} key={subject} title={<span title="Edit the selected sub-areas" className="SubjectLinkActive">{subject}</span>}>
                 <NavDropdown.Header>Sub-Areas</NavDropdown.Header>
-                <label class="switch">
-                  <input type="checkbox" id="myCheckbox" defaultChecked onChange={tempfunction} />
-                  <span class="slider"></span>
-                </label>
+                <div className="Toggle">
+                  Toggle all sub-areas
+                  <label class="switch">
+                    <input type="checkbox" id="myCheckbox" defaultChecked onChange={tempfunction} />
+                    <span class="slider"></span>
+                  </label>
+                </div>
                 {subjectAreaInfo[selectedSubject].map((subArea) =>
                   <div className="SubArea" key={subArea[0]}>
                     <label className="checkboxes">
