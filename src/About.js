@@ -28,22 +28,22 @@ function About() {
         <Col>
           <h3 className="center"><Image className="images" src="./images/namh.png" /></h3>
           <h4 className="center2">Namh Lahade</h4>
-          <h5 className="center2">fwefewoifjewoifjewofi fewjfioewjfoweifj weoi jfjewoifj ewoifjewoifj woifj we  fjewoifj weoifjewoij oif jweoi weoifj </h5>
+          <h6 className="center2">fwefewoifjewoifjewofi fewjfioewjfoweifj weoi jfjewoifj ewoifjewoifj woifj we  fjewoifj weoifjewoij oif jweoi weoifj </h6>
         </Col>
         <Col>
           <h3 className="center"><Image className="images" src="./images/oum2.png" /></h3>
           <h4 className="center2">Oum Lahade</h4>
-          <h5 className="center2">fwefewoifjewoifjewofi fewjfioewjfoweifj weoi jfjewoifj ewoifjewoifj woifj we  fjewoifj weoifjewoij oif jweoi weoifj </h5>
+          <h6 className="center2">fwefewoifjewoifjewofi fewjfioewjfoweifj weoi jfjewoifj ewoifjewoifj woifj we  fjewoifj weoifjewoij oif jweoi weoifj </h6>
         </Col>
         <Col>
           <h3 className="center"><Image className="images" src="./images/neel3.png" /></h3>
           <h4 className="center2">Neel Runton</h4>
-          <h5 className="center2">fwefewoifjewoifjewofi fewjfioewjfoweifj weoi jfjewoifj ewoifjewoifj woifj we  fjewoifj weoifjewoij oif jweoi weoifj </h5>
+          <h6 className="center2">fwefewoifjewoifjewofi fewjfioewjfoweifj weoi jfjewoifj ewoifjewoifj woifj we  fjewoifj weoifjewoij oif jweoi weoifj </h6>
         </Col>
         <Col>
           <h3 className="center"><Image className="images" src="./images/alan.jpg" /></h3>
           <h4 className="center2">Alan Chen</h4>
-          <h5 className="center2">fwefewoifjewoifjewofi fewjfioewjfoweifj weoi jfjewoifj ewoifjewoifj woifj we  fjewoifj weoifjewoij oif jweoi weoifj </h5>
+          <h6 className="center2">fwefewoifjewoifjewofi fewjfioewjfoweifj weoi jfjewoifj ewoifjewoifj woifj we  fjewoifj weoifjewoij oif jweoi weoifj </h6>
         </Col>
       </Row>
     </div>
