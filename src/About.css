@@ -35,3 +35,29 @@
 .GitHubLogoIcon:hover {
     opacity: .75;
 }
+
+.title {
+    font-size: 3 em;
+    text-align: center;
+    position: static;
+    margin: 20px;
+    font: serif;
+}
+
+.center {
+    text-align: center;
+    position: static;
+    margin: 20px;
+    
+}
+
+.center2 {
+    text-align: center;
+    position: static;
+    margin: 20px;
+}
+
+.images {
+    height: 300px;
+    width: 263px;
+}

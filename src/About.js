@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Navbar, Nav } from 'react-bootstrap';
+import { Image, Navbar, Nav, Row, Col } from 'react-bootstrap';
 import { subjectList } from './constants';
 import './About.css';
 
@@ -23,17 +23,29 @@ function About() {
           </Nav>
         </Navbar.Collapse>
       </Navbar>
-      <p>Picture of Oum Lahade</p>
-      <p>Oum Lahade's Bio</p>
-      <br />
-      <p>Picture of Namh Lahade</p>
-      <p>Namh Lahade's Bio</p>
-      <br />
-      <p>Picture of Alan Chen</p>
-      <p>Alan Chen's Bio</p>
-      <br />
-      <p>Picture of Neel Runton</p>
-      <p>Neel Runton's Bio</p>
+      <h1 className="title ">About Us</h1>
+      <Row>
+        <Col>
+          <h3 className="center"><Image className="images" src="./images/namh.png" /></h3>
+          <h4 className="center2">Namh Lahade</h4>
+          <h5 className="center2">fwefewoifjewoifjewofi fewjfioewjfoweifj weoi jfjewoifj ewoifjewoifj woifj we  fjewoifj weoifjewoij oif jweoi weoifj </h5>
+        </Col>
+        <Col>
+          <h3 className="center"><Image className="images" src="./images/oum2.png" /></h3>
+          <h4 className="center2">Oum Lahade</h4>
+          <h5 className="center2">fwefewoifjewoifjewofi fewjfioewjfoweifj weoi jfjewoifj ewoifjewoifj woifj we  fjewoifj weoifjewoij oif jweoi weoifj </h5>
+        </Col>
+        <Col>
+          <h3 className="center"><Image className="images" src="./images/neel3.png" /></h3>
+          <h4 className="center2">Neel Runton</h4>
+          <h5 className="center2">fwefewoifjewoifjewofi fewjfioewjfoweifj weoi jfjewoifj ewoifjewoifj woifj we  fjewoifj weoifjewoij oif jweoi weoifj </h5>
+        </Col>
+        <Col>
+          <h3 className="center"><Image className="images" src="./images/alan.jpg" /></h3>
+          <h4 className="center2">Alan Chen</h4>
+          <h5 className="center2">fwefewoifjewoifjewofi fewjfioewjfoweifj weoi jfjewoifj ewoifjewoifj woifj we  fjewoifj weoifjewoij oif jweoi weoifj </h5>
+        </Col>
+      </Row>
     </div>
   );
 }
