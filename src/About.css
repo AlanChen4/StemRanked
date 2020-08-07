@@ -68,4 +68,9 @@
     border: 3px solid grey;
 }
 
+.methodology_border{
+    border: 3px solid var(--sidebar-color);
+    margin: 15px;
+}
+
 

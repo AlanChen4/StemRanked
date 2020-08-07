@@ -48,7 +48,10 @@ function About() {
       </Row>
 
       <h1 className="title">The Rankings</h1>
-      <h6 className="center"></h6>
+      <div className="methodology_border">
+        <h6 className="center">The rankings system is based off of an adjusted count found from the number of publications each institution has after the user's selected start date in major conferences. An average count is then created based off of the user's selection of areas with the given formula.</h6>
+        <h6 className="center"><Image src="./images/ranking_equation.jpg" /></h6>
+      </div>
     </div>
   );
 }
