@@ -26,12 +26,12 @@ function About() {
       <h1 className="title ">About Us</h1>
       <Row className="center">
         <Col>
-          <a href="https://www.instagram.com/namhlahade_/" className="center"><Image className="images" src="./images/namh.png" /></a>
+          <a href="https://www.linkedin.com/in/namh-lahade-015b33177/" className="center"><Image className="images" src="./images/namh.png" /></a>
           <h4 className="center2">Namh Lahade</h4>
           <h6 className="center2">Namh attends Duke University and is currently majoring in Electrical & Computer Engineering and Economics.</h6>
         </Col>
         <Col>
-          <a href="https://www.instagram.com/oum.lahade/" className="center"><Image className="images" src="./images/oum2.png" /></a>
+          <a href="https://www.linkedin.com/in/oum-lahade-920b30177/" className="center"><Image className="images" src="./images/oum2.png" /></a>
           <h4 className="center2">Oum Lahade</h4>
           <h6 className="center2">Oum attends Duke University and is currently majoring in Electrical & Computer Engineering and Economics.</h6>
         </Col>
@@ -41,7 +41,7 @@ function About() {
           <h6 className="center2">Neel attends Duke University and is majoring in Electrical & Computer Engineering and Computer Science. At STEM Ranked, he primarily does front-end design and development. In his freetime, he enjoys playing sports like basketball and football.</h6>
         </Col>
         <Col>
-          <a href="https://www.instagram.com/alan.ch3n/" className="center"><Image className="images" src="./images/alan.jpg" /></a>
+          <a href="https://www.linkedin.com/in/alan-chen-aa8994191/" className="center"><Image className="images" src="./images/alan.jpg" /></a>
           <h4 className="center2">Alan Chen</h4>
           <h6 className="center2">Alan attends Duke University and is majoring in Computer Science and Economics.</h6>
         </Col>
