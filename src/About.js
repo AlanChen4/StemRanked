@@ -24,28 +24,31 @@ function About() {
         </Navbar.Collapse>
       </Navbar>
       <h1 className="title ">About Us</h1>
-      <Row>
+      <Row className="center">
         <Col>
-          <h3 className="center"><Image className="images" src="./images/namh.png" /></h3>
+          <a href="https://www.instagram.com/namhlahade_/" className="center"><Image className="images" src="./images/namh.png" /></a>
           <h4 className="center2">Namh Lahade</h4>
-          <h6 className="center2">fwefewoifjewoifjewofi fewjfioewjfoweifj weoi jfjewoifj ewoifjewoifj woifj we  fjewoifj weoifjewoij oif jweoi weoifj </h6>
+          <h6 className="center2">Namh attends Duke University and is currently majoring in Electrical & Computer Engineering and Economics.</h6>
         </Col>
         <Col>
-          <h3 className="center"><Image className="images" src="./images/oum2.png" /></h3>
+          <a href="https://www.instagram.com/oum.lahade/" className="center"><Image className="images" src="./images/oum2.png" /></a>
           <h4 className="center2">Oum Lahade</h4>
-          <h6 className="center2">fwefewoifjewoifjewofi fewjfioewjfoweifj weoi jfjewoifj ewoifjewoifj woifj we  fjewoifj weoifjewoij oif jweoi weoifj </h6>
+          <h6 className="center2">Oum attends Duke University and is currently majoring in Electrical & Computer Engineering and Economics.</h6>
         </Col>
         <Col>
-          <h3 className="center"><Image className="images" src="./images/neel3.png" /></h3>
+          <a href="https://www.instagram.com/neel_runton/" className="center"><Image className="images" src="./images/neel3.png" /></a>
           <h4 className="center2">Neel Runton</h4>
-          <h6 className="center2">fwefewoifjewoifjewofi fewjfioewjfoweifj weoi jfjewoifj ewoifjewoifj woifj we  fjewoifj weoifjewoij oif jweoi weoifj </h6>
+          <h6 className="center2">Neel attends Duke University and is majoring in Electrical & Computer Engineering and Computer Science. At STEM Ranked, he primarily does front-end design and development. In his freetime, he enjoys playing sports like basketball and football.</h6>
         </Col>
         <Col>
-          <h3 className="center"><Image className="images" src="./images/alan.jpg" /></h3>
+          <a href="https://www.instagram.com/alan.ch3n/" className="center"><Image className="images" src="./images/alan.jpg" /></a>
           <h4 className="center2">Alan Chen</h4>
-          <h6 className="center2">fwefewoifjewoifjewofi fewjfioewjfoweifj weoi jfjewoifj ewoifjewoifj woifj we  fjewoifj weoifjewoij oif jweoi weoifj </h6>
+          <h6 className="center2">Alan attends Duke University and is majoring in Computer Science and Economics.</h6>
         </Col>
       </Row>
+
+      <h1 className="title">The Rankings</h1>
+      <h6 className="center"></h6>
     </div>
   );
 }
