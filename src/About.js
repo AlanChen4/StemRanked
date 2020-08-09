@@ -36,7 +36,7 @@ function About() {
           <h6 className="center2">Oum attends Duke University and is currently majoring in Electrical & Computer Engineering and Economics.</h6>
         </Col>
         <Col>
-          <a href="https://www.instagram.com/neel_runton/" className="center"><Image className="images" src="./images/neel3.png" /></a>
+          <a href="https://www.linkedin.com/in/neelam-runton-3637291b4/" className="center"><Image className="images" src="./images/neel3.png" /></a>
           <h4 className="center2">Neel Runton</h4>
           <h6 className="center2">Neel attends Duke University and is majoring in Electrical & Computer Engineering and Computer Science. At STEM Ranked, he primarily does front-end design and development. In his freetime, he enjoys playing sports like basketball and football.</h6>
         </Col>
