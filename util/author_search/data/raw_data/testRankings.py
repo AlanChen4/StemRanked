@@ -7,8 +7,8 @@ with gzip.open('util/author_search/data/raw_data/raw_Computer_Science.csv.gz', '
     counter = 0
     d = {}
     for row in reader:
-        if (row[2] == 'Neural Information Processing Systems'):
-            d[row[1]] = d.get(row[1],0)+1
+        if (row[2] == 'IEEE/SICE International Symposium on System Integration'):
+            d[row[1]] = d.get(row[1],0)+float(row[4])
             counter+=1
             print(row)
 

@@ -57,7 +57,7 @@ def checkTilda(links, researcher):
     for i in range(len(urlsParts)):
         if (urlsParts[i].lower().find(list(researcher.split(' '))[len(list(researcher.split(' ')))-1].strip().lower())>-1 or urlsParts[i].find('~')>-1): #should be first one
             endVal = i
-            break;
+            break
     newRet = head
     for i in range(endVal+1):
         newRet+=f"{urlsParts[i]}/"

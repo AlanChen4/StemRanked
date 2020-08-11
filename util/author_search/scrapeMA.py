@@ -7,7 +7,7 @@ def main(subject):
         for row in reader:
             institutions.append(row[0])
     
-    last = "University of Maryland, College Park"
+    last = "University of Florida"
     check = True
     inst = []
     for i in range(0, len(institutions)):
@@ -33,6 +33,6 @@ if __name__ == "__main__":
     #main('Computer Science')
     #main('Mathematics')
     #main('Physics')
-    main('Chemistry')
-    #main('Engineering')
+    #main('Chemistry')
+    main('Engineering')
 
