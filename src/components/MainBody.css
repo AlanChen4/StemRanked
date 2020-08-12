@@ -27,6 +27,7 @@
 }
 
 .YearDropdown {
+    font-size: 1vw;
     padding-top: 0;
     padding-bottom: 0;
     padding-left: 0.33vw;
@@ -34,7 +35,6 @@
     margin-right: 0.33vw;
     border: none !important;
     color: black !important;
-    font-size: 1vw;
     background: var(--main-bg-color) !important;
 }
 
@@ -51,7 +51,8 @@
     background-color: var(--sidebar-color) !important;
 }
 
-.DropdownScrollBar{
+.DropdownScrollBar {
+    font-size: 1vw;
     height: 60vh;
     overflow-y: scroll;
     overflow-x: hidden;
@@ -122,6 +123,7 @@
 .AuthorRanks {
     border-left: 1px solid rgba(112, 112, 112, 0.25);
 }
+
 .DataColumnInstitutions{
     height: 52vh;
     overflow-y: scroll;

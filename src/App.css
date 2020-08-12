@@ -15,7 +15,7 @@
 
 .SubArea {
   white-space: nowrap;
-  margin-right: 5px;
+  margin-right: 0.5vw;
 }
 
 .SubjectLink {
@@ -30,13 +30,13 @@
 }
 
 .checkboxes {
-  margin-left: 5px;
+  margin-left: 0.25vw;
   display: block;
   position: relative;
-  padding-left: 26px;
-  margin-bottom: 0px;
+  padding-left: 1.75vw;
+  margin-bottom: 2px;
   cursor: pointer;
-  font-size: 15px;
+  font-size: 1vw;
 }
 
 .checkboxes input {
@@ -51,8 +51,8 @@
   position: absolute;
   top: 0;
   left: 0;
-  height: 20px;
-  width: 20px;
+  height: 1.5vw;
+  width: 1.5vw;
   background-color: white;
   border: black solid 1px;
 }
@@ -76,12 +76,12 @@
 }
 
 .checkboxes .box:after {
-  left: 6px;
-  top: 3px;
-  width: 5px;
-  height: 10px;
+  left: 0.5vw;
+  top: 0.25vw;
+  width: 0.4vw;
+  height: 0.75vw;
   border: solid white;
-  border-width: 0 3px 3px 0;
+  border-width: 0 0.2vw 0.2vw 0;
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
@@ -109,11 +109,11 @@
 
 .switch {
   position: relative;
-
   display: inline-block;
-  width: 30px;
-  height: 17px;
-  margin: 5px
+  width: 2.1vw;
+  height: 1.2vw;
+  margin-left: 0.3vw;
+  margin-top: 0.25vw;
 }
 
 .switch input { 
@@ -137,10 +137,10 @@
 .slider:before {
   position: absolute;
   content: "";
-  height: 13px;
-  width: 13px;
-  left: 2px;
-  bottom: 2px;
+  height: 1vw;
+  width: 1vw;
+  left: 0.1vw;
+  bottom: 0.125vw;
   background-color: white;
   -webkit-transition: .4s;
   transition: .4s;
@@ -160,18 +160,10 @@ input:checked + .slider:before {
   transform: translateX(13px);
 }
 
-/* Rounded sliders */
-.slider.round {
-  border-radius: 34px;
-}
-
-.slider.round:before {
-  border-radius: 50%;
-}
-
 .Toggle {
+  font-size: 1vw;
   white-space: nowrap;
-  margin-left: 5px;
+  margin-left: 0.25vw;
   display: flex;
   margin-bottom: 5px;
 }
