@@ -13,8 +13,8 @@ function PublicationPieChart(props) {
   //if (env) console.log('FULL DATA FOR ' + props.author, data);
 
   return (
-    <div style={{ textAlign: 'center' }}>
-      Sub-Area Breakdown for Publications by {props.author}
+    <div className="ChartContainerBody">
+      <span style={{ fontSize: '1vw' }}>Sub-Area Breakdown for Publications by {props.author}</span>
       <PieChart
         style={{ height: '30vh' }}
         background="#ff5454"
@@ -38,7 +38,7 @@ function AuthorRankings(props) {
 
   return (
     <div>
-      {props.school === 'loading' ? <LoadingSpinner /> : props.school === null ? <div><span className="AdjustMargin">Select an institution to view its details.</span></div> :
+      {props.school === 'loading' ? <LoadingSpinner /> : props.school === null ? <div><span className="AdjustMarginFont">Select an institution to view its details.</span></div> :
         <div>
           <Row className="InstitutionHeader">
             <Col><span className="AdjustMargin">{props.school}</span></Col>
@@ -73,7 +73,9 @@ function AuthorRankings(props) {
                       </Accordion.Toggle>
                       <Accordion.Collapse eventKey={author}>
                         <Card.Body>
-                          <PublicationPieChart school={props.school} everything={props.everything} author={author} />
+                          <div className="ChartContainer">
+                            <PublicationPieChart school={props.school} everything={props.everything} author={author} />
+                          </div>
                         </Card.Body>
                       </Accordion.Collapse>
                     </Card>

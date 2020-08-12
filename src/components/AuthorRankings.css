@@ -13,6 +13,11 @@
     margin-left: 1.75vw;
 }
 
+.AdjustMarginFont {
+    margin-left: 1.75vw;
+    font-size: 1vw;
+}
+
 .AuthorsTable {
     margin-top: 5vh;
 }
@@ -20,18 +25,19 @@
 .Author {
     padding-top: 1vh;
     padding-bottom: 0.5vh;
+    font-size: 1vw;
 }
 
 .StrongestArea{
-    font-size: 0.01em;
+    font-size: 0.6vw;
     text-transform: uppercase;
 }
 
 .Graph {
-    height: 1.5vh;
+    height: 0.75vw;
     width: auto;
-    margin-left: 5px;
-    margin-bottom: 2px;
+    margin-left: 0.2vw;
+    margin-bottom: 0.15vw;
 }
 
 .AuthorAccordion {
@@ -48,3 +54,12 @@
     cursor: pointer;
 }
 
+.ChartContainer {
+    display: flex;
+    justify-content: center;
+}
+
+.ChartContainerBody {
+    text-align: center;
+    width: 20vw;
+}
