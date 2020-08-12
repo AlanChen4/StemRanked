@@ -1,0 +1,131 @@
+.Outside {
+    padding-top: 5vh;
+    padding-bottom: 2vh;
+    padding-left: 2.25vw;
+    padding-right: 2.25vw;
+}
+
+.SubjectName {
+    display: flex;
+    align-items: center;
+    font-size: 1.75vw;
+    margin-bottom: 5vh;
+}
+
+.Rankings {
+    margin-top: -1vh;
+}
+
+.YearSelect {
+    text-align: center;
+    color: black;
+    font-size: 1vw;
+}
+
+.BottomLine {
+    justify-content: center;
+}
+
+.YearDropdown {
+    font-size: 1vw;
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-left: 0.33vw;
+    padding-right: 0.33vw;
+    margin-right: 0.33vw;
+    border: none !important;
+    color: black !important;
+    background: var(--main-bg-color) !important;
+}
+
+.YearDropdown:hover {
+    background-color: white !important;
+}
+
+.YearDropdown:focus {
+    background-color: white !important;
+    border: none !important;
+}
+
+.Active {
+    background-color: var(--sidebar-color) !important;
+}
+
+.DropdownScrollBar {
+    font-size: 1vw;
+    height: 60vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.SubAreas {
+    text-align: center;
+    font-size: 1vw;
+}
+
+.Inactive:focus {
+    background-color: var(--sidebar-color) !important;
+}
+
+.InstitutionRankings {
+    margin-top: 5vh;
+}
+
+.TableHeaders {
+    font-size: 1.75vw;
+    font-weight: 400;
+    margin-bottom: 1vh;
+}
+
+.RankingColumnAlignment {
+    margin-left: 1.75vw;
+}
+
+.Institution {
+    cursor: pointer;
+    font-size: 1vw;
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+    --arrow-opacity: 0;
+}
+
+.Institution:hover {
+    background-color: white;
+    --arrow-opacity: 0.5;
+}
+
+.InstitutionSelected {
+    font-weight: 500;
+    background-color: white;
+    cursor: pointer;
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+    font-size: 1vw;
+}
+
+.ArrowContainer {
+    display: flex;
+    text-align: left;
+    align-items: center;
+}
+
+.Arrow {
+    width: 0.7vw;
+    height: auto;
+}
+
+.ArrowInactive {
+    opacity: var(--arrow-opacity);
+    width: 0.7vw;
+    height: auto
+}
+
+.AuthorRanks {
+    border-left: 1px solid rgba(112, 112, 112, 0.25);
+}
+
+.DataColumnInstitutions{
+    height: 52vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}

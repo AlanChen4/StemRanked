@@ -1,0 +1,83 @@
+.Main {
+    background-color: var(--main-bg-color);
+    overflow-x: hidden;
+  }
+
+.Logo {
+    width: 10vw;
+    min-width: 120px;
+}
+
+.Navbar {
+    background-color: var(--sidebar-color);
+}
+
+.RightSideNavLinks {
+    align-items: center;
+}
+
+.SubjectLinkActive {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: calc(8px + 0.9vw);
+}
+
+.AboutLink {
+    font-size: calc(8px + 0.9vw) !important;
+    margin-right: 1vw;
+}
+
+.GitHubLogoIcon {
+    opacity: 0.5;
+    width: calc(8px + 0.9vw);
+    height: calc(8px + 0.9vw);
+    margin-right: 1vw;
+}
+
+.GitHubLogoIcon:hover {
+    opacity: .75;
+}
+
+.title {
+    font-size: 2vw;
+    text-align: center;
+    position: static;
+    margin: 2vw;
+    font: serif;
+}
+
+.center {
+    text-align: center;
+    position: static;
+    margin: 2vw;
+}
+
+.center2 {
+    text-align: center;
+    position: static;
+    margin: 2vw;
+    font-size: 1.5vw;
+}
+
+.center3 {
+    text-align: center;
+    position: static;
+    margin: 2vw;
+    font-size: 1vw;
+}
+
+.images1 {
+    height: 20vw;
+    width: auto;
+    border: 3px solid var(--sidebar-color);
+}
+
+.images1:hover{
+    border: 3px solid grey;
+}
+
+.images2 {
+    height: 6vw;
+    width: auto;
+}
+
+

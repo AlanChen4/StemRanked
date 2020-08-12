@@ -1,0 +1,10 @@
+.Container {
+    text-align: center;
+    align-items: center;
+    padding-top: 1vh;
+}
+
+.Spinner {
+    margin-top: 1vh;
+    color: var(--sidebar-color) !important;
+}

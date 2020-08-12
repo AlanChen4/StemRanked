@@ -286,7 +286,7 @@ async function rankings(subject, subAreas, startYr) {
     if (env) console.log('Authors', finalAuthors);
 
     let authorArea = speciality(rankAuthors);
-    console.log("Strongest areas for authors", authorArea);
+    console.log("Author strongest areas", authorArea);
 
     let rank_dic = rankingsInfo(final_colleges, colleges);
     if (env) console.log('Result of rankingsInfo call', rank_dic);
@@ -299,7 +299,7 @@ async function rankings(subject, subAreas, startYr) {
 
     if (env) console.log('Author Counts:', finalAuthorCounts);
 
-    return [final, finalAuthors, finalAuthorCounts];
+    return [final, finalAuthors, finalAuthorCounts, authorArea, rankAuthors];
     //return { UNC: 1.532423 }
 }
 

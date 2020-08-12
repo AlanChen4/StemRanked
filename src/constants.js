@@ -1,60 +1,29 @@
 export const subjectAreaInfo = {
-    'Emery Computer Science': [
-        ['Computer Vision', 'vision'],
-        ['Programming Languages', 'plan'],
-        ['Software Engineering', 'soft'],
-        ['Operating Systems', 'ops'],
-        ['Measurement and Perf. Analysis', 'metrics'],
-        ['Mobile Computing', 'mobile'],
-        ['High Performance Computing', 'hpc'],
-        ['Embeddec and real-time systems', 'bed'],
-        ['Design Automation', 'da'],
-        ['Databases', 'mod'],
-        ['Computer Security', 'sec'],
-        ['Computer Networks', 'comm'],
-        ['Computer Architecture', 'arch'],
-        ['Logic and Verification', 'log'],
-        ['Algorithms and Complexity', 'act'],
-        ['Machine Learning and Data Mining', 'mlmining'],
-        ['Computer Graphics', 'compgraph'],
-        ['The Web and Information Retrieval', 'ir'],
-        ['Human Computer Interaction', 'chi'],
-        ['Natural Language Processing', 'nlp'],
-        ['Robotics', 'robotics'],
-        ['Cryptography', 'crypt'],
-        ['Computer Biology and Bioinformatics', 'bio'],
-        ['Visualization', 'visual'],
-        ['Ecomonics and Computation', 'ecom'],
-        ['Artificial Intelligence', 'ai']
-    ],
     'Computer Science': [
-        ['Computer Vision', 'Computer Vision'],
-        ['Programming Languages', 'Programming Languages'],
-        ['Software Engineering', 'Software Engineering'],
-        ['Operating Systems', 'Operating Systems'],
-        ['Measurement and Perf. Analysis', 'Measurement and Performance Analysis'],
-        ['Mobile Computing', 'Mobile Computing'],
-        ['High Performance Computing', 'High Performance Computing'],
-        ['Embedded and real-time systems', 'Embedded and Real-Time Systems'],
-        ['Design Automation', 'Design Automation'],
+        ['Computer Vision', 'Vision'],
+        ['Programming Languages', 'PL'],
+        ['Software Engineering', 'SE'],
+        ['Operating Systems', 'OS'],
+        ['Measurement and Perf. Analysis', 'MPA'],
+        ['Mobile Computing', 'Mobile'],
+        ['High Performance Computing', 'HPC'],
+        ['Embedded and real-time systems', 'Embedded'],
+        ['Design Automation', 'DA'],
         ['Databases', 'Databases'],
-        ['Computer Security', 'Computer Security'],
-        ['Computer Networks', 'Computer Networks'],
-        ['Computer Architecture', 'Computer Architecture'],
-        ['Logic and Verification', 'Logic and Verification'],
-        ['Algorithms and Complexity', 'Algorithms & Complexity'],
-        ['Machine Learning and Data Mining', 'Machine Learning & Data Mining'],
-        ['Computer Graphics', 'Computer Graphics'],
-        ['The Web and Information Retrieval', 'The Web and Information'],
-        ['Human Computer Interaction', 'Human-Computer Interaction'],
-        ['Natural Language Processing', 'Natural Language Processing'],
+        ['Computer Security', 'Security'],
+        ['Computer Networks', 'Networks'],
+        ['Computer Architecture', 'Arch'],
+        ['Logic and Verification', 'Logic'],
+        ['Algorithms and Complexity', 'Algorithms'],
+        ['Machine Learning and Data Mining', 'ML & DM'],
+        ['Computer Graphics', 'Graphics'],
+        ['The Web and Information Retrieval', 'Web'],
+        ['Human Computer Interaction', 'HCI'],
+        ['Natural Language Processing', 'NLP'],
         ['Robotics', 'Robotics'],
-        ['Computer Biology and Bioinformatics', 'Comp. bio & bioinformatics'],
-        ['Visualization', 'Visualization'],
-        ['Artificial Intelligence', 'Artificial Intelligence']
-    ],
-    'test': [
-        ['Ketan Mayer Patel Subarea', 'foweifjewoifj']
+        ['Computer Biology and Bioinformatics', 'Bio'],
+        ['Visualization', 'Visual'],
+        ['Artificial Intelligence', 'AI']
     ],
     'Chemistry': [
         ['Analytical Chemistry', 'None'],
@@ -109,7 +78,18 @@ export const subjectAreaInfo = {
         ['Physiology', 'None'],
         ['Microbiology', 'None']
     ],
+
     'Statistics': []
 };
+
+export const subjectList = [
+    'Computer Science',
+    'Life Sciences',
+    'Chemistry',
+    'Engineering',
+    'Mathematics',
+    'Physics',
+    'Statistics'
+]
 
 export const env = process.env.NODE_ENV === 'development';

@@ -1,0 +1,65 @@
+.DataColumnAuthors{
+    height: 54vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.InstitutionHeader {
+    font-size: 1.75vw;
+    font-weight: 400;
+}
+
+.AdjustMargin {
+    margin-left: 1.75vw;
+}
+
+.AdjustMarginFont {
+    margin-left: 1.75vw;
+    font-size: 1vw;
+}
+
+.AuthorsTable {
+    margin-top: 5vh;
+}
+
+.Author {
+    padding-top: 1vh;
+    padding-bottom: 0.5vh;
+    font-size: 1vw;
+}
+
+.StrongestArea{
+    font-size: 0.6vw;
+    text-transform: uppercase;
+}
+
+.Graph {
+    height: 0.75vw;
+    width: auto;
+    margin-left: 0.2vw;
+    margin-bottom: 0.15vw;
+}
+
+.AuthorAccordion {
+    border-color: var(--main-bg-color) !important;
+}
+
+.AccordionContainer {
+    padding: 0;
+    border-bottom: none;
+}
+
+.AccordionContainer:hover {
+    background-color: white !important;
+    cursor: pointer;
+}
+
+.ChartContainer {
+    display: flex;
+    justify-content: center;
+}
+
+.ChartContainerBody {
+    text-align: center;
+    width: 20vw;
+}

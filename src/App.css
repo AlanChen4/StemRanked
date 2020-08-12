@@ -1,14 +1,169 @@
-.App {
-  text-align: center;
+/* Collapse or no? If no, change all font-sizes back to 2.5vh/relative amount */
+.Main {
+  background-color: var(--main-bg-color);
+  overflow-x: hidden;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+.NavBar {
+  background-color: var(--sidebar-color);
+}
+
+.Logo {
+  width: 10vw;
+  min-width: 120px;
+}
+
+.SubArea {
+  white-space: nowrap;
+  margin-right: 0.5vw;
+}
+
+.SubjectLink {
+  font-size: calc(8px + 0.9vw);
+  margin-left: 1vw;
+}
+
+.SubjectLinkActive {
+  font-size: calc(8px + 0.9vw);
+  margin-left: 1vw;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.checkboxes {
+  margin-left: 0.25vw;
+  display: block;
+  position: relative;
+  padding-left: 1.75vw;
+  margin-bottom: 2px;
+  cursor: pointer;
+  font-size: 1vw;
+}
+
+.checkboxes input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.box {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 1.5vw;
+  width: 1.5vw;
+  background-color: white;
+  border: black solid 1px;
+}
+
+.checkboxes:hover input ~ .box {
+  background-color: lightgray;
+}
+
+.checkboxes input:checked ~ .box {
+  background-color: #26324b;
+}
+
+.box:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.checkboxes input:checked ~ .box:after {
+  display: block;
+}
+
+.checkboxes .box:after {
+  left: 0.5vw;
+  top: 0.25vw;
+  width: 0.4vw;
+  height: 0.75vw;
+  border: solid white;
+  border-width: 0 0.2vw 0.2vw 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+.RightSideNavLinks {
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+}
+
+.AboutLink {
+  font-size: calc(8px + 0.9vw) !important;
+  margin-right: 1vw;
+}
+
+.GitHubLogoIcon {
+  opacity: 0.5;
+  width: calc(8px + 0.9vw);
+  height: calc(8px + 0.9vw);
+  margin-right: 1vw;
+}
+
+.GitHubLogoIcon:hover {
+  opacity: .75;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 2.1vw;
+  height: 1.2vw;
+  margin-left: 0.3vw;
+  margin-top: 0.25vw;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0px;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 1vw;
+  width: 1vw;
+  left: 0.1vw;
+  bottom: 0.125vw;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #26324b;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(13px);
+  -ms-transform: translateX(13px);
+  transform: translateX(13px);
+}
+
+.Toggle {
+  font-size: 1vw;
+  white-space: nowrap;
+  margin-left: 0.25vw;
+  display: flex;
+  margin-bottom: 5px;
 }
