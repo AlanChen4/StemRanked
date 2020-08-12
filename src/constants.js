@@ -61,7 +61,7 @@ export const subjectAreaInfo = {
         ['Atomic and Molecular Physics', 'Atomic and Molecular Physics'],
         ['Condensed Matter Physics', 'Condensed Matter Physics'],
         ['Nuclear and High Energy Physics', 'Nuclear and High Energy Physics'],
-        ['Surfaces and Interfaces', 'Surfaces and Interfaces']
+        ['Surfaces and Interfaces', 'Surfaces and Interfaces'],
         ['Optics', 'Optics']
     ],
 

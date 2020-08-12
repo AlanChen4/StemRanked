@@ -26,17 +26,6 @@ export const areaDictionary = {
         'Visual': ['vis', 'ieee transactions on visualization and computer graphics']
     },
 
-    'Mathematics': {
-        'Algebra and Number Theory': ['journal of differential geometry', 'compositio mathematica', 'forum of mathematics, pi'],
-        'Analysis': ["annales de l'institut henri poincaré c, analyse non linéaire", "geometric and functional analysis", "archive for rational mechanics and analysis"],
-        'Applied Mathematics': ['journal of the american mathematical society', "ieee transactions on pattern analysis and machine intelligence", "communications on pure and applied mathematics"],
-        //'Computational Mathematics': ["journal of computational physics", "journal of computational chemistry"],
-        'Geometry and Topology': ["geometry & topology", "geometric and functional analysis", "journal of topology"],
-        'Numerical Analysis': ["acta numerica", "r journal", "analysis & pde"],
-        //'Statistics and Probability': ["journal of statistical software", "journal of machine learning research", "journal of the american statistical association", "annals of mathematics", "annals of statistics", "annals of probability"],
-        //'Discrete Mathematics and Combinatorics': ["combinatorica", "journal of combinatorial theory, series b", "journal of combinatorial theory, series a", "ieee transactions on information theory"]
-    },
-
     'Physics': {
         'Astronomy and Astrophysics': ['websci', 'cidu', 'ims', 'irmmw-thz', 'eqec', 'ursi gass', 'nss', 'icpr', 'cpa', 'phystat', 'qels', 'icops', 'cleo', 'aeroconf', 'sfc', 'nss/mic', 'jicimwicte', 'siggraph', 'e-science', 'rta'],
         'Atomic and Molecular Physics': ['cleo', 'icsd', 'sispad', 'ectc', 'vlsit', 'eqec', 'qels', 'jcis', 'acoft', 'fts', 'pcm', 'icops', 'icmens', 'mines', 'cp', 'cpem', 'ivnc', 'mems', 'iemt'],
