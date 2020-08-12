@@ -1,4 +1,7 @@
+import csv
 import json
+import itertools
+import os
 import requests
 
 
@@ -14,7 +17,7 @@ def get_venues(field_name):
     conferences = get_conferences(field_id)
     journals = get_journals(field_id)
 
-    return conferences, journals
+    write_to_csv(list(itertools.chain(conferences, journals)), field_name)
 
 
 def get_conferences(field_id):
@@ -26,8 +29,8 @@ def get_conferences(field_id):
     conf_resp = session.get(conf_endpoint)
     if 200 <= conf_resp.status_code < 300:
         confs = json.loads(conf_resp.text)['te']
-        for conf in confs:
-            print(conf['dn'])
+        print(f'[Done] Fetched {len(confs)} conferences')
+        return confs
     else:
         return get_conferences(field_id)
 
@@ -38,8 +41,8 @@ def get_journals(field_id):
     jour_resp = session.get(jour_endpoint)
     if 200 <= jour_resp.status_code < 300:
         jours = json.loads(jour_resp.text)['te']
-        for jour in jours:
-            print(jour['dn'])
+        print(f'[Done] Fetched {len(jours)} journals')
+        return jours
     else:
         return get_journals(field_id)
 
@@ -59,4 +62,20 @@ def get_field_id(field):
             }
     field_resp = session.post(search_endpoint, json=payload)
     return json.loads(field_resp.text)['f'][3]['fi'][0]['id']
+
+
+def write_to_csv(venues, field, name='output'):
+    # write the information from dictionary onto .csv 
+    try:
+        with open(f'output/{field}/{name}_venues.csv', 'a+', newline='', encoding='utf-8') as f:
+            w = csv.writer(f)
+            for venue in venues:
+                w.writerow([venue])
+            print('[Finished] Output to .CSV complete')
+    except FileNotFoundError:
+        # create the folder off field name if it doesn't exist
+        output_path = r'./output/' + str(field)
+        os.makedirs(output_path)
+
+        write_to_csv(venues=venues, field=field, name=name)
 
