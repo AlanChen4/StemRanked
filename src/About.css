@@ -18,17 +18,18 @@
 
 .SubjectLinkActive {
     color: rgba(255, 255, 255, 0.75);
+    font-size: calc(8px + 0.9vw);
 }
 
 .AboutLink {
-    font-size: 23px;
+    font-size: calc(8px + 0.9vw) !important;
     margin-right: 1vw;
 }
 
 .GitHubLogoIcon {
     opacity: 0.5;
-    width: 1.5vw;
-    height: 1.5vw;
+    width: calc(8px + 0.9vw);
+    height: calc(8px + 0.9vw);
     margin-right: 1vw;
 }
 
@@ -37,40 +38,46 @@
 }
 
 .title {
-    font-size: 3 em;
+    font-size: 2vw;
     text-align: center;
     position: static;
-    margin: 20px;
+    margin: 2vw;
     font: serif;
 }
 
 .center {
     text-align: center;
     position: static;
-    margin: 20px;
+    margin: 2vw;
 }
 
 .center2 {
     text-align: center;
     position: static;
-    margin: 20px;
+    margin: 2vw;
+    font-size: 1.5vw;
 }
 
-.images {
-    height: 300px;
-    width: 263px;
+.center3 {
+    text-align: center;
+    position: static;
+    margin: 2vw;
+    font-size: 1vw;
+}
+
+.images1 {
+    height: 20vw;
+    width: auto;
     border: 3px solid var(--sidebar-color);
 }
 
-.images:hover{
-    height: 300px;
-    width: 263px;
+.images1:hover{
     border: 3px solid grey;
 }
 
-.methodology_border{
-    border: 3px solid var(--sidebar-color);
-    margin: 15px;
+.images2 {
+    height: 6vw;
+    width: auto;
 }
 
 
