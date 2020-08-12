@@ -13,6 +13,22 @@
   min-width: 120px;
 }
 
+.SubArea {
+  white-space: nowrap;
+  margin-right: 5px;
+}
+
+.SubjectLink {
+  font-size: calc(8px + 0.9vw);
+  margin-left: 1vw;
+}
+
+.SubjectLinkActive {
+  font-size: calc(8px + 0.9vw);
+  margin-left: 1vw;
+  color: rgba(255, 255, 255, 0.75);
+}
+
 .checkboxes {
   margin-left: 5px;
   display: block;
@@ -22,6 +38,7 @@
   cursor: pointer;
   font-size: 15px;
 }
+
 .checkboxes input {
   position: absolute;
   opacity: 0;
@@ -29,6 +46,7 @@
   height: 0;
   width: 0;
 }
+
 .box {
   position: absolute;
   top: 0;
@@ -38,20 +56,25 @@
   background-color: white;
   border: black solid 1px;
 }
+
 .checkboxes:hover input ~ .box {
   background-color: lightgray;
 }
+
 .checkboxes input:checked ~ .box {
   background-color: #26324b;
 }
+
 .box:after {
   content: "";
   position: absolute;
   display: none;
 }
+
 .checkboxes input:checked ~ .box:after {
   display: block;
 }
+
 .checkboxes .box:after {
   left: 6px;
   top: 3px;
@@ -64,35 +87,19 @@
   transform: rotate(45deg);
 }
 
-.SubArea {
-  white-space: nowrap;
-  margin-right: 5px;
-}
-
-.SubjectLink {
-  font-size: 23px;
-  margin-left: 1vw;
-}
-
-.SubjectLinkActive {
-  font-size: 23px;
-  margin-left: 1vw;
-  color: rgba(255, 255, 255, 0.75);
-}
-
 .RightSideNavLinks {
   align-items: center;
 }
 
 .AboutLink {
-  font-size: 23px;
+  font-size: calc(8px + 0.9vw) !important;
   margin-right: 1vw;
 }
 
 .GitHubLogoIcon {
   opacity: 0.5;
-  width: 1.5vw;
-  height: 1.5vw;
+  width: calc(8px + 0.9vw);
+  height: calc(8px + 0.9vw);
   margin-right: 1vw;
 }
 
