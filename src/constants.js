@@ -46,22 +46,23 @@ export const subjectAreaInfo = {
     ],
 
     'Mathematics': [
-        ['Algebra and Number Theory', 'Algebra and Number Theory'],
-        ['Analysis', 'Analysis'],
-        ['Applied Mathematics', 'Applied Mathematics'],
-        //['Computational Mathematics', 'Computational Mathematics'],
-        ['Geometry and Topology', 'Geometry and Topology'],
-        ['Numerical Analysis', 'Numerical Analysis'],
-        //['Statistics and Probability', 'Statistics and Probability'],
-        //['Discrete Mathematics and Combinatorics', 'Discrete Mathematics and Combinatorics'],
+        ['Algebra and Number Theory','Algebra and Number Theory'],
+        ['Analysis','Analysis'],
+        ['Applied Mathematics','Applied Mathematics'],
+        ['Computational Mathematics','Computational Mathematics'],
+        ['Geometry and Topology','Geometry and Topology'],
+        ['Numerical Analysis','Numerical Analysis'],
+        ['Statistics and Probability','Statistics and Probability'],
+        ['Discrete Mathematics and Combinatorics','Discrete Mathematics and Combinatorics'],
     ],
 
     'Physics': [
-        ['Astronomy and Astrophysics', 'None'],
-        ['Atomic and Molecular Physics, and Optics', 'None'],
-        ['Condensed Matter Physics', 'None'],
-        ['Nuclear and High Energy Physics', 'None'],
-        ['Surfaces and Interfaces', 'None']
+        ['Astronomy and Astrophysics', 'Astronomy and Astrophysics'],
+        ['Atomic and Molecular Physics', 'Atomic and Molecular Physics'],
+        ['Condensed Matter Physics', 'Condensed Matter Physics'],
+        ['Nuclear and High Energy Physics', 'Nuclear and High Energy Physics'],
+        ['Surfaces and Interfaces', 'Surfaces and Interfaces'],
+        ['Optics', 'Optics']
     ],
 
     'Life Sciences': [

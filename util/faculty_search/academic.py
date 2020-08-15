@@ -5,9 +5,10 @@ from fake_useragent import UserAgent
 
 
 session = requests.Session()
+search_endpoint = 'https://academic.microsoft.com/api/search'
 
 def get_academic(uni_name, field, limit):
-    endpoint, af_id, f_id = get_authors_endpoint(uni_name, field)
+    endpoint, uni_id, field_id = get_authors_endpoint(uni_name, field)
     endpoint += str(limit)
     print(f'[Endpoint] {endpoint}')
 
@@ -16,7 +17,7 @@ def get_academic(uni_name, field, limit):
     if 200 <= top_authors.status_code < 300:
         top_authors_json = json.loads(top_authors.text)
         for author in top_authors_json['te']:
-            if af_id == author['ci']['id']:
+            if uni_id == author['ci']['id']:
                 authors_list[author['an']] = author['id']
         print(f'[Finished] {len(authors_list)} total authors found')
         return authors_list
@@ -24,27 +25,44 @@ def get_academic(uni_name, field, limit):
         print(f'[Failed] top_authors {top_authors.status_code}')
 
 
-def get_authors_endpoint(uni_name, category):
-    api_search = 'https://academic.microsoft.com/api/search'
-    data = {
-            'query':f'{uni_name} {category}',
-            'queryExpression':'',
-            'Filters':[],
-            'orderBy':'4',
-            'Skip':'0',
-            'sortAscending':True,
-            'Take':'10',
-            'includeCitationContexts':True,
-            'profileId':''
+def get_authors_endpoint(uni_name, field):
+    print('[Start] Fetching authors endpoint')
+    uni_id = get_uni_id(uni_name)
+    field_id = get_field_id(field)
+
+    authors_endpoint = f'https://academic.microsoft.com/api/entity/topEntities/6/{uni_id}?tet=1&filters=Composite(F.FId={field_id})&take='
+
+    return authors_endpoint, uni_id, field_id
+
+
+def get_uni_id(uni_name):
+    payload = {
+            "query": uni_name,
+            "queryExpression":"",
+            "filters":[],
+            "orderBy":0,
+            "skip":0,
+            "sortAscending": True,
+            "take":10,
+            "includeCitationContexts": True,
+            "profileId":""
             }
-    res = session.post(api_search, json=data)
-    if 200 <= res.status_code < 300:
-        res_json = json.loads(res.text)
-        # af_id is affiliation (university) ID
-        af_id = res_json['f'][0]['fi'][0]['id']
-        # f_id is field ID
-        f_id = res_json['f'][3]['fi'][0]['id']
-        return f'https://academic.microsoft.com/api/entity/topEntities/6/{af_id}?tet=1&filters=Composite(F.FId={f_id})&take=', af_id, f_id
-    else:
-        print(f'[Failed] endpoint {res.status_code}')
+    uni_resp = session.post(search_endpoint, json=payload)
+    return json.loads(uni_resp.text)['f'][0]['fi'][0]['id']
+
+
+def get_field_id(field):
+    payload = {
+            "query": field,
+            "queryExpression":"",
+            "filters":[],
+            "orderBy":0,
+            "skip":0,
+            "sortAscending": True,
+            "take":10,
+            "includeCitationContexts": True,
+            "profileId":""
+            }
+    field_resp = session.post(search_endpoint, json=payload)
+    return json.loads(field_resp.text)['f'][3]['fi'][0]['id']
 

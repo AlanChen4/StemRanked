@@ -3,23 +3,25 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import { BrowserRouter as Router, Redirect, Route } from 'react-router-dom';
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import About from './About';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Router>
-      <Route exact path="/">
-        <Redirect to="/Computer_Science" />
-      </Route>
-      <Route exact path="/Computer_Science" render={() => { return <App subject="Computer Science" /> }} />
-      <Route exact path="/Life_Sciences" render={() => { return <App subject="Life Sciences" /> }} />
-      <Route exact path="/Chemistry" render={() => { return <App subject="Chemistry" /> }} />
-      <Route exact path="/Engineering" render={() => { return <App subject="Engineering" /> }} />
-      <Route exact path="/Mathematics" render={() => { return <App subject="Mathematics" /> }} />
-      <Route exact path="/Physics" render={() => { return <App subject="Physics" /> }} />
-      <Route exact path="/About" render={() => { return <About /> }} />
-    </Router>
+    <BrowserRouter forceRefresh={true}>
+      <Switch>
+        <Route exact path="/">
+          <Redirect to="/Computer_Science" />
+        </Route>
+        <Route path="/Computer_Science" render={() => { return <App subject="Computer Science" /> }} />
+        <Route path="/Life_Sciences" render={() => { return <App subject="Life Sciences" /> }} />
+        <Route path="/Chemistry" render={() => { return <App subject="Chemistry" /> }} />
+        <Route path="/Engineering" render={() => { return <App subject="Engineering" /> }} />
+        <Route path="/Mathematics" render={() => { return <App subject="Mathematics" /> }} />
+        <Route path="/Physics" render={() => { return <App subject="Physics" /> }} />
+        <Route path="/About" render={() => { return <About /> }} />
+      </Switch>
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
 );
