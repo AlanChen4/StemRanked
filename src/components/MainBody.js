@@ -117,7 +117,7 @@ function MainBody(props) {
                         <a onClick={() => setSelectedSchool(school)} key={school} title={'Select ' + school + ' to view more details'}>
                           <Row className={selectedSchool === school ? "InstitutionSelected" : "Institution"}>
                             <Col xs={3}><span className="RankingColumnAlignment">{i + 1}</span></Col>
-                            <Col xs={8}><span className="RankingColumnAlignment">{/*console.log('putting in', school)*/}{school}</span></Col>
+                            <Col xs={8}><span className="RankingColumnAlignment">{school}</span></Col>
                             <Col className="ArrowContainer">
                               <Image className={selectedSchool === school ? "Arrow" : "ArrowInactive"} src="./images/arrow.png" />
                             </Col>
