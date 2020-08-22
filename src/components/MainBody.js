@@ -113,7 +113,6 @@ function MainBody(props) {
                 <Row>
                   <Col>
                     <div className="DataColumnInstitutions">
-                      {/*console.log('ranking institutions')*/}
                       {loadingDataStatus ? <LoadingSpinner /> : ranks.map((school, i) =>
                         <a onClick={() => setSelectedSchool(school)} key={school} title={'Select ' + school + ' to view more details'}>
                           <Row className={selectedSchool === school ? "InstitutionSelected" : "Institution"}>
