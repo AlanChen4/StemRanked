@@ -113,7 +113,6 @@ function MainBody(props) {
                 <Row>
                   <Col>
                     <div className="DataColumnInstitutions">
-                      {console.log('rendering institutions')}
                       {loadingDataStatus ? <LoadingSpinner /> : ranks.map((school, i) =>
                         // eslint-disable-next-line
                         <a onClick={() => setSelectedSchool(school)} key={school} title={'Select ' + school + ' to view more details'}>

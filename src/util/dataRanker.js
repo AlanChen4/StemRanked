@@ -143,7 +143,7 @@ function AuthorRank(author_rank_dic, institutionAuthors) {
 
 //Computers the author average count from the dictionary author_rank_dic
 function authorAvgCount(author_rank_dic, subAreas, areaDict) {
-    console.log("This is author_rank_dic", author_rank_dic);
+    if (env) console.log("This is author_rank_dic", author_rank_dic);
     let numAreas = subAreas.length;
     if (subAreas.length === 0) {
         numAreas = Object.keys(areaDict).length;
@@ -160,7 +160,7 @@ function authorAvgCount(author_rank_dic, subAreas, areaDict) {
             authorCounts[inst][author] = add;
         }
     }
-    console.log(authorCounts);
+    if (env) console.log(authorCounts);
     return authorCounts;
 
 }
@@ -286,7 +286,7 @@ async function rankings(subject, subAreas, startYr) {
     if (env) console.log('Authors', finalAuthors);
 
     let authorArea = speciality(rankAuthors);
-    console.log("Author strongest areas", authorArea);
+    if (env) console.log("Author strongest areas", authorArea);
 
     let rank_dic = rankingsInfo(final_colleges, colleges);
     if (env) console.log('Result of rankingsInfo call', rank_dic);
@@ -300,7 +300,6 @@ async function rankings(subject, subAreas, startYr) {
     if (env) console.log('Author Counts:', finalAuthorCounts);
 
     return [final, finalAuthors, finalAuthorCounts, authorArea, rankAuthors];
-    //return { UNC: 1.532423 }
 }
 
 export default rankings;
