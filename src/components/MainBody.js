@@ -114,7 +114,6 @@ function MainBody(props) {
                   <Col>
                     <div className="DataColumnInstitutions">
                       {loadingDataStatus ? <LoadingSpinner /> : ranks.map((school, i) =>
-                        // eslint-disable-next-line
                         <a onClick={() => setSelectedSchool(school)} key={school} title={'Select ' + school + ' to view more details'}>
                           <Row className={selectedSchool === school ? "InstitutionSelected" : "Institution"}>
                             <Col xs={3}><span className="RankingColumnAlignment">{i + 1}</span></Col>
