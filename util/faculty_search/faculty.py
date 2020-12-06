@@ -1,15 +1,8 @@
 import csv
-import json
 import os
-import requests
-import time
 
-from bs4 import BeautifulSoup
-from itertools import cycle
-from requests.exceptions import Timeout, ProxyError, ConnectionError
-
-from academic import get_academic
-from scholar import get_scholar
+from .academic import get_academic
+from .scholar import get_scholar
 
 
 def clean_duplicates(scholar, academic):
@@ -124,7 +117,6 @@ def get_faculty_from_list(institutions_path, field_fullname, starting_uni=None):
         # call get_faculty for each uni in uni_list
         print(f'[Start] Finding faculty list for {uni[0]}')
         get_faculty(email_domain=field_email,
-                uni_name=uni[0],
-                field=field_fullname,
-                output_name=uni[0] + '_' + field_fullname)
-
+                    uni_name=uni[0],
+                    field=field_fullname,
+                    output_name=uni[0] + '_' + field_fullname)

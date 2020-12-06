@@ -3,9 +3,8 @@ import random
 import requests
 
 from bs4 import BeautifulSoup
-from csv import writer
 from requests.exceptions import Timeout, ProxyError, ConnectionError, ChunkedEncodingError
-from proxy import get_proxy_local, gen_headers
+from .proxy import get_proxy_local, gen_headers
 
 
 session = requests.Session()
