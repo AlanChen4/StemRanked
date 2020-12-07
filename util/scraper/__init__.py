@@ -1,4 +1,3 @@
-import uuid
 import sqlite3
 
 from .authors import get_authors
@@ -69,9 +68,38 @@ def add_authors(uni_name, field):
                       {'id': author['id'], 'first': author['first'], 'last': author['last']})
 
 
-def add_publications(author_id):
+def add_publications(uni_name, field):
     """Creates table (if not already exists) and adds unique publications
 
-    :param author_id: unique author id associated with author
+    :param uni_name: name of the university, which is also used as key to find university authors
+    :param field: name of the field that the publications are being searched in
     """
-    pass
+    conn = sqlite3.connect('universities.db')
+    c = conn.cursor()
+
+    # create table for publications if it doesn't exist
+    if len(list(c.execute(f'''SELECT name FROM sqlite_master 
+                    WHERE type='table' AND name="{uni_name}_pubs"'''))) == 0:
+        with conn:
+            c.execute(f'''CREATE TABLE {uni_name}_pubs (
+                        author_id varchar,
+                        title varchar,
+                        location varchar,
+                        year INTEGER)''')
+
+    # get all authors from specified university
+    uni_authors = c.execute(f"SElECT * FROM {uni_name} WHERE field='{field}'")
+
+    # add publications associated with each author
+    for a in list(uni_authors):
+        a_id, a_uni, a_first, a_last, a_field = a[0], a[1], a[2], a[3], a[4]
+        a_publications = get_publications(a_uni, a_first, a_last, a_field)
+        for pub in a_publications:
+            with conn:
+                c.execute(f'''INSERT INTO {uni_name}_pubs VALUES(
+                            :id,
+                            :title,
+                            :location,
+                            :year)''', {
+                    'id': a_id, 'title': pub['title'], 'location': pub['location'], 'year': pub['year']
+                })
