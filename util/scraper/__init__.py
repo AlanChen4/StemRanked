@@ -15,15 +15,6 @@ def clear_db():
             c.execute('DROP TABLE ' + table[0])
 
 
-def add_all(file_path):
-    """Adds all universities from a given text file, along with
-    their authors and publication information
-
-    :param file_path: file path of the text file
-    """
-    pass
-
-
 def add_university(uni_name):
     """Create table for university and add to main table
 
