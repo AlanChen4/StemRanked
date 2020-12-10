@@ -1,29 +1,29 @@
 import copy
+import os
 import uuid
 
-from .academic import *
+from .academic import get_academic_authors
+from .scholar import get_scholar_authors
 
 
 def get_authors(uni_name, field):
-    """Returns list of authors from google
+    """
+    Returns list of authors from google
     scholar and microsoft academic"""
 
     # author_list.append({'id': str(uuid.uuid4()), 'first': 'alan', 'last': 'chen'})
 
-    aa = get_academic_authors(uni_name, field)
-    aa = clean_authors(aa, {'Lawrence Carin': 343434})
-    return aa
+    academic_authors = get_academic_authors(uni_name, field)
 
-
-def get_scholar_authors():
-    pass
+    proxies_path = os.path.dirname(__file__) + '/proxies/proxies.txt'
+    scholar_authors = get_scholar_authors("duke.edu", field, proxies_path)
+    cleaned_authors = clean_authors(academic_authors, scholar_authors)
+    return cleaned_authors
 
 
 def clean_authors(academic, scholar):
     """
     Return the list of authors in proper format so it can be inserted into database
-
-    Both academic and scholar should be inputted as list with [full_name]
 
     :param academic : list of authors from microsoft academic
     :param scholar: list of authors form google scholar
@@ -46,7 +46,7 @@ def clean_authors(academic, scholar):
         no_middle_academic.append(first_name + ' ' + last_name)
 
     scholar_copy = copy.deepcopy(scholar)
-    for name in scholar_copy.keys():
+    for name in scholar_copy:
         # remove middle name
         split_name = name.split()
         first_name = split_name[0]
@@ -59,7 +59,6 @@ def clean_authors(academic, scholar):
         for scholar_author in no_middle_scholar:
             if academic_author == scholar_author:
                 no_middle_scholar.remove(academic_author)
-                no_middle_academic.remove(scholar_author)
     combined = no_middle_scholar + no_middle_academic
 
     # convert into proper format and return

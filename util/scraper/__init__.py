@@ -48,6 +48,8 @@ def add_authors(uni_name, field):
     conn = sqlite3.connect('rankings.db')
     c = conn.cursor()
 
+    field = field.replace('_', ' ')
+
     all_authors = get_authors(uni_name, field)
     for author in all_authors:
         with conn:
