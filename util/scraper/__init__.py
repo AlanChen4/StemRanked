@@ -6,7 +6,7 @@ from .publications import get_publications
 
 def clear_db():
     """Deletes all tables from database"""
-    conn = sqlite3.connect('universities.db')
+    conn = sqlite3.connect('rankings.db')
     c = conn.cursor()
 
     with conn:
@@ -20,7 +20,7 @@ def add_university(uni_name):
 
     :param uni_name: name of the university
     """
-    conn = sqlite3.connect('universities.db')
+    conn = sqlite3.connect('rankings.db')
     c = conn.cursor()
 
     with conn:
@@ -43,7 +43,7 @@ def add_authors(uni_name, field):
     :param uni_name: name of the university
     :param field: name of the field that authors are being added from (CS)
     """
-    conn = sqlite3.connect('universities.db')
+    conn = sqlite3.connect('rankings.db')
     c = conn.cursor()
 
     all_authors = get_authors(uni_name, field)
@@ -65,7 +65,7 @@ def add_publications(uni_name, field):
     :param uni_name: name of the university, which is also used as key to find university authors
     :param field: name of the field that the publications are being searched in
     """
-    conn = sqlite3.connect('universities.db')
+    conn = sqlite3.connect('rankings.db')
     c = conn.cursor()
 
     # create table for publications if it doesn't exist
