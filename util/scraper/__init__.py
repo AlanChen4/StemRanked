@@ -16,7 +16,8 @@ def clear_db():
 
 
 def add_university(uni_name):
-    """Create table for university and add to main table
+    """
+    Create table for university and add to main table
 
     :param uni_name: name of the university
     """
@@ -38,7 +39,8 @@ def add_university(uni_name):
 
 
 def add_authors(uni_name, field):
-    """Adds list of authors based off university name and field
+    """
+    Adds list of authors based off university name and field
 
     :param uni_name: name of the university
     :param field: name of the field that authors are being added from (CS)
@@ -60,7 +62,8 @@ def add_authors(uni_name, field):
 
 
 def add_publications(uni_name, field):
-    """Creates table (if not already exists) and adds unique publications
+    """
+    Creates table (if not already exists) and adds unique publications
 
     :param uni_name: name of the university, which is also used as key to find university authors
     :param field: name of the field that the publications are being searched in
