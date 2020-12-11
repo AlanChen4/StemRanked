@@ -34,8 +34,7 @@ def add_university(uni_name):
                     first varchar,
                     last varchar,
                     field varchar,
-                    pub_count integer,
-                    publications_id varchar)''')
+                    pub_count integer)''')
 
 
 def add_authors(uni_name, field):
