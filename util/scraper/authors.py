@@ -11,8 +11,6 @@ def get_authors(uni_name, field):
     Returns list of authors from google
     scholar and microsoft academic"""
 
-    # author_list.append({'id': str(uuid.uuid4()), 'first': 'alan', 'last': 'chen'})
-
     academic_authors = get_academic_authors(uni_name, field)
 
     proxies_path = os.path.dirname(__file__) + '/proxies/proxies.txt'
@@ -33,8 +31,8 @@ def clean_authors(academic, scholar):
     cleaned_list = []
 
     # remove middle names to reduce error from middle name being left out on certain platforms
-    no_middle_academic = []
-    no_middle_scholar = []
+    no_middle_academic = {}
+    no_middle_scholar = {}
 
     academic_copy = copy.deepcopy(academic)
     for name in academic_copy.keys():
@@ -43,7 +41,7 @@ def clean_authors(academic, scholar):
         first_name = split_name[0]
         last_name = split_name[-1]
 
-        no_middle_academic.append(first_name + ' ' + last_name)
+        no_middle_academic[first_name + ' ' + last_name] = academic_copy[name]
 
     scholar_copy = copy.deepcopy(scholar)
     for name in scholar_copy:
@@ -52,19 +50,20 @@ def clean_authors(academic, scholar):
         first_name = split_name[0]
         last_name = split_name[-1]
 
-        no_middle_scholar.append(first_name + ' ' + last_name)
+        no_middle_scholar[first_name + ' ' + last_name] = None
 
     # remove duplicates from google scholar and microsoft academic
-    for academic_author in no_middle_academic:
-        for scholar_author in no_middle_scholar:
-            if academic_author == scholar_author:
-                no_middle_scholar.remove(academic_author)
-    combined = no_middle_scholar + no_middle_academic
+    combined = {**no_middle_scholar, **no_middle_academic}
 
     # convert into proper format and return
-    for author in combined:
+    for author in combined.keys():
         split_name = author.split()
         first_name, last_name = split_name[0], split_name[-1]
-        cleaned_list.append({'id': str(uuid.uuid4()), 'first': first_name, 'last': last_name})
+        cleaned_list.append({
+            'id': str(uuid.uuid4()),
+            'first': first_name,
+            'last': last_name,
+            'academic': combined[author]
+        })
 
     return cleaned_list

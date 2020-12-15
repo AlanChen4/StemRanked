@@ -1,3 +1,4 @@
+import os
 import sqlite3
 
 from .authors import get_authors
@@ -34,6 +35,7 @@ def add_university(uni_name):
                     first varchar,
                     last varchar,
                     field varchar,
+                    academic varchar,
                     pub_count integer)''')
 
 
@@ -52,14 +54,15 @@ def add_authors(uni_name, field):
     all_authors = get_authors(uni_name, field)
     for author in all_authors:
         with conn:
-            c.execute(f'''INSERT INTO {uni_name} (id, uni_name, first, last, field)
+            c.execute(f'''INSERT INTO {uni_name} (id, uni_name, first, last, field, academic)
                         VALUES (
                             :id,
                             "{uni_name}",
                             :first,
                             :last,
-                            "{field}")''',
-                      {'id': author['id'], 'first': author['first'], 'last': author['last']})
+                            "{field}",
+                            :academic)''',
+              {'id': author['id'], 'first': author['first'], 'last': author['last'], 'academic': author['academic']})
 
 
 def add_publications(uni_name, field):
@@ -86,9 +89,10 @@ def add_publications(uni_name, field):
     uni_authors = c.execute(f"SElECT * FROM {uni_name} WHERE field='{field}'")
 
     # add publications associated with each author
+    path_to_proxies = os.path.dirname(__file__) + '/proxies/proxies.txt'
     for a in list(uni_authors):
         a_id, a_uni, a_first, a_last, a_field = a[0], a[1], a[2], a[3], a[4]
-        a_publications = get_publications(a_uni, a_first, a_last, a_field)
+        a_publications = get_publications(a_uni, a_first, a_last, a_field, path_to_proxies)
         for pub in a_publications:
             with conn:
                 c.execute(f'''INSERT INTO {uni_name}_pubs VALUES(
