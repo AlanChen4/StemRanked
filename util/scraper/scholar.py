@@ -22,7 +22,6 @@ def get_scholar_authors(email_domain, field, proxy_path, starting_author=None,
     :param int proxy_thread: Number of threads to use when checking proxies
     :param boolean strict: While False, proxies will be removed when IP banned
     """
-
     # final list being returned
     profiles = {}
 
@@ -50,6 +49,9 @@ def get_scholar_authors(email_domain, field, proxy_path, starting_author=None,
             base_check = add_profiles(profiles, base_resp.text)
         try:
             soup = BeautifulSoup(base_resp.text, 'html.parser')
+            nav_btns = soup.find_all('button', attrs={'aria-label': True})
+            next_btn = list(filter(lambda x: x['aria-label'] == 'Next', nav_btns))
+            next_link = next_btn[0]['onclick'][17:-1]
         except IndexError:
             # check if it was just no results returned
             if "didn't match any user profiles" in soup.text:
@@ -117,6 +119,8 @@ def get_scholar_authors(email_domain, field, proxy_path, starting_author=None,
                         print(f'[{time_record}] collected #{len(profiles)}')
                     except Timeout:
                         print(f'[Timeout] proxy timed out, switching proxies')
+                    except ConnectionError:
+                        print(f'[ConnectionError] switching proxies')
                     except ProxyError:
                         # remove proxy if strict is True
                         if strict:
@@ -124,8 +128,6 @@ def get_scholar_authors(email_domain, field, proxy_path, starting_author=None,
                             print(f'[ProxyError-Removed] {len(proxy_list)} proxies remaining')
                         else:
                             print(f'[ProxyError] [Strict: False] {proxy}')
-                    except ConnectionError:
-                        print(f'[ConnectionError] switching proxies')
                     except ChunkedEncodingError:
                         proxy_list.remove(proxy)
                         print(f'[CEE] Removed bad proxy')
@@ -134,6 +136,7 @@ def get_scholar_authors(email_domain, field, proxy_path, starting_author=None,
             # check if last page has been reached
             except KeyError:
                 try:
+                    disable_toggle = next_btn[0]['disabled']
                     print(f'[Finished] {len(profiles)} results collected')
                     break
                 except Exception as e:

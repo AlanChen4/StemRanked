@@ -1,7 +1,9 @@
 import os
+import random
 import sqlite3
 
 from .authors import get_authors
+from .proxy import get_proxy_local
 from .publications import get_publications
 
 
@@ -62,7 +64,8 @@ def add_authors(uni_name, field):
                             :last,
                             "{field}",
                             :academic)''',
-              {'id': author['id'], 'first': author['first'], 'last': author['last'], 'academic': author['academic']})
+                      {'id': author['id'], 'first': author['first'], 'last': author['last'],
+                       'academic': author['academic']})
 
 
 def add_publications(uni_name, field):
@@ -83,22 +86,31 @@ def add_publications(uni_name, field):
                         author_id varchar,
                         title varchar,
                         location varchar,
-                        year INTEGER)''')
+                        year INTEGER,
+                        author_count INTEGER)''')
 
     # get all authors from specified university
-    uni_authors = c.execute(f"SElECT * FROM {uni_name} WHERE field='{field}'")
+    uni_authors = c.execute(f"SElECT * FROM {uni_name} WHERE field='{field.replace('_', ' ')}'")
 
     # add publications associated with each author
-    path_to_proxies = os.path.dirname(__file__) + '/proxies/proxies.txt'
+    proxies_path = os.path.dirname(__file__) + '/proxies/proxies.txt'
+    proxies = get_proxy_local(proxies_path, 10)
     for a in list(uni_authors):
-        a_id, a_uni, a_first, a_last, a_field = a[0], a[1], a[2], a[3], a[4]
-        a_publications = get_publications(a_uni, a_first, a_last, a_field, path_to_proxies)
+        if len(proxies) < 1:
+            proxies = get_proxy_local(proxies_path, 10)
+            pub_proxy = random.choice(proxies)
+        else:
+            pub_proxy = random.choice(proxies)
+        a_id, a_uni, a_first, a_last, a_field, author_id = a[0], a[1], a[2], a[3], a[4], a[5]
+        a_publications = get_publications(a_uni, a_first, a_last, a_field, author_id, pub_proxy)
         for pub in a_publications:
             with conn:
                 c.execute(f'''INSERT INTO {uni_name}_pubs VALUES(
                             :id,
                             :title,
                             :location,
-                            :year)''', {
-                    'id': a_id, 'title': pub['title'], 'location': pub['location'], 'year': pub['year']
+                            :year,
+                            :author_count)''', {
+                    'id': a_id, 'title': pub['title'], 'location': pub['location'],
+                    'year': pub['year'], 'author_count': pub['author_count']
                 })
