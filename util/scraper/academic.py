@@ -17,7 +17,11 @@ def get_academic_authors(uni_name, field, limit=500):
         top_authors_json = json.loads(top_authors.text)
         for author in top_authors_json['te']:
             if uni_id == author['ci']['id']:
-                authors_list[author['an']] = author['id']
+                info = {
+                    'id': author['id'],
+                    'pub_count': author['pc']
+                }
+                authors_list[author['an']] = info
         print(f'[Finished] {len(authors_list)} total authors found')
         return authors_list
     else:
@@ -25,7 +29,6 @@ def get_academic_authors(uni_name, field, limit=500):
 
 
 def get_authors_endpoint(uni_name, field):
-    print('[Start] Fetching authors endpoint')
     uni_id = get_uni_id(uni_name)
     field_id = get_field_id(field)
 

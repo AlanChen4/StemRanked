@@ -56,16 +56,17 @@ def add_authors(uni_name, field):
     all_authors = get_authors(uni_name, field)
     for author in all_authors:
         with conn:
-            c.execute(f'''INSERT INTO {uni_name} (id, uni_name, first, last, field, academic)
+            c.execute(f'''INSERT INTO {uni_name} (id, uni_name, first, last, field, academic, pub_count)
                         VALUES (
                             :id,
                             "{uni_name}",
                             :first,
                             :last,
                             "{field}",
-                            :academic)''',
+                            :academic,
+                            :pub_count)''',
                       {'id': author['id'], 'first': author['first'], 'last': author['last'],
-                       'academic': author['academic']})
+                       'academic': author['id'], 'pub_count': author['pc']})
 
 
 def add_publications(uni_name, field):
@@ -98,11 +99,8 @@ def add_publications(uni_name, field):
     for a in list(uni_authors):
         if len(proxies) < 1:
             proxies = get_proxy_local(proxies_path, 10)
-            pub_proxy = random.choice(proxies)
-        else:
-            pub_proxy = random.choice(proxies)
         a_id, a_uni, a_first, a_last, a_field, author_id = a[0], a[1], a[2], a[3], a[4], a[5]
-        a_publications = get_publications(a_uni, a_first, a_last, a_field, author_id, pub_proxy)
+        a_publications = get_publications(a_uni, a_first, a_last, a_field, author_id, proxies)
         for pub in a_publications:
             with conn:
                 c.execute(f'''INSERT INTO {uni_name}_pubs VALUES(

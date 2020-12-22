@@ -9,11 +9,15 @@ from .scholar import get_scholar_authors
 def get_authors(uni_name, field):
     """
     Returns list of authors from google
-    scholar and microsoft academic"""
+    scholar and microsoft academic
+    """
 
+    print('[Starting] Getting authors from MA')
     academic_authors = get_academic_authors(uni_name, field)
 
     proxies_path = os.path.dirname(__file__) + '/proxies/proxies.txt'
+
+    print('[Starting] Getting authors from GS')
     scholar_authors = get_scholar_authors("duke.edu", field, proxies_path)
     cleaned_authors = clean_authors(academic_authors, scholar_authors)
     return cleaned_authors
@@ -59,11 +63,17 @@ def clean_authors(academic, scholar):
     for author in combined.keys():
         split_name = author.split()
         first_name, last_name = split_name[0], split_name[-1]
-        cleaned_list.append({
+        author_info = {
             'id': str(uuid.uuid4()),
             'first': first_name,
             'last': last_name,
-            'academic': combined[author]
-        })
+        }
+        if combined[author] is not None:
+            author_info['id'] = combined[author]['id']
+            author_info['pc'] = combined[author]['pub_count']
+        else:
+            author_info['id'] = None
+            author_info['pc'] = None
+        cleaned_list.append(author_info)
 
     return cleaned_list

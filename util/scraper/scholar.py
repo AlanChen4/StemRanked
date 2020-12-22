@@ -138,7 +138,7 @@ def get_scholar_authors(email_domain, field, proxy_path, starting_author=None,
                 try:
                     disable_toggle = next_btn[0]['disabled']
                     print(f'[Finished] {len(profiles)} results collected')
-                    break
+                    return profiles
                 except Exception as e:
                     print(e)
                     break
