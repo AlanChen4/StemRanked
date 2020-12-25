@@ -98,9 +98,10 @@ def add_publications(uni_name, field):
     proxies = get_proxy_local(proxies_path, 10)
     for a in list(uni_authors):
         if len(proxies) < 1:
+            print('[Danger] Ran out of proxies, re-fetching proxies from list')
             proxies = get_proxy_local(proxies_path, 10)
         a_id, a_uni, a_first, a_last, a_field, author_id = a[0], a[1], a[2], a[3], a[4], a[5]
-        a_publications = get_publications(a_uni, a_first, a_last, a_field, author_id, proxies)
+        a_publications = get_publications(a_uni, a_first, a_last, a_field, proxies, author_id)
         for pub in a_publications:
             with conn:
                 c.execute(f'''INSERT INTO {uni_name}_pubs VALUES(
