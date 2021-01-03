@@ -2,7 +2,6 @@ import copy
 import uuid
 
 from .academic import get_academic_authors
-from .scholar import get_scholar_authors
 
 
 def get_authors(uni_name, field):
