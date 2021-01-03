@@ -18,8 +18,8 @@ def get_academic_authors(uni_name, field, limit=500):
         for author in top_authors_json['te']:
             if uni_id == author['ci']['id']:
                 info = {
-                    'id': author['id'],
-                    'pub_count': author['pc']
+                    'id': None,
+                    'pub_count': None,
                 }
                 authors_list[author['an']] = info
         print(f'[Finished] {len(authors_list)} total authors found')

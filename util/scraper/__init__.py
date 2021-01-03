@@ -1,5 +1,4 @@
 import os
-import random
 import sqlite3
 
 from .authors import get_authors
@@ -56,17 +55,15 @@ def add_authors(uni_name, field):
     all_authors = get_authors(uni_name, field)
     for author in all_authors:
         with conn:
-            c.execute(f'''INSERT INTO {uni_name} (id, uni_name, first, last, field, academic, pub_count)
+            c.execute(f'''INSERT INTO {uni_name} (id, uni_name, first, last, field)
                         VALUES (
                             :id,
                             "{uni_name}",
                             :first,
                             :last,
-                            "{field}",
-                            :academic,
-                            :pub_count)''',
-                      {'id': author['id'], 'first': author['first'], 'last': author['last'],
-                       'academic': author['id'], 'pub_count': author['pc']})
+                            "{field}")
+                        ''',
+                      {'id': author['id'], 'first': author['first'], 'last': author['last']})
 
 
 def add_publications(uni_name, field):
