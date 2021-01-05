@@ -33,7 +33,6 @@ class ProxyThread(threading.Thread):
                                proxies=proxy,
                                timeout=5).text
             if res == ip.split(':')[0]:
-                print(f'[Success] {ip}')
                 good_proxies.append(proxy)
         except Exception:
             return
