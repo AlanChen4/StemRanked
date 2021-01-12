@@ -1,6 +1,7 @@
 import os
 import sqlite3
 
+from .academic import add_related_authors
 from .authors import get_authors
 from .proxy import get_proxy_local
 from .publications import get_publications
@@ -53,6 +54,7 @@ def add_authors(uni_name, field):
     field = field.replace('_', ' ')
 
     all_authors = get_authors(uni_name, field)
+    print(f'[Update] Adding authors from {uni_name} to database')
     for author in all_authors:
         with conn:
             c.execute(f'''INSERT INTO {uni_name} (id, uni_name, first, last, field)
@@ -64,6 +66,31 @@ def add_authors(uni_name, field):
                             "{field}")
                         ''',
                       {'id': author['id'], 'first': author['first'], 'last': author['last']})
+    print(f'[Finished] Finished adding authors from {uni_name}')
+
+
+def add_pc_and_id(table_name, uni_name, field):
+    """
+    Adds the publication count (pc) and the author id (id) to each of the authors
+    :param table_name: name of table in SQL database
+    :param uni_name: name of the university
+    """
+    conn = sqlite3.connect('rankings.db')
+    c = conn.cursor()
+
+    # get all rows from table
+    c.execute(f'SELECT * FROM {table_name}')
+    all_authors = c.fetchall()
+
+    print('[Started] Getting pc and id info for authors')
+    author_info = add_related_authors(all_authors, uni_name, field)
+    for info in author_info:
+        with conn:
+            c.execute(f'''UPDATE {table_name} 
+                        SET academic="{info['academic']}", 
+                            pub_count="{info['pc']}"
+                        WHERE id="{info['id']}"
+                        ''')
 
 
 def add_publications(uni_name, field):

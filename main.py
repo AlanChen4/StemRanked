@@ -7,4 +7,4 @@ if __name__ == '__main__':
     add_university('nc_state')
 
     add_authors('duke', 'computer_science')
-    # add_publications('duke', 'computer_science')
+    add_pc_and_id('duke', 'duke', 'computer science')
