@@ -74,6 +74,7 @@ def add_pc_and_id(table_name, uni_name, field):
     Adds the publication count (pc) and the author id (id) to each of the authors
     :param table_name: name of table in SQL database
     :param uni_name: name of the university
+    :param field: name of field being searched in
     """
     conn = sqlite3.connect('rankings.db')
     c = conn.cursor()
@@ -137,3 +138,18 @@ def add_publications(uni_name, field):
                     'id': a_id, 'title': pub['title'], 'location': pub['location'],
                     'year': pub['year'], 'author_count': pub['author_count']
                 })
+
+
+def remove_unrelated_authors(table_name):
+    """
+    Removes the authors whose academic && pub_count are either None or Null.
+    This function is called after add_pc_and_id is called
+    :param table_name: Name of table that the authors will be removed from
+    """
+    conn = sqlite3.connect('rankings.db')
+    c = conn.cursor()
+
+    with conn:
+        c.execute(f'''DELETE FROM {table_name} 
+                        WHERE academic="None" 
+                        OR academic IS NULL''')
