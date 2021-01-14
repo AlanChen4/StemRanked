@@ -153,3 +153,19 @@ def remove_unrelated_authors(table_name):
         c.execute(f'''DELETE FROM {table_name} 
                         WHERE academic="None" 
                         OR academic IS NULL''')
+
+
+def remove_duplicate_authors(table_name):
+    """
+    Removes any duplicate authors. Duplicate authors are identified as entries with the
+    same ID on MA
+    :param table_name: Name of the table that will have duplicate authors removed
+    """
+    conn = sqlite3.connect('rankings.db')
+    c = conn.cursor()
+
+    with conn:
+        c.execute(f'''DELETE FROM {table_name}
+                    WHERE ROWID NOT IN (SELECT MIN(ROWID)
+                    FROM {table_name}
+                    GROUP BY ACADEMIC)''')
