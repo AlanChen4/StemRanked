@@ -8,52 +8,64 @@ session = requests.Session()
 search_endpoint = 'https://academic.microsoft.com/api/search'
 
 
-def get_publications(uni_name, first, last, field, proxies, author_id=None):
+def get_publications(first, last, proxies, author_id=None):
     """Returns all publications associated with author
-    :param uni_name: Name of the university that the author belongs to
     :param first: First name of the author
     :param last: Last name of the author
-    :param field: Field that the author's works are being searched in
     :param proxies: List of proxies to be cycled through
-    :param author_id: Author id on MA. This is passed in only if already in database
+    :param author_id: Author id in database
     """
     # final list of publications to be returned
     publications = []
 
     proxy = random.choice(proxies)
 
-    try:
-        # search for author_id if not already in database
-        if author_id is None:
-            # search for the author, in order to find author_id
-            find_author_payload = {
-                "query": f"{first} {last} while at {uni_name} university {field}",
-                "queryExpression": f"@@@And(Composite(And(AA.AuN=='{first} {last}',AA.AfN=='{uni_name} university')),"
-                                   f"Composite(F.FN=='{field}'))",
-                "filters": [], "orderBy": 4, "skip": 0, "sortAscending": True, "take": 10,
-                "includeCitationContexts": True, "profileId": ""
-            }
-            find_author_resp = session.post(search_endpoint, json=find_author_payload, proxies=proxy)
-            print(find_author_resp.text, find_author_resp.status_code)
-            author_id = json.loads(find_author_resp.text)['f'][1]['fi'][0]['id']
+    # keep trying until publication info is gathered
+    papers = []
 
-        # search for author based on author_id
-        author_info_payload = {
-            "query": f"{first} {last}",
-            "queryExpression": f"Composite(AA.AuId={author_id})",
-            "filters": [], "orderBy": 0, "skip": 0, "sortAscending": True,
-            "take": 500, " includeCitationContexts": True,
-            "authorId": f"{author_id}", "profileId": ""
-        }
-        author_info_resp = session.post(search_endpoint, json=author_info_payload, proxies=proxy)
-        author_info = json.loads(author_info_resp.text)
-    except ProxyError:
-        print('[Proxy Connection Error] Trying again')
-        return get_publications(uni_name=uni_name, first=first, last=last,
-                                field=field, author_id=author_id, proxies=proxies)
+    skip = 0
+    while True:
+        try:
+            author_info_payload = {
+                "query": f"{first} {last}",
+                "queryExpression": f"Composite(AA.AuId={author_id})",
+                "filters": [],
+                "orderBy": 4,  # rank by saliency
+                "skip": skip,
+                "sortAscending": True,
+                "take": 10,
+                "includeCitationContexts": True,
+                "authorId": f"{author_id}",
+                "profileId": ""
+            }
+            author_info_resp = session.post(search_endpoint, json=author_info_payload, proxies=proxy)
+            author_info = json.loads(author_info_resp.text)
+            for paper in author_info['pr']:
+                papers.append(paper)
+            skip += 10
+            # Reached the 500 limit, any publication requested after this will result in 403
+            if skip > 500:
+                break
+        # bad response
+        except requests.exceptions.ChunkedEncodingError:
+            continue
+        # bad proxy was picked
+        except ProxyError:
+            proxy = random.choice(proxies)
+            print('[Proxy Connection Error] Trying again')
+        # KeyError is raised when author has < 500 publications, and the last publication is reached
+        except KeyError:
+            if 200 <= author_info_resp.status_code < 300:
+                break
+        # reached last publication && total publications > 500
+        except json.decoder.JSONDecodeError:
+            if 400 <= author_info_resp.status_code < 500:
+                print('[Proxy Banned] Rotating Proxies')
+                proxy = random.choice(proxies)
 
     # collect information
-    for paper in author_info['pr']:
+    print(f'[Update] Found {len(papers)} publications for {first} {last}')
+    for paper in papers:
         paper_title = paper['paper']['dn']
         location, year = paper['paper']['v']['displayName'], paper['paper']['v']['publishedYear']
         author_count = len(paper['paper']['a'])

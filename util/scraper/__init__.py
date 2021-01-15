@@ -51,8 +51,6 @@ def add_authors(uni_name, field):
     conn = sqlite3.connect('rankings.db')
     c = conn.cursor()
 
-    field = field.replace('_', ' ')
-
     all_authors = get_authors(uni_name, field)
     print(f'[Update] Adding authors from {uni_name} to database')
     for author in all_authors:
@@ -116,7 +114,7 @@ def add_publications(uni_name, field):
                         author_count INTEGER)''')
 
     # get all authors from specified university
-    uni_authors = c.execute(f"SElECT * FROM {uni_name} WHERE field='{field.replace('_', ' ')}'")
+    uni_authors = c.execute(f"SElECT * FROM {uni_name} WHERE field='{field}'")
 
     # add publications associated with each author
     proxies_path = os.path.dirname(__file__) + '/proxies/proxies.txt'
@@ -125,8 +123,8 @@ def add_publications(uni_name, field):
         if len(proxies) < 1:
             print('[Danger] Ran out of proxies, re-fetching proxies from list')
             proxies = get_proxy_local(proxies_path, 10)
-        a_id, a_uni, a_first, a_last, a_field, author_id = a[0], a[1], a[2], a[3], a[4], a[5]
-        a_publications = get_publications(a_uni, a_first, a_last, a_field, proxies, author_id)
+        a_first, a_last, author_id = a[2], a[3], a[5]
+        a_publications = get_publications(a_first, a_last, proxies, author_id)
         for pub in a_publications:
             with conn:
                 c.execute(f'''INSERT INTO {uni_name}_pubs VALUES(
@@ -138,6 +136,7 @@ def add_publications(uni_name, field):
                     'id': a_id, 'title': pub['title'], 'location': pub['location'],
                     'year': pub['year'], 'author_count': pub['author_count']
                 })
+        print(f'[Success] Added {a_first} {a_last} to database')
 
 
 def remove_unrelated_authors(table_name):
