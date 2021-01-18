@@ -116,27 +116,22 @@ def add_publications(uni_name, field):
     # get all authors from specified university
     uni_authors = c.execute(f"SElECT * FROM {uni_name} WHERE field='{field}'")
 
-    # add publications associated with each author
-    proxies_path = os.path.dirname(__file__) + '/proxies/proxies.txt'
-    proxies = get_proxy_local(proxies_path, 10)
-    for a in list(uni_authors):
-        if len(proxies) < 1:
-            print('[Danger] Ran out of proxies, re-fetching proxies from list')
-            proxies = get_proxy_local(proxies_path, 10)
-        a_first, a_last, author_id = a[2], a[3], a[5]
-        a_publications = get_publications(a_first, a_last, proxies, author_id)
-        for pub in a_publications:
-            with conn:
-                c.execute(f'''INSERT INTO {uni_name}_pubs VALUES(
-                            :id,
-                            :title,
-                            :location,
-                            :year,
-                            :author_count)''', {
-                    'id': a_id, 'title': pub['title'], 'location': pub['location'],
-                    'year': pub['year'], 'author_count': pub['author_count']
-                })
-        print(f'[Success] Added {a_first} {a_last} to database')
+    all_publications = []
+    get_publications(uni_authors, all_publications)
+    all_pubs_length = len(all_publications)
+    for index, pub in enumerate(all_publications):
+        print(f'[Update] Adding {index}/{all_pubs_length}')
+        with conn:
+            c.execute(f'''INSERT INTO {uni_name}_pubs VALUES(
+                        :id,
+                        :title,
+                        :location,
+                        :year,
+                        :author_count)''', {
+                'id': pub['author_id'], 'title': pub['title'], 'location': pub['location'],
+                'year': pub['year'], 'author_count': pub['author_count']
+            })
+    print('[Finished] Added publications to database')
 
 
 def remove_unrelated_authors(table_name):
