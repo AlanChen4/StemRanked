@@ -1,4 +1,3 @@
-import os
 import sqlite3
 
 from .academic import add_related_authors
