@@ -1,3 +1,5 @@
+import os
+import pandas as pd
 import sqlite3
 
 from .academic import add_related_authors
@@ -162,3 +164,16 @@ def remove_duplicate_authors(table_name):
                     WHERE ROWID NOT IN (SELECT MIN(ROWID)
                     FROM {table_name}
                     GROUP BY ACADEMIC)''')
+
+
+def get_universities():
+    """
+    Returns list of the top universities to be scraped
+    :return: list of universities with their names
+    """
+    uni_path = os.path.dirname(__file__) + '/data/uni_list.csv'
+    uni_list = []
+    with open(uni_path, 'r') as f:
+        for row in f.readlines():
+            uni_list.append(''.join(row.split(',')[:-1]))
+    return uni_list
