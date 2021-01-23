@@ -1,11 +1,33 @@
 import os
-import pandas as pd
 import sqlite3
 
 from .academic import add_related_authors
 from .authors import get_authors
 from .proxy import get_proxy_local
 from .publications import get_publications
+
+
+def scrape_field(field):
+    """
+    Goes through each university in the university list and adds its information to the DB
+    :param field: Name of the field that is being scraped
+    """
+    uni_list = get_universities()
+    for uni in uni_list:
+        print(f'[Started] Scraping {uni} for {field}')
+        table_name = uni.replace(' ', '_')
+
+        # add all information before scraping publications
+        add_university(table_name)
+        add_authors(table_name, uni, field)
+        add_pc_and_id(table_name=table_name, uni_name=uni, field=field)
+
+        # clean and remove mistake entries
+        remove_unrelated_authors(table_name=table_name)
+        remove_duplicate_authors(table_name=table_name)
+
+        # add publications
+        add_publications(table_name, uni, field)
 
 
 def clear_db():
@@ -19,11 +41,11 @@ def clear_db():
             c.execute('DROP TABLE ' + table[0])
 
 
-def add_university(uni_name):
+def add_university(table_name):
     """
     Create table for university and add to main table
 
-    :param uni_name: name of the university
+    :param table_name: name of the university with spaces replaced as underscore
     """
     conn = sqlite3.connect('rankings.db')
     c = conn.cursor()
@@ -32,7 +54,7 @@ def add_university(uni_name):
         c.execute("PRAGMA foreign_keys = ON;")
 
         # create table for university
-        c.execute(f'''CREATE TABLE {uni_name}(
+        c.execute(f'''CREATE TABLE {table_name}(
                     id varchar primary key,
                     uni_name varchar,
                     first varchar,
@@ -42,10 +64,11 @@ def add_university(uni_name):
                     pub_count integer)''')
 
 
-def add_authors(uni_name, field):
+def add_authors(table_name, uni_name, field):
     """
     Adds list of authors based off university name and field
 
+    :param table_name: name of the SQL table
     :param uni_name: name of the university
     :param field: name of the field that authors are being added from (CS)
     """
@@ -56,7 +79,7 @@ def add_authors(uni_name, field):
     print(f'[Update] Adding authors from {uni_name} to database')
     for author in all_authors:
         with conn:
-            c.execute(f'''INSERT INTO {uni_name} (id, uni_name, first, last, field)
+            c.execute(f'''INSERT INTO {table_name} (id, uni_name, first, last, field)
                         VALUES (
                             :id,
                             "{uni_name}",
@@ -93,10 +116,11 @@ def add_pc_and_id(table_name, uni_name, field):
                         ''')
 
 
-def add_publications(uni_name, field):
+def add_publications(table_name, uni_name, field):
     """
     Creates table (if not already exists) and adds unique publications
 
+    :param table_name: name of the original SQL table containing the authors belonging to university
     :param uni_name: name of the university, which is also used as key to find university authors
     :param field: name of the field that the publications are being searched in
     """
@@ -105,9 +129,9 @@ def add_publications(uni_name, field):
 
     # create table for publications if it doesn't exist
     if len(list(c.execute(f'''SELECT name FROM sqlite_master 
-                    WHERE type='table' AND name="{uni_name}_pubs"'''))) == 0:
+                    WHERE type='table' AND name="{table_name}_pubs"'''))) == 0:
         with conn:
-            c.execute(f'''CREATE TABLE {uni_name}_pubs (
+            c.execute(f'''CREATE TABLE {table_name}_pubs (
                         author_id varchar,
                         title varchar,
                         location varchar,
@@ -115,7 +139,7 @@ def add_publications(uni_name, field):
                         author_count INTEGER)''')
 
     # get all authors from specified university
-    uni_authors = c.execute(f"SElECT * FROM {uni_name} WHERE field='{field}'")
+    uni_authors = c.execute(f"SElECT * FROM {table_name} WHERE field='{field}'")
 
     all_publications = []
     get_publications(uni_authors, all_publications)
@@ -123,7 +147,7 @@ def add_publications(uni_name, field):
     for index, pub in enumerate(all_publications):
         print(f'[Update] Adding {index}/{all_pubs_length}')
         with conn:
-            c.execute(f'''INSERT INTO {uni_name}_pubs VALUES(
+            c.execute(f'''INSERT INTO {table_name}_pubs VALUES(
                         :id,
                         :title,
                         :location,
