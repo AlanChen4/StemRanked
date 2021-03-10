@@ -45,6 +45,6 @@
     ]
   },
   "devDependencies": {
-    "elliptic": "^6.5.3"
+    "elliptic": "^6.5.4"
   }
 }
