@@ -13,7 +13,7 @@
     "lodash": "^4.17.19",
     "node-forge": "^0.10.0",
     "node-notifier": "^9.0.0",
-    "object-path": "^0.11.5",
+    "object-path": "^0.11.6",
     "papaparse": "^5.2.0",
     "react": "^16.13.1",
     "react-bootstrap": "^1.2.2",
